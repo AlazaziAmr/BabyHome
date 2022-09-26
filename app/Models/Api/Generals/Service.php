@@ -21,6 +21,7 @@ class Service extends BaseModel
         'type_id',
         'is_active',
         'user_id',
+        'sub_category_id',
     ];
 
     /**

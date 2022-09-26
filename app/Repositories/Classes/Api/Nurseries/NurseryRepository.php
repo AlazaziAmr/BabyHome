@@ -171,6 +171,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                         'is_paid' => $service['is_paid'] ?? null,
                         'type_id' =>  $service['type_id'],
                         'user_id' =>  user()->id,
+                        'sub_category_id' =>  $service['sub_category_id'],
                     ]);
                     $additional_services[] += $savedService['id'];
                     if (!empty($service['attachments'])) uploadAttachment($savedService, $service, 'attachments', 'services');

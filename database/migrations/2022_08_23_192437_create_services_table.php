@@ -22,6 +22,7 @@ class CreateServicesTable extends Migration
             $table->boolean('is_active')->default(1);
             $table->foreignId('type_id')->constrained('nursery_service_types')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->bigInteger('sub_category_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
