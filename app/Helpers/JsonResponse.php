@@ -34,7 +34,7 @@ class JsonResponse
     {
         return response()->json([
             'result' => trans(self::MSG_FAILED),
-            'data' => null,
+            'data' => array(),
             'message' => trans('responses.' . $message),
             'status' => $status
         ]);

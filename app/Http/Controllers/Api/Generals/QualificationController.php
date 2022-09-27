@@ -26,7 +26,7 @@ class QualificationController extends Controller
     public function index()
     {
         try {
-            return JsonResponse::successfulResponse('', QualificationResource::collection($this->qualificationRepository->fetchAll()));
+            return JsonResponse::successfulResponse('', QualificationResource::collection(Qualification::all()));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

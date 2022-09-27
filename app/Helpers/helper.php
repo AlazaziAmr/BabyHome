@@ -81,7 +81,6 @@ if (!function_exists('sendOTP')) {
     function sendOTP($OTP, $phone, $message = 'رمز التحقق للدخول هو  %s , أهلا بك عميلنا العزيز')
     {
         //!function_exists('send_verification_code')
-        return true;
        if (1) {
             try {
                 $message = "رمز التحقق: $OTP";
