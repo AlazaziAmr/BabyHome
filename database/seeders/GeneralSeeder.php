@@ -323,23 +323,8 @@ class GeneralSeeder extends Seeder
             ],
         ]);
 
-        $s1 = NurseryServiceType::create([
-            'name' => [
-                'en' => 'Activity',
-                'ar' => 'انشطه',
-            ],
-            'description' => '',
-            'parent_id' => 0,
-        ]);
-
-        $s2 = NurseryServiceType::create([
-            'name' => [
-                'en' => 'food',
-                'ar' => 'طعام',
-            ],
-            'description' => '',
-            'parent_id' => 0,
-        ]);
+        $s1 = NurseryServiceType::find(1);
+        $s2 = NurseryServiceType::find(2);
 
         NurseryServiceType::create([
             'name' => [

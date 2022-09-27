@@ -85,6 +85,7 @@ class NurseryRequest extends FormRequest
             'additional_services.*.price' => 'nullable|between:0,999999999999.99',
             'additional_services.*.is_paid' => 'nullable|boolean',
             'additional_services.*.type_id'      => 'nullable|exists:nursery_service_types,id',
+            'additional_services.*.sub_category_id'      => 'nullable|integer',
             'additional_services.*.attachments.*.file' => 'nullable|mimes:jpeg,png,jpg,gif,pdf',
         ];
     }
