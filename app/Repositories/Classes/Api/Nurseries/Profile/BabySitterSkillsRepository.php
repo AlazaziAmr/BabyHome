@@ -12,4 +12,9 @@ class BabySitterSkillsRepository extends BaseRepository implements IBabySitterSk
     {
         return BabysitterSkill::class;
     }
+
+    public function babySitterSkills($baby_sitter_id)
+    {
+        return $this->model->where('babysitter_id',$baby_sitter_id)->get();
+    }
 }

@@ -92,11 +92,13 @@ if (!function_exists('sendOTP')) {
                     "msg"         => $message,
                     "msgEncoding" => "UTF8",
                 ]);
-                dd($response->body());
+//                dd($response->body());
             } catch (\Exception $e) {
                 return JsonResponse::errorResponse($e->getMessage());
             }
         }
+        return  true;
+
     }
 }
 

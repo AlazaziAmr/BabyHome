@@ -33,7 +33,7 @@ use App\Http\Controllers\Api\Users\Auth\UserAuthController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Nurseries\Profile\BabySitterController;
-
+use \App\Http\Controllers\Api\Nurseries\Profile\BabySitterSkillController;
 
 // ========================================================Public==================================================================
 
@@ -83,6 +83,8 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::post('/master/reset-verification', [MasterResetPasswordController::class, 'verifyToReset']);
     Route::post('/master/reset-password', [MasterResetPasswordController::class, 'passwordReset']);
     Route::get('/qualifications', [QualificationController::class, 'index']);
+    Route::post('/qualifications', [QualificationController::class, 'store']);
+    Route::apiResource('/skills',BabySitterSkillController::class);
 
     //nationalities
     Route::get('nationalities',[\App\Http\Controllers\Api\Generals\NationalityController::class,'index']);

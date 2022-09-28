@@ -13,4 +13,26 @@ class BabysitterQualificationRepository extends BaseRepository implements IBabys
     {
         return BabysitterQualification::class;
     }
+
+    public function create($payload)
+    {
+        if (!empty($payload['qualifications'])) {
+            foreach ($payload['qualifications'] as $qualification) {
+                $q = $this->model->where('qualification_id', $qualification['id'])
+                    ->where('babysitter_id', $payload['babysitter_id'])
+                    ->get()->first();
+                if ($q) {
+                   $q->update([
+                       'description' => $qualification['description'],
+                   ]);
+                }else{
+                    BabysitterQualification::create([
+                        'description' => $qualification['description'],
+                        'qualification_id' => $qualification['id'],
+                        'babysitter_id' => $payload['babysitter_id'],
+                    ]);
+                }
+            }
+        }
+    }
 }

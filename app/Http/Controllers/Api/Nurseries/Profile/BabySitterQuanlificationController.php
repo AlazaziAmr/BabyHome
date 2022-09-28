@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Nurseries\Profile;
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Nurseries\BabysitterInfoRequest;
+use App\Http\Requests\Api\Nurseries\BabysitterQulificationRequest;
 use App\Http\Requests\Api\Nurseries\NurseryRequest;
 use App\Http\Resources\Api\Nurseries\BabysitterInfoResource;
 use App\Http\Resources\Api\Nurseries\BabysitterQulificationResource;
@@ -18,12 +19,12 @@ use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 
 class BabySitterQuanlificationController extends Controller
 {
-//   private $babySitterRepository;
-//
-//    public function __construct(IBabysitterQualificationRepository $babySitterRepository)
-//    {
-//        $this->babySitterRepository = $babySitterRepository;
-//    }
+   private $babySitterRepository;
+
+    public function __construct(IBabysitterQualificationRepository $babySitterRepository)
+    {
+        $this->babySitterRepository = $babySitterRepository;
+    }
 
     public function index()
     {
@@ -42,26 +43,22 @@ class BabySitterQuanlificationController extends Controller
         }
     }
 
-    public function update(BabysitterInfoRequest $request)
-    {
+    public function store(BabysitterQulificationRequest $request){
         try {
             $nursery =Nursery::where('user_id',auth('api')->user()->id)->first();
             if($nursery){
                 $nursery_id = $nursery->id;
                 $babySitter = BabysitterInfo::find($nursery_id);
                 if($babySitter){
-                    $this->babySitterRepository->update($request->validated(), $babySitter['id']);
-                }else{
-                    $request_data = $request->validated();
-                    $request_data['user_id'] = auth('api')->user()->id;
-                    $request_data['nursery_id'] = $nursery_id;
-                    $this->babySitterRepository->create($request_data);
+                    $data = $request->validated();
+                    $data['babysitter_id'] = $babySitter->id;
+                    $this->babySitterRepository->create($data);
                 }
                 return JsonResponse::successfulResponse('msg_updated_succssfully');
             }else{
                 return JsonResponse::errorResponse('');
             }
-             } catch (\Exception $e) {
+        } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
     }

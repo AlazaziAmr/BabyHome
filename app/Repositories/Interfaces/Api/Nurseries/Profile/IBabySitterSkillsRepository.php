@@ -6,5 +6,5 @@ use App\Repositories\Interfaces\IBaseRepository;
 
 interface IBabySitterSkillsRepository extends IBaseRepository
 {
-
+    public function babySitterSkills($baby_sitter_id);
 }

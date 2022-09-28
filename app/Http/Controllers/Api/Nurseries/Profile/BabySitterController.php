@@ -49,7 +49,6 @@ class BabySitterController extends Controller
                     $this->babySitterRepository->update($request->validated(), $babySitter['id']);
                 }else{
                     $request_data = $request->validated();
-                    $request_data['user_id'] = auth('api')->user()->id;
                     $request_data['nursery_id'] = $nursery_id;
                     $this->babySitterRepository->create($request_data);
                 }

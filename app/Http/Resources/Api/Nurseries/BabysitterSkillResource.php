@@ -9,6 +9,7 @@ class BabysitterSkillResource  extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'description' => $this->description,
             'babysitter_id' => $this->babysitter_id
         ];
