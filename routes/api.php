@@ -82,12 +82,15 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::post('/master/confirm-phone-number', [MasterResetPasswordController::class, 'checkPhone']);
     Route::post('/master/reset-verification', [MasterResetPasswordController::class, 'verifyToReset']);
     Route::post('/master/reset-password', [MasterResetPasswordController::class, 'passwordReset']);
-    Route::get('/qualifications', [QualificationController::class, 'index']);
+
+    Route::get('/qualifications', [QualificationController::class, 'all']);
     Route::post('/qualifications', [QualificationController::class, 'store']);
     Route::apiResource('/skills',BabySitterSkillController::class);
 
     //nationalities
     Route::get('nationalities',[\App\Http\Controllers\Api\Generals\NationalityController::class,'index']);
+
+    Route::get('privacy',[\App\Http\Controllers\Api\Generals\PrivacyController::class,'index']);
 });
 
 

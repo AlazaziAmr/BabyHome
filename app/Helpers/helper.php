@@ -81,7 +81,8 @@ if (!function_exists('sendOTP')) {
     function sendOTP($OTP, $phone, $message = 'رمز التحقق للدخول هو  %s , أهلا بك عميلنا العزيز')
     {
         //!function_exists('send_verification_code')
-       if (1) {
+
+        if (1) {
             try {
                 $message = "رمز التحقق: $OTP";
                 $response = Http::post('https://www.msegat.com/gw/sendsms.php', [

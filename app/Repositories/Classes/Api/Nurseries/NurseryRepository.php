@@ -218,9 +218,10 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             'user_id')
             ->with(['nationalitydata','languages'])
             ->where('user_id',$id)->get()->first();
-//        $data['qualifications'] = BabysitterQualification::where('babysitter_id',$data['babysitter']->id)->get();
-//        $data['skills'] = BabysitterSkill::where('babysitter_id',$data['babysitter']->id)->get();
-//        $data['days'] = NurseryAvailability::where('nursery_id',$data['nursery']->id)->get();
+        $data['babysitter']->image = $data['babysitter']->getMainAttachmentAttribute();
+        $data['qualifications'] = BabysitterQualification::where('babysitter_id',$data['babysitter']->id)->get();
+        $data['skills'] = BabysitterSkill::where('babysitter_id',$data['babysitter']->id)->get();
+        $data['days'] = NurseryAvailability::where('nursery_id',$data['nursery']->id)->get();
         return $data;
     }
 }

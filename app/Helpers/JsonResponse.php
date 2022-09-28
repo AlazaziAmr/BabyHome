@@ -23,7 +23,7 @@ class JsonResponse
             'data' => $payload,
             'message' =>  trans('responses.' . $message),
             'status' => $status
-        ]);
+        ],200);
     }
 
     /**
@@ -36,7 +36,7 @@ class JsonResponse
             'result' => trans(self::MSG_FAILED),
             'data' => array(),
             'message' => trans('responses.' . $message),
-            'status' => $status
+            'status' => "500"
         ]);
     }
 

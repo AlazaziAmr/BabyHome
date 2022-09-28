@@ -8,6 +8,7 @@ use App\Http\Requests\Api\Users\RestoreUserRequest;
 use App\Http\Requests\Api\Users\UserLoginRequest;
 use App\Http\Requests\Api\Users\UserRegistrationRequest;
 use App\Http\Resources\Api\Users\UserResource;
+use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
 use App\Notifications\Notifications;
 use App\Repositories\Interfaces\Api\Users\IUserRepository;
@@ -165,8 +166,20 @@ class UserAuthController extends Controller
     public function hasRegisteredNursery()
     {
         try {
-            $check = user()->has_nursery ? true : false;
-            return JsonResponse::successfulResponse('msg_user_check', $check);
+            /*
+             * 0 no nursery
+             * 1 has block nursery
+             * 2 has active nursery
+             * */
+
+            $data['has_nursery'] = user()->has_nursery ? true : false;
+            $data['status'] = 0;
+            if($data['has_nursery'])
+            {
+                $nursery = Nursery::where('user_id',user()->id)->get()->first();
+                $data['status'] = $nursery->status ? $nursery->status : 0;
+            }
+            return JsonResponse::successfulResponse('msg_user_check', $data);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
