@@ -83,8 +83,9 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::post('/master/reset-verification', [MasterResetPasswordController::class, 'verifyToReset']);
     Route::post('/master/reset-password', [MasterResetPasswordController::class, 'passwordReset']);
 
-    Route::get('/qualifications', [QualificationController::class, 'all']);
+    Route::get('/qualifications', [QualificationController::class, 'index']);
     Route::post('/qualifications', [QualificationController::class, 'store']);
+
     Route::apiResource('/skills',BabySitterSkillController::class);
 
     //nationalities
@@ -114,7 +115,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/nurseryProfile', [NurseryController::class, 'nurseryProfile']);
     Route::get('/babySitter',[BabySitterController::class,'index']);
     Route::post('/babySitter',[BabySitterController::class,'update']);
-    Route::resource('qualifications',\App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
+    Route::resource('sitterQualifications',\App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
     // nursery services types
     Route::get('/nursery-services-types', [NurseryServiceTypeController::class, 'index']);
     Route::get('/nursery-sub-services-types/{parent_id}', [NurseryServiceTypeController::class, 'subServices']);

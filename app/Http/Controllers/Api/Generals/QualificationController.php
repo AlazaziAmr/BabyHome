@@ -26,11 +26,11 @@ class QualificationController extends Controller
      */
     public function index()
     {
-        try {
-            return JsonResponse::successfulResponse('', QualificationResource::collection($this->qualificationRepository->fetchAll()));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
+        return JsonResponse::successfulResponse('', QualificationResource::collection($this->qualificationRepository->fetchAll()));
+//        try {
+//        } catch (\Exception $e) {
+//            return JsonResponse::errorResponse($e->getMessage());
+//        }
     }
 
     /**

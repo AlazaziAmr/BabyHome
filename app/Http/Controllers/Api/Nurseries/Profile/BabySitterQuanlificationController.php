@@ -19,12 +19,6 @@ use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 
 class BabySitterQuanlificationController extends Controller
 {
-   private $babySitterRepository;
-
-//    public function __construct(IBabysitterQualificationRepository $babySitterRepository)
-//    {
-//        $this->babySitterRepository = $babySitterRepository;
-//    }
 
     public function index()
     {

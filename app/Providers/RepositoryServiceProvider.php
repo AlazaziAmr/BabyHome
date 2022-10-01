@@ -99,7 +99,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(INationalityRepository::class, NationalityRepository::class);
         $this->app->bind(IBabySitterRepository::class, BabySitterRepository::class);
         $this->app->bind(IBabySitterSkillsRepository::class, BabySitterSkillsRepository::class);
-        $this->app->bind(IBabysitterQualificationRepository::class, BabysitterQualification::class);
+//        $this->app->bind(IBabysitterQualificationRepository::class, BabysitterQualification::class);
     }
 
     /**
