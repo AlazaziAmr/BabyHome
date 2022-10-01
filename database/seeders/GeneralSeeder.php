@@ -309,17 +309,60 @@ class GeneralSeeder extends Seeder
 
         DB::table('amenities')->insert($amenities);
 
+
         Nationality::create([
             "name" => [
-                'ar' => 'يمني',
-                'en' => 'Yameni',
+                'ar' => 'سعودي',
+                'en' => '',
             ],
         ]);
 
         Nationality::create([
             "name" => [
-                'ar' => 'سعودي',
-                'en' => 'suadi',
+                'ar' => 'يمني',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'مصري',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'سوري',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'كويتي',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'قطري',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'بحريني',
+                'en' => '',
+            ],
+        ]);
+
+        Nationality::create([
+            "name" => [
+                'ar' => 'امراتي',
+                'en' => '',
             ],
         ]);
 
