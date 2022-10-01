@@ -19,4 +19,9 @@ class NurseryServiceTypeRepository extends BaseRepository implements INurserySer
     {
         return $this->model->where('parent_id',$parent_id)->get();
     }
+
+    public function parentServices()
+    {
+        return $this->model->whereNull('parent_id')->get();
+    }
 }

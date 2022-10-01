@@ -82,16 +82,16 @@ class UserAuthController extends Controller
                     if (Hash::check($request['password'], $user['password'])) {
                         return $this->userWithToken($user);
                     } else {
-                        return JsonResponse::errorResponse('msg_password_mismatch');
+                        return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
                     }
                 }
                 if (Hash::check($request['password'], $user['password'])) {
                     return $this->VerfiedUserWithToken($user);
                 } else {
-                    return JsonResponse::errorResponse('msg_password_mismatch');
+                    return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
                 }
             } else {
-                return JsonResponse::errorResponse('msg_user_does_not_exist');
+                return JsonResponse::errorResponse('المستخدم غير موجود');
             }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -111,7 +111,7 @@ class UserAuthController extends Controller
             user()->tokens()->delete();
             // $token = user('api')->token();
             // $token->revoke();
-            return JsonResponse::successfulResponse('msg_logged_out_succssfully');
+            return JsonResponse::successfulResponse('تم تسجيل الخروج بنجاح');
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

@@ -27,7 +27,7 @@ class NurseryServiceTypeController extends Controller
     public function index()
     {
         try {
-            return JsonResponse::successfulResponse('', NurseryServiceTypeResource::collection($this->nurseryServiceTypeRepository->subServices()));
+            return JsonResponse::successfulResponse('', NurseryServiceTypeResource::collection($this->nurseryServiceTypeRepository->parentServices()));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
