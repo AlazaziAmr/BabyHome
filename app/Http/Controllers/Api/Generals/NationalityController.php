@@ -22,6 +22,7 @@ class NationalityController extends Controller
     public function index()
     {
         try {
+            app()->setLocale('ar');
             return JsonResponse::successfulResponse('', NationalityResource::collection($this->nationalityRepository->fetchAll()));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
