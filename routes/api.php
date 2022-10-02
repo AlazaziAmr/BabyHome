@@ -84,6 +84,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::post('/master/reset-password', [MasterResetPasswordController::class, 'passwordReset']);
 
     Route::get('/qualifications', [QualificationController::class, 'index']);
+    Route::get('/all-qualifications', [QualificationController::class, 'index']);
     Route::post('/qualifications', [QualificationController::class, 'store']);
 
     Route::apiResource('/skills',BabySitterSkillController::class);
