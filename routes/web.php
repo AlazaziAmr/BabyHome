@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 //Route::get('test_sms', function () {
 //    $OTP = '1234';
-//    $message = "رمز التحقق: $OTP";
+//    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
 //    $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
 //        "userName"    => "babyhome",
 //        "apiKey"      => "0eacc90c694d720222a39c3b74241915",
@@ -43,3 +43,4 @@ Route::get('/clear-cache', function () {
     //$exitCode = Artisan::call('config:cache');
     return 'DONE'; //Return anything
 });
+

@@ -48,7 +48,11 @@ class NurseryController extends Controller
     public function store(NurseryRequest $request)
     {
         try {
-            return  $this->nurseryRepository->createRequest($request->validated())['status'] ? JsonResponse::successfulResponse('msg_created_succssfully') :  JsonResponse::errorResponse($this->nurseryRepository->createRequest($request->validated())['error']);
+            if(user()->id){
+                return  $this->nurseryRepository->createRequest($request->validated())['status'] ? JsonResponse::successfulResponse('msg_created_succssfully') :  JsonResponse::errorResponse($this->nurseryRepository->createRequest($request->validated())['error']);
+            }else{
+                return JsonResponse::errorResponse('Unauthenticated');
+            }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

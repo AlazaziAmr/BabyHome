@@ -10,6 +10,7 @@ use App\Http\Requests\Api\Nurseries\NurseryRequest;
 use App\Http\Resources\Api\Nurseries\BabysitterInfoResource;
 use App\Http\Resources\Api\Nurseries\BabysitterQulificationResource;
 use App\Http\Resources\Api\Nurseries\NurseryResource;
+use App\Models\Api\Generals\Qualification;
 use App\Models\Api\Nurseries\BabysitterInfo;
 use App\Models\Api\Nurseries\BabysitterQualification;
 use App\Models\Api\Nurseries\Nursery;
@@ -22,19 +23,21 @@ class BabySitterQuanlificationController extends Controller
 
     public function index()
     {
-        try {
-            $nursery =Nursery::where('user_id',auth('api')->user()->id)->first();
-            if($nursery){
-                $nursery_id = $nursery->id;
-                $baby = BabysitterInfo::find($nursery_id);
-                $nurseries = BabysitterQualification::with('qualification')->where('babysitter_id',$baby->id)->get();
-                return JsonResponse::successfulResponse('msg_success', $nurseries);
-            }else{
-                return JsonResponse::errorResponse('');
-            }
-           } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
+        return JsonResponse::successfulResponse('msg_success', Qualification::all());
+
+//        try {
+//            $nursery =Nursery::where('user_id',auth('api')->user()->id)->first();
+//            if($nursery){
+//                $nursery_id = $nursery->id;
+//                $baby = BabysitterInfo::find($nursery_id);
+//                $nurseries = BabysitterQualification::with('qualification')->where('babysitter_id',$baby->id)->get();
+//                return JsonResponse::successfulResponse('msg_success', $nurseries);
+//            }else{
+//                return JsonResponse::errorResponse('');
+//            }
+//           } catch (\Exception $e) {
+//            return JsonResponse::errorResponse($e->getMessage());
+//        }
     }
 
     public function store(BabysitterQulificationRequest $request){

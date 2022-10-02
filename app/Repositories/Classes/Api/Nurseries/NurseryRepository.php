@@ -114,6 +114,11 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         try {
             DB::beginTransaction();
 
+            if(!user()->id){
+                DB::rollBack();
+                return ['status' => false, 'error' => 'no_user'];
+            }
+
             $nursery = $this->model->create([
                 'capacity' => $request['capacity'],
                 'acceptance_age_from' => $request['acceptance_age_from'],
