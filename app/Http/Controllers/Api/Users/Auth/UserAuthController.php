@@ -177,7 +177,7 @@ class UserAuthController extends Controller
             if($data['has_nursery'])
             {
                 $nursery = Nursery::where('user_id',user()->id)->get()->first();
-                $data['status'] = $nursery->status ? $nursery->status : 0;
+                $data['status'] = $nursery->status ? $nursery->status : 'submitted';
             }
             return JsonResponse::successfulResponse('msg_user_check', $data);
         } catch (\Exception $e) {
