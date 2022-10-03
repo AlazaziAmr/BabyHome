@@ -34,9 +34,8 @@ use App\Http\Controllers\Api\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Nurseries\Profile\BabySitterController;
 use \App\Http\Controllers\Api\Nurseries\Profile\BabySitterSkillController;
-
+use \App\Http\Controllers\Api\Nurseries\Profile\ProfileController;
 // ========================================================Public==================================================================
-
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], function () {
 
@@ -117,6 +116,9 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/babySitter',[BabySitterController::class,'index']);
     Route::post('/babySitter',[BabySitterController::class,'update']);
     Route::resource('sitterQualifications',\App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
+    Route::get('/nursery-amenities/{nursery_id}',[ProfileController::class,'amenities']);
+
+
     // nursery services types
     Route::get('/nursery-services-types', [NurseryServiceTypeController::class, 'index']);
     Route::get('/nursery-sub-services-types/{parent_id}', [NurseryServiceTypeController::class, 'subServices']);
@@ -301,7 +303,6 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {
     Route::get('/profile',[\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class,'profile']);
-
 });
 
 

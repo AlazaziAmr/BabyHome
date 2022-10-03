@@ -26,8 +26,8 @@ class AdminInspectionResultRequest extends FormRequest
         return [
             'inspection_id' => 'required|exists:inspections,id',
             'nursery_id' => 'required|exists:nurseries,id',
-            'latitude' => 'required|numeric|gt:0|between:0,99.99',
-            'longitude' => 'required|numeric|gt:0|between:0,99.99',
+            'latitude' => 'nullable|numeric|gt:0|between:0,99.99',
+            'longitude' => 'nullable|numeric|gt:0|between:0,99.99',
 
             'result' => 'required|array',
 

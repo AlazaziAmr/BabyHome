@@ -27,13 +27,24 @@ class NurseryAmenity extends  BaseModel
 
     public function getMainAttachmentAttribute()
     {
-
         if (filled($this->attachmentable)) {
             foreach ($this->attachmentable as $image) {
                 return asset('storage/amenities/' . $image->path);
             }
         }
         return null;
+    }
+
+    public function getImages()
+    {
+        $images = array();
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $image) {
+                $images[] = asset('storage/amenities/' . $image->path);
+            }
+        }
+
+        return $images;
     }
 
     /**

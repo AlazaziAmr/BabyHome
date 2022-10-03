@@ -13,11 +13,6 @@ class BabysitterQualification  extends BaseModel
 
     protected $fillable = ['description', 'babysitter_id', 'qualification_id'];
 
-    /**
-     * Get the qualification that owns the BabysitterQualification
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class, 'qualification_id', 'id');

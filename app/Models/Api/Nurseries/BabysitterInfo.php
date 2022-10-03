@@ -50,6 +50,28 @@ class BabysitterInfo  extends BaseModel
         return null;
     }
 
+    public function getImage()
+    {
+
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $image) {
+                return asset('storage/baby-sitters/' . $image->path);
+            }
+        }
+        return null;
+    }
+
+    public function getImages()
+    {
+        $images = array();
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $image) {
+                $images[] = asset('storage/baby-sitters/' . $image->path);
+            }
+        }
+        return $images;
+    }
+
     // /**
     //  * Get all of the qualifications for the BabysitterInfo
     //  *

@@ -3,6 +3,7 @@
 namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Helpers\JsonResponse;
+use App\Models\Api\Generals\Activity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Api\Nurseries\Nursery;
@@ -23,6 +24,63 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     public function model()
     {
         return Nursery::class;
+    }
+
+    public function FindOne($with = []){
+        return $this->model->with($with)
+            ->where('user_id',user()->id)
+            ->first();
+    }
+
+    public function BabySitter($nursery_id){
+        return BabysitterInfo::with(['languages'])
+            ->where('nursery_id',$nursery_id)->first();
+    }
+
+    public function skills($babysitter_id)
+    {
+        return BabysitterSkill::where('babysitter_id',$babysitter_id)
+            ->get();
+    }
+
+    public function qualifications($babysitter_id){
+        return BabysitterQualification::with(['qualification'])
+            ->where('babysitter_id',$babysitter_id)
+            ->get();
+    }
+
+    public function NurseryAmenity($nursery_id){
+        return NurseryAmenity::where('nursery_id',$nursery_id)
+            ->with(['amenity'])->get();
+    }
+
+    public function profile($id){
+        $data['nursery'] = Nursery::with(
+            ['country','city','neighborhood']
+        )
+            ->where('user_id',user()->id)->first();
+
+        $data['babysitter_info'] = $data['nursery'] ?
+            BabysitterInfo::with(['languages','qualifications','skills','nationalitydata'])
+                ->where('nursery_id',$data['nursery']->id)
+                ->first() : '';
+
+        $data['activities'] = $data['nursery'] ?
+            Activity::where('user_id',$id)
+                ->get() : '';
+
+        foreach ($data['activities'] as $activity){
+            $activity->image = $activity->getMainAttachmentAttribute();
+        }
+
+        $data['nursery_availabilities'] = $data['nursery'] ? NurseryAvailability::where('nursery_id',$data['nursery']->id)->get() : '';
+
+        $data['babysitter_info']->image = ($data['babysitter_info']) ? $data['babysitter_info']->getMainAttachmentAttribute() : '';
+
+        $data['qualifications'] = ($data['babysitter']) ?  BabysitterQualification::with('qualification')->where('babysitter_id',$data['babysitter']->id)->get() : '';
+        $data['skills'] = ($data['babysitter']) ? BabysitterSkill::where('babysitter_id',$data['babysitter']->id)->get() : '';
+
+        return $data;
     }
 
     public function fetchAllForCurrentUser($with = [], $columns = array('*'))
@@ -154,7 +212,6 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                     $savedAmenity = NurseryAmenity::create([
                         'nursery_id' => $nursery['id'],
                         'amenity_id' => $amenity['id'],
-
                     ]);
                     if (!empty($amenity['attachments'])) uploadAttachment($savedAmenity, $amenity, 'attachments', 'amenities');
                 }
@@ -207,26 +264,5 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             'to' =>  $request['to'],
             'notes' =>  $request['note'] ?? null,
         ]);
-    }
-
-    public function profile($id)
-    {
-        $data['nursery'] = $this->model->where('user_id',$id)
-            ->get()->first();
-        $data['babysitter'] =  BabysitterInfo::select(
-            'years_of_experince',
-            'date_of_birth',
-            'national_id',
-            'nationality',
-            'free_of_disease',
-            'nursery_id',
-            'user_id')
-            ->with(['nationalitydata','languages'])
-            ->where('user_id',$id)->get()->first();
-        $data['babysitter']->image = $data['babysitter']->getMainAttachmentAttribute();
-        $data['qualifications'] = BabysitterQualification::where('babysitter_id',$data['babysitter']->id)->get();
-        $data['skills'] = BabysitterSkill::where('babysitter_id',$data['babysitter']->id)->get();
-        $data['days'] = NurseryAvailability::where('nursery_id',$data['nursery']->id)->get();
-        return $data;
     }
 }

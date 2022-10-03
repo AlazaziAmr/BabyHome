@@ -21,7 +21,7 @@ class BabysitterInfoResource extends JsonResource
             'national_id' => $this->national_id,
             'nationalityData' => $this->nationalitydata,
             'languages' => $this->languages,
-            'image' => $this->getMainAttachmentAttribute,
+            'image' => $this->getMainAttachmentAttribute(),
         ];
     }
 }
