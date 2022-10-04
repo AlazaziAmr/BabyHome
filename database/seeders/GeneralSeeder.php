@@ -243,19 +243,10 @@ class GeneralSeeder extends Seeder
         $amenities = [
             [
                 "name" => json_encode([
-                    'ar' => 'دورة مياة',
-                    'en' => 'bathroom',
+                    'ar' => 'غرفة إستقبال',
+                    'en' => 'Reception Room',
                 ]),
                 'is_required' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                "name" => json_encode([
-                    'ar' => 'الحاضنة من الخارج',
-                    'en' => 'Babysitter from the outside',
-                ]),
-                'is_required' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -270,10 +261,19 @@ class GeneralSeeder extends Seeder
             ],
             [
                 "name" => json_encode([
-                    'ar' => 'غرفة إستقبال',
-                    'en' => 'Reception Room',
+                    'ar' => 'دورة مياة',
+                    'en' => 'bathroom',
                 ]),
                 'is_required' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                "name" => json_encode([
+                    'ar' => 'الحاضنة من الخارج',
+                    'en' => 'Babysitter from the outside',
+                ]),
+                'is_required' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

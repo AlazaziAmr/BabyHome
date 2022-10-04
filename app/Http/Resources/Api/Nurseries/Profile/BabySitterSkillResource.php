@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api\Nurseries\Profile;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SkillResource extends JsonResource
+class BabySitterSkillResource extends JsonResource
 {
 
     public function toArray($request)
@@ -12,7 +12,6 @@ class SkillResource extends JsonResource
         return [
             'id' => $this->id,
             'description' => $this->description,
-            'babysitter_id', $this->babysitter_id,
         ];
     }
 }

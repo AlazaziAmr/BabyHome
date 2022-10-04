@@ -12,7 +12,7 @@ class BabysitterQulificationResource extends JsonResource
             'id' => $this->id,
             'babysitter_id' => $this->babysitter_id,
             'qualification_id' => $this->qualification_id,
-            'qualification' => $this->qualification->name,
+            'qualification' => ($this->qualification) ? $this->qualification->name : '',
         ];
     }
 }

@@ -10,7 +10,7 @@ use App\Http\Resources\Api\Nurseries\BabysitterInfoResource;
 use App\Http\Resources\Api\Nurseries\BabysitterQulificationResource;
 use App\Http\Resources\Api\Nurseries\NurseryResource;
 use App\Http\Resources\Api\Nurseries\Profile\NurseryAmenityResource;
-use App\Http\Resources\Api\Nurseries\Profile\SkillResource;
+use App\Http\Resources\Api\Nurseries\Profile\BabySitterSkillResource;
 use App\Models\Api\Nurseries\Nursery;
 use App\Repositories\Interfaces\Api\Nurseries\INurseryRepository;
 
@@ -31,16 +31,34 @@ class ProfileController extends Controller
             }
             $data['nursery'] = array();
             $data['babysitter'] = array();
-//            $data['qualifications'] = array();
-//            $data['skills'] = array();
+            $data['qualifications'] = array();
+            $data['skills'] = array();
+            $data['amenities'] = array();
 
-            $data['nursery'] = new NurseryResource($this->nurseryRepository->FindOne(['country', 'city', 'neighborhood','utilities']));
+
+
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood','utilities']);
+            if($nursery){
+                $data['nursery'] = new NurseryResource($nursery);
+            }
             if ($data['nursery']) {
-                $data['babysitter'] = new BabysitterInfoResource($this->nurseryRepository->BabySitter($data['nursery']->id));
-                $data['amenities'] = NurseryAmenityResource::collection($this->nurseryRepository->NurseryAmenity($data['nursery']->id));
+                $babysitter = $this->nurseryRepository->BabySitter($data['nursery']->id);
+                if($babysitter){
+                    $data['babysitter'] = new BabysitterInfoResource($babysitter);
+                }
+                $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
+                if($amenities){
+                    $data['amenities'] = NurseryAmenityResource::collection($amenities);
+                }
                 if ($data['babysitter']) {
-//                    $data['skills'] = SkillResource::collection($this->nurseryRepository->skills($data['babysitter']->id));
-//                    $data['qualifications'] = new BabysitterQulificationResource($this->nurseryRepository->qualifications(6));
+                    $skills = $this->nurseryRepository->skills($data['babysitter']->id);
+                    if($skills){
+                        $data['skills'] = BabySitterSkillResource::collection($skills);
+                    }
+                    $qualifications = $this->nurseryRepository->qualifications($data['babysitter']->id);
+                    if($qualifications){
+                        $data['qualifications'] =  BabysitterQulificationResource::collection($qualifications);
+                    }
                 }
 
             }
@@ -65,7 +83,7 @@ class ProfileController extends Controller
                 $data['babysitter'] = new BabysitterInfoResource($this->nurseryRepository->BabySitter($data['nursery']->id));
                 $data['amenities'] = NurseryAmenityResource::collection($this->nurseryRepository->NurseryAmenity($data['nursery']->id));
                 if ($data['babysitter']) {
-                    $data['skills'] = SkillResource::collection($this->nurseryRepository->skills($data['babysitter']->id));
+                    $data['skills'] = BabySitterSkillResource::collection($this->nurseryRepository->skills($data['babysitter']->id));
                     $data['qualifications'] = new BabysitterQulificationResource($this->nurseryRepository->qualifications($data['babysitter']->id));
                 }
 
