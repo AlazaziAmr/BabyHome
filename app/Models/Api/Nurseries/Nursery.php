@@ -30,6 +30,7 @@ class Nursery extends BaseModel
     protected $fillable = [
         // 'name',
         'capacity',
+        'acceptance_age_type',
         'acceptance_age',
         'country_id',
         'city_id',

@@ -180,6 +180,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $nursery = $this->model->create([
                 'capacity' => $request['capacity'],
                 'acceptance_age_from' => $request['acceptance_age_from'],
+                'acceptance_age_type' => $request['acceptance_age_type'],
                 'acceptance_age_to' => $request['acceptance_age_to'],
                 'national_address' => $request['national_address'],
                 'address_description' => $request['address_description'],

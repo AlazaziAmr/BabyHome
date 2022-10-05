@@ -6,21 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class NurseryRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -44,6 +34,7 @@ class NurseryRequest extends FormRequest
             'skills.*' => 'string',
 
             'capacity'      => 'required|numeric|max:5',
+            'acceptance_age_type'      => 'required|numeric',
             'acceptance_age_from'      => 'required|numeric',
             'acceptance_age_to'      => 'required|numeric',
             'national_address'      => 'required|string',

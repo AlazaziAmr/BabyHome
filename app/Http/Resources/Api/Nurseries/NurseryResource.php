@@ -17,6 +17,7 @@ class NurseryResource extends JsonResource
         return [
             'id' => $this->id,
             'capacity' => $this->capacity,
+            'acceptance_age_type' => $this->acceptance_age_type,
             'acceptance_age_from' => $this->acceptance_age_from,
             'acceptance_age_to' => $this->acceptance_age_to,
             'country' => $this->country['name'],
