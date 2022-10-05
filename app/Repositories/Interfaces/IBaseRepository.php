@@ -17,6 +17,8 @@ interface IBaseRepository
      */
     public function fetchAll($with = [], $columns = array('*'));
 
+    public function pagination($with = [], $columns = array('*'));
+
     /**
      * @param array $payload
      * @return mixed

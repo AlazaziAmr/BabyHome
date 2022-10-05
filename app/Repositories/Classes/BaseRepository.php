@@ -62,6 +62,15 @@ abstract class BaseRepository implements IBaseRepository
             return $query->get($columns);
     }
 
+    public function pagination($with = [], $columns = array('*'))
+    {
+        $query = $this->model;
+        if (!empty($with))
+            return $query->with($with)->paginate(20);
+        else
+            return $query->paginate(20);
+    }
+
     /**
      * @param array $payload
      * @return mixed

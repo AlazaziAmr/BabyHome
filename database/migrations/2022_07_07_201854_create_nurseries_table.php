@@ -12,6 +12,7 @@ class CreateNurseriesTable extends Migration
             $table->id();
             // $table->json('name');
             $table->integer('capacity')->max(3);
+            $table->integer('acceptance_age_type')->comment('1 for month - 2 for year');
             $table->integer('acceptance_age_from');
             $table->integer('acceptance_age_to');
             $table->string('national_address');

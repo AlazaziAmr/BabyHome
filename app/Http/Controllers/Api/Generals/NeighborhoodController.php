@@ -25,9 +25,12 @@ class NeighborhoodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
+            if($request->city_id){
+                return JsonResponse::successfulResponse('', NeighborhoodResource::collection($this->neighborhoodRepository->cityNeighbirhoods($request->city_id)));
+            }
             return JsonResponse::successfulResponse('', NeighborhoodResource::collection($this->neighborhoodRepository->fetchAll()));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

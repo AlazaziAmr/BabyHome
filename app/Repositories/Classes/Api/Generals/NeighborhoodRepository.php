@@ -14,5 +14,8 @@ class NeighborhoodRepository extends BaseRepository implements INeighborhoodRepo
         return Neighborhood::class;
     }
 
-
+    public function cityNeighbirhoods($id)
+    {
+        return $this->model->with('city')->where('city_id',$id)->get()->take(100);
+    }
 }
