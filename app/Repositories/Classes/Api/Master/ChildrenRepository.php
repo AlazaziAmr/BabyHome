@@ -81,4 +81,42 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
             return ['status' => false, 'error' => $e->getMessage()];
         }
     }
+
+    public function update(array $payload, $id, $attribute = "id")
+    {
+        $child = $this->model->where('id',$id)->first();
+        try {
+            DB::beginTransaction();
+            $child->update([
+                'name' => $payload['name'],
+                'gender_id' => $payload['gender_id'],
+                'relation_id' => $payload['relation_id'],
+                'date_of_birth' => $payload['date_of_birth'],
+                'description' => $payload['description'],
+                'has_disability' => $payload['has_disability'],
+            ]);
+
+            //Languages
+            if ($payload['languages']) $child->languages()->sync($payload['languages']);
+
+            //phones
+            Phone::where('child_id',$child['id'])->delete();
+            if ($payload['phones']) {
+                foreach ($payload['phones'] as $phone) {
+                    Phone::create([
+                        'child_id' => $child['id'],
+                        'phone' => $phone,
+                    ]);
+                }
+            }
+
+            //attachments
+            if (!empty($payload['attachments'])) uploadAttachment($child, $payload, 'attachments', 'children');
+            DB::commit();
+            return ['status' => true];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['status' => false, 'error' => $e->getMessage()];
+        }
+    }
 }

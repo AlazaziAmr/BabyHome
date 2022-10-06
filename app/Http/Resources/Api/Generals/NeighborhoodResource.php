@@ -17,7 +17,7 @@ class NeighborhoodResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'city' => new CityResource($this->city),
+//            'city' => ($this->city) ? new CityResource($this->city) : '',
         ];
     }
 }
