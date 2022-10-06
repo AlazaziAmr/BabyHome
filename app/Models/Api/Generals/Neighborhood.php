@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Neighborhood extends BaseModel
 {
     use HasTranslations;
-
     public $translatable = ['name'];
 
     protected $fillable = [

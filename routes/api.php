@@ -35,6 +35,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Nurseries\Profile\BabySitterController;
 use \App\Http\Controllers\Api\Nurseries\Profile\BabySitterSkillController;
 use \App\Http\Controllers\Api\Nurseries\Profile\ProfileController;
+use \App\Http\Controllers\Api\Master\Children\ChildSicknessController;
+use \App\Http\Controllers\Api\Master\Children\ChildAllergyController;
+use \App\Http\Controllers\Api\Master\Children\ChildAlertController;
 // ========================================================Public==================================================================
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], function () {
@@ -281,6 +284,10 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     // Children
     Route::apiResource('children', ChildController::class);
 
+    Route::get('child-sickness/{id}',[ChildSicknessController::class,'index']);
+    Route::apiResource('child-sickness',ChildSicknessController::class)->except(['show']);
+    Route::apiResource('child-allergies',ChildAllergyController::class)->except(['show']);
+    Route::apiResource('child-alerts',ChildAlertController::class)->except(['show']);
 
     Route::get('/nearest-nurseries', [NurseryController::class, 'nurseriesCloseToMaster']);
 
@@ -299,6 +306,9 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sanctum', 'ability:user,master', 'locale']], function () {
     // Generals
     Route::get('/packages-type', [PackagesTypeController::class, 'index']);
+    Route::get('child-sickness/{id}',[ChildSicknessController::class,'index']);
+    Route::get('child-allergies/{id}',[ChildAllergyController::class,'index']);
+    Route::get('child-alerts/{id}',[ChildAlertController::class,'index']);
 });
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {

@@ -3,9 +3,12 @@
 namespace App\Repositories\Classes\Api\Master;
 
 use App\Models\Api\Master\Child;
+use App\Models\Api\Master\ChildAllergy;
+use App\Models\Api\Master\ChildSickness;
 use App\Models\Api\Master\Phone;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Master\IChildrenRepository;
+use Illuminate\Support\Facades\DB;
 
 class ChildrenRepository extends BaseRepository implements IChildrenRepository
 {
@@ -16,37 +19,66 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
 
     public function fetchAllForCurrentUser()
     {
-        return master()->children()->with('gender','attachmentable')->get();
+        return master()->children()->with('gender', 'attachmentable')->get();
     }
+
     public function createRequest($payload)
     {
-        // Child
-        $child = $this->model->create([
-            'name' => $payload['name'],
-            'gender_id' => $payload['gender_id'],
-            'relation_id' => $payload['relation_id'],
-            'date_of_birth' => $payload['date_of_birth'],
-            'description' => $payload['description'],
-            'has_disability' => $payload['has_disability'],
-        ]);
+        try {
+            DB::beginTransaction();
+            $child = $this->model->create([
+                'name' => $payload['name'],
+                'gender_id' => $payload['gender_id'],
+                'relation_id' => $payload['relation_id'],
+                'date_of_birth' => $payload['date_of_birth'],
+                'description' => $payload['description'],
+                'has_disability' => $payload['has_disability'],
+            ]);
 
-        //Parent
-        master()->children()->sync($child['id'],false);
-
-        //Languages
-        if ($payload['languages'])  $child->languages()->sync($payload['languages']);
-
-        //phones
-        if ($payload['phones']) {
-            foreach ($payload['phones'] as $phone) {
-                Phone::create([
-                    'child_id' => $child['id'],
-                    'phone' => $phone,
-                ]);
+            if($payload['allergies']){
+                foreach ($payload['allergies'] as $allergy){
+                    ChildAllergy::create([
+                        'child_id' => $child['id'],
+                        'allergy_name' => $allergy,
+                    ]);
+                }
             }
-        }
 
-        //attachments
-        if (!empty($payload['attachments'])) uploadAttachment($child, $payload, 'attachments', 'children');
+            if($payload['sicknesses']){
+                foreach ($payload['sicknesses'] as $sickness){
+                    ChildSickness::create([
+                        'child_id' => $child['id'],
+                        'sickness_name' => $sickness['sickness_name'],
+                        'sickness_date' => $sickness['sickness_date'],
+                        'sickness_desc' => $sickness['sickness_desc'],
+                        'sickness_status' => $sickness['sickness_status'],
+                    ]);
+                }
+            }
+
+            //Parent
+            master()->children()->sync($child['id'], false);
+
+            //Languages
+            if ($payload['languages']) $child->languages()->sync($payload['languages']);
+
+            //phones
+            if ($payload['phones']) {
+                foreach ($payload['phones'] as $phone) {
+                    Phone::create([
+                        'child_id' => $child['id'],
+                        'phone' => $phone,
+                    ]);
+                }
+            }
+
+            //attachments
+            if (!empty($payload['attachments'])) uploadAttachment($child, $payload, 'attachments', 'children');
+            DB::commit();
+            return ['status' => true];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['status' => false, 'error' => $e->getMessage()];
+        }
     }
 }

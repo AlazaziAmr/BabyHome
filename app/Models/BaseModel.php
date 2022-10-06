@@ -9,5 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BaseModel extends Model
 {
+
+    public $preventsLazyLoading = true;
+
     use HasFactory, SoftDeletes;
 }

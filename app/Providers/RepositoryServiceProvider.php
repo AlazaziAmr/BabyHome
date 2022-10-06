@@ -4,10 +4,16 @@ namespace App\Providers;
 
 use App\Repositories\Classes\Api\Generals\NationalityRepository;
 use App\Repositories\Classes\Api\Inspector\NurseryEvaluationRepository;
+use App\Repositories\Classes\Api\Master\ChildAlertRepository;
+use App\Repositories\Classes\Api\Master\ChildAllergyRepository;
+use App\Repositories\Classes\Api\Master\ChildSicknessRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterSkillsRepository;
 use App\Repositories\Interfaces\Api\Generals\INationalityRepository;
 use App\Repositories\Interfaces\Api\Inspector\INurseryEvaluationRepository;
+use App\Repositories\Interfaces\Api\Master\IChildAlertRepository;
+use App\Repositories\Interfaces\Api\Master\IChildAllergyRepository;
+use App\Repositories\Interfaces\Api\Master\IChildSicknessRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterSkillsRepository;
 use Illuminate\Support\ServiceProvider;
@@ -97,6 +103,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(INationalityRepository::class, NationalityRepository::class);
         $this->app->bind(IBabySitterRepository::class, BabySitterRepository::class);
         $this->app->bind(IBabySitterSkillsRepository::class, BabySitterSkillsRepository::class);
+        $this->app->bind(IChildSicknessRepository::class, ChildSicknessRepository::class);
+        $this->app->bind(IChildAllergyRepository::class, ChildAllergyRepository::class);
+        $this->app->bind(IChildAlertRepository::class, ChildAlertRepository::class);
     }
 
     /**

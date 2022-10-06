@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         {
             return substr($value, 0, 1) == '+';
         });
-        Model::preventLazyLoading(! $this->app->isProduction());
+        Model::preventLazyLoading(false);
 
 
         Nursery::observe(NurseryObserver::class);

@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateChildrenTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('children', function (Blueprint $table) {

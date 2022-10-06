@@ -46,10 +46,10 @@ class ProfileController extends Controller
                 if($babysitter){
                     $data['babysitter'] = new BabysitterInfoResource($babysitter);
                 }
-                $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
-                if($amenities){
-                    $data['amenities'] = NurseryAmenityResource::collection($amenities);
-                }
+//             amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
+//                if($amenities){
+//                    $data['amenities'] = NurseryAmenityResource::collection($amenities);
+//                }
                 if ($data['babysitter']) {
                     $skills = $this->nurseryRepository->skills($data['babysitter']->id);
                     if($skills){

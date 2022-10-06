@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Country extends BaseModel
 {
     use HasTranslations;
+    public $preventsLazyLoading = true;
 
     public $translatable = ['name'];
 

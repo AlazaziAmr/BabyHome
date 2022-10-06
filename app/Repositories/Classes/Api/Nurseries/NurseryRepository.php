@@ -33,7 +33,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     }
 
     public function BabySitter($nursery_id){
-        return BabysitterInfo::with(['languages'])
+        return BabysitterInfo::with(['languages','nationalitydata','attachmentable'])
             ->where('nursery_id',$nursery_id)->first();
     }
 

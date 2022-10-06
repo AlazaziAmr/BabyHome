@@ -101,4 +101,12 @@ class Child  extends BaseModel
     {
         return Carbon::createFromDate($value)->translatedFormat('j M, Y - g:i a');
     }
+
+    public function sicknesses(){
+        return $this->hasMany(ChildSickness::class);
+    }
+
+    public function allergies(){
+        return $this->hasMany(ChildAllergy::class);
+    }
 }
