@@ -29,7 +29,7 @@ class NeighborhoodController extends Controller
     {
         try {
             if($request->city_id){
-                return JsonResponse::successfulResponse('', NeighborhoodResource::collection($this->neighborhoodRepository->cityNeighbirhoods($request->city_id)));
+                return JsonResponse::successfulResponse('', NeighborhoodResource::collection(Neighborhood::with('city')->where('city_id',$request->city_id)->get()));
             }
             return JsonResponse::successfulResponse('', NeighborhoodResource::collection($this->neighborhoodRepository->fetchAll(['city'])));
         } catch (\Exception $e) {
