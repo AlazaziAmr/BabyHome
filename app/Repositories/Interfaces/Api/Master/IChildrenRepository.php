@@ -10,4 +10,6 @@ interface IChildrenRepository extends IBaseRepository
 
 
     public function createRequest($payload);
+
+    public function profile($id);
 }

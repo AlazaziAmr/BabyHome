@@ -2,6 +2,7 @@
 
 namespace App\Models\Api\Master;
 
+use App\Models\Api\Generals\Nationality;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,8 @@ class Master extends Authenticatable
         'fcm_token',
         'address',
         'latitude',
-        'longitude'
+        'longitude',
+        'nationality_id'
     ];
 
     protected $hidden = [
@@ -36,12 +38,9 @@ class Master extends Authenticatable
         'pivot'
     ];
 
-
-    /**
-     * The children that belong to the Master
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
+    public function nationality(){
+        return $this->belongsTo(Nationality::class);
+    }
     public function children(): BelongsToMany
     {
         return $this->belongsToMany(Child::class, 'master_children', 'master_id', 'child_id')->withTimestamps();

@@ -17,6 +17,12 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
         return Child::class;
     }
 
+    public function profile($id){
+        return $this->model->with(
+            ['gender','languages:name','phones:child_id,phone,name','attachmentable','master'])
+            ->find($id);
+    }
+
     public function fetchAllForCurrentUser()
     {
         return master()->children()->with('gender', 'attachmentable')->get();

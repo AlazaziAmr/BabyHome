@@ -7,12 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChildResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
     public function toArray($request)
     {
         return [
@@ -21,7 +15,7 @@ class ChildResource extends JsonResource
             'master' => $this->master['name'],
             'created_at' => $this->created_at,
             'age' => $this->age,
-            'gender' => $this->gender['name'],
+            'gender' => ($this->gender) ? $this->gender->name : '',
             'date_of_birth' => $this->date_of_birth,
             'description' => $this->description,
             'languages' => NameResource::collection($this->languages->makeHidden('pivot')),
@@ -29,7 +23,7 @@ class ChildResource extends JsonResource
             'phones' => $this->phones,
             'address' => $this->master['address'],
             'image' => $this->mainAttachment,
-            'siblings' => ChildCardResource::collection($this->master->children),
+//            'siblings' => ChildCardResource::collection($this->master->children),
         ];
     }
 }

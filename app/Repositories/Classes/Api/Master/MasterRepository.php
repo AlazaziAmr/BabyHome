@@ -15,6 +15,9 @@ class MasterRepository extends BaseRepository implements IMasterRepository
         return Master::class;
     }
 
+    public function profile($master_id){
+        return $this->model()->with(['nationality'])->find($master_id);
+    }
     public function register($payload)
     {
         return $this->model->create(

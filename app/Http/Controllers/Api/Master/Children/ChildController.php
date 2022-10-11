@@ -5,18 +5,28 @@ namespace App\Http\Controllers\Api\Master\Children;
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Children\ChildRequest;
+use App\Http\Resources\Api\Master\Children\ChildAllergyResource;
 use App\Http\Resources\Api\Master\Children\ChildCardResource;
 use App\Http\Resources\Api\Master\Children\ChildResource;
+use App\Http\Resources\Api\Master\Children\ChildSicknessResource;
 use App\Models\Api\Master\Child;
+use App\Repositories\Interfaces\Api\Master\IChildAllergyRepository;
 use App\Repositories\Interfaces\Api\Master\IChildrenRepository;
+use App\Repositories\Interfaces\Api\Master\IChildSicknessRepository;
 
 class ChildController extends Controller
 {
     private $childrenRepository;
+    private $allergySicknessRepository;
 
-    public function __construct(IChildrenRepository $childrenRepository)
+    public function __construct(
+        IChildrenRepository $childrenRepository,
+        IChildAllergyRepository $allergySicknessRepository,
+        IChildSicknessRepository $sicknessSicknessRepository)
     {
         $this->childrenRepository = $childrenRepository;
+        $this->childAllergyRepository = $allergySicknessRepository;
+        $this->childSicknessRepository = $sicknessSicknessRepository;
     }
 
     /**
@@ -50,11 +60,14 @@ class ChildController extends Controller
      * @param  Child $Child
      * @return \Illuminate\Http\Response
      */
-    public function show(Child $child)
+    public function show($id)
     {
         try {
-            $child = new ChildResource($child->load('master.children.attachmentable','master.children.gender','languages:name','phones:child_id,phone','attachmentable'));
-            return JsonResponse::successfulResponse('msg_success', $child);
+            $data['child'] = new ChildResource($this->childrenRepository->profile($id));;
+            $data['sickness'] = ChildSicknessResource::collection($this->childSicknessRepository->fetchForChild($id));
+            $data['allergies'] = ChildAllergyResource::collection($this->childAllergyRepository->fetchForChild($id));
+
+            return JsonResponse::successfulResponse('msg_success', $data);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

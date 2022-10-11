@@ -14,12 +14,29 @@ class MasterResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'address' => $this->address,
-        ];
+        if(isset($this->nationality)){
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'address' => $this->address,
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
+                'nationality' => $this->nationality->name,
+            ];
+        }else{
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'address' => $this->address,
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
+                'nationality' => '',
+            ];
+        }
+
     }
 }

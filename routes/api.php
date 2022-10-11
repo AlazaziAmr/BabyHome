@@ -277,6 +277,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
 Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master', 'cors', 'json.response', 'locale'], 'prefix' => 'master'], function () {
 
     //Auth
+    Route::get('/profile', [MasterAuthController::class, 'profile']);
     Route::post('/logout', [MasterAuthController::class, 'logout']);
     Route::post('/resend', [MasterAuthController::class, 'resendOTP']);
     Route::post('/verify', [MasterAuthController::class, 'verifyOTP']);
@@ -306,6 +307,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sanctum', 'ability:user,master', 'locale']], function () {
     // Generals
     Route::get('/packages-type', [PackagesTypeController::class, 'index']);
+    Route::get('child-profile/{id}',[ChildController::class,'show']);
     Route::get('child-sickness/{id}',[ChildSicknessController::class,'index']);
     Route::get('child-allergies/{id}',[ChildAllergyController::class,'index']);
     Route::get('child-alerts/{id}',[ChildAlertController::class,'index']);

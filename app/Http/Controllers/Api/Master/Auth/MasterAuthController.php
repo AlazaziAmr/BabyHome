@@ -154,4 +154,13 @@ class MasterAuthController extends Controller
         }
     }
 
+    public function profile(){
+        try {
+            $master = new MasterResource($this->masterRepository->findBy('id',master()->id));
+            return JsonResponse::successfulResponse('msg_success', $master);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
 }
