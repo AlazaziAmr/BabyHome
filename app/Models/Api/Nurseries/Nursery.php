@@ -59,7 +59,21 @@ class Nursery extends BaseModel
         5 => 'approved',
     ];
 
-
+    public function getStatusLabel(){
+        if($this->status == 0){
+            return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
+        }else if($this->status == 1){
+            return '<span class="badge badge-sm bg-gradient-warning">reviewing</span>';
+        }else if($this->status == 2){
+            return '<span class="badge badge-sm bg-gradient-primary">inspecting</span>';
+        }else if($this->status == 3){
+            return '<span class="badge badge-sm bg-gradient-info">inspecting</span>';
+        }else if($this->status == 4){
+            return '<span class="badge badge-sm bg-gradient-danger">suspended</span>';
+        }else if($this->status == 5){
+            return '<span class="badge badge-sm bg-gradient-success">approved</span>';
+        }
+    }
     /**
      * Get the status.
      *

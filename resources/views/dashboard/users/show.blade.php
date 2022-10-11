@@ -1,0 +1,106 @@
+@extends('dashboard.app.app')
+@section('content')
+    @include('dashboard.app.breadcumb')
+    <div class="inbox-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="inbox-left-sd">
+                        <div class="compose-ml">
+                            <a class="btn" href="#">Compose</a>
+                        </div>
+                        <div class="inbox-status">
+                            <ul class="inbox-st-nav inbox-ft">
+                                <li><a href="#"><i class="notika-icon notika-mail"></i> Inbox<span class="pull-right">12</span></a></li>
+                                <li><a href="#"><i class="notika-icon notika-sent"></i> Sent</a></li>
+                                <li><a href="#"><i class="notika-icon notika-draft"></i> Draft</a></li>
+                                <li><a href="#"><i class="notika-icon notika-trash"></i> Trash</a></li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div class="inbox-status">
+                            <ul class="inbox-st-nav">
+                                <li><a href="#"><i class="notika-icon notika-travel"></i> Travel</a></li>
+                                <li><a href="#"><i class="notika-icon notika-finance"></i> Finance</a></li>
+                                <li><a href="#"><i class="notika-icon notika-social"></i> Social</a></li>
+                                <li><a href="#"><i class="notika-icon notika-promos"></i> Promos</a></li>
+                                <li><a href="#"><i class="notika-icon notika-flag"></i> Updates</a></li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div class="inbox-status">
+                            <ul class="inbox-st-nav inbox-nav-mg">
+                                <li><a href="#"><i class="notika-icon notika-chat"></i> Forum</a></li>
+                                <li><a href="#"><i class="notika-icon notika-chat"></i> Chat</a></li>
+                                <li><a href="#"><i class="notika-icon notika-chat"></i> Work</a></li>
+                                <li><a href="#"><i class="notika-icon notika-settings"></i> Settings</a></li>
+                                <li><a href="#"><i class="notika-icon notika-support"></i> Support</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <div class="view-mail-list sm-res-mg-t-30">
+                        <div class="view-mail-hd">
+                            <div class="view-mail-hrd">
+                                <h2>Email view</h2>
+                            </div>
+                            <div class="view-ml-rl">
+                                <p>08:26 PM (2 hours ago)</p>
+                            </div>
+                        </div>
+                        <div class="mail-ads mail-vw-ph">
+                            <p class="first-ph"><b>Subject: </b>Lorem Ipsum has been the industry's standard dummy text ever</p>
+                            <p><b>Email:</b> <a href="#">example.@email.com</a></p>
+                            <p class="last-ph"><b>Date:</b> 15.03.2018</p>
+                        </div>
+                        <div class="view-mail-atn">
+                            <h2>Hello Mamunur Roshid!</h2>
+                            <p>Dummy text of the printing and typesetting industry. Lorem Ipsum has been the <b>dustrys standard dummy text</b> ever since the 1500s, when an unknown printer took a galley of types and scrambleded it to make a type specimenen book. It hasn survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. when an unknown printer took a galley of types and scrambleded it to make a type specimenen book. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages <a href="#">Read more</a>.</p>
+                            <p>All the Lorem Ipsum generators on the Internet tend to repeat the predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence crisity structures, to generate Lorem Ipsum which looks reasonable. recently with.Dummy text of the printing and typesetting industryunknown printer took a galley of type. when an unknown printer took a galley of types and scrambleded it's stambanner to make a type specimenen book.survived not only five centuries, but also the leap into the electronic typesetting, remaining essentially unchanged.</p>
+                            <span class="vw-tr">Thanks and Regards</span>
+                            <span>Mark Smith</span>
+                        </div>
+                        <div class="file-download-system">
+                            <div class="dw-st-ic mg-t-20">
+                                <div class="dw-atc-sn">
+                                    <span><i class="notika-icon notika-paperclip"></i> 4 attachments <i class="notika-icon notika-arrow-right atc-sign"></i></span>
+                                </div>
+                                <div class="dw-atc-sn">
+                                    <a class="btn dw-al-ft" href="#">Download all in zip format <i class="notika-icon notika-file"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vw-ml-action-ls text-right mg-t-20">
+                            <div class="btn-group ib-btn-gp active-hook nk-email-inbox">
+                                <button class="btn btn-default btn-sm waves-effect"><i class="notika-icon notika-next"></i> Reply</button>
+                                <button class="btn btn-default btn-sm waves-effect"><i class="notika-icon notika-right-arrow"></i> Forward</button>
+                                <button class="btn btn-default btn-sm waves-effect"><i class="notika-icon notika-print"></i> Print</button>
+                                <button class="btn btn-default btn-sm waves-effect"><i class="notika-icon notika-trash"></i> Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (auth()->user()->hasPermission('users-create'))
+        @include('dashboard.users.create_model')
+    @endif
+    @if (auth()->user()->hasPermission('users-update'))
+        @include('dashboard.users.edit_model')
+    @endif
+@endsection
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('public/dashboard/css/bootstrap-select/bootstrap-select.css')}}">
+    <link rel="stylesheet" href="{{ asset('public/dashboard/css/jquery.dataTables.min.css')}}">
+@endpush
+
+@push('scripts')
+    @php $table_id = 'fajer-table';@endphp
+    <script src="{{ asset('public/dashboard/js/data-table/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('public/dashboard/js/data-table/data-table-act.js')}}"></script>
+    <script src="{{ asset('public/dashboard/js/bootstrap-select/bootstrap-select.js')}}"></script>
+    {!! $dataTable->scripts()  !!}
+    @include('dashboard.app.js._table_form')
+@endpush

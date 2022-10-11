@@ -2,23 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+use \App\Http\Controllers\Admin\Auth\AdminAuthController;
+use \App\Http\Controllers\Admin\HomeController;
+use \App\Http\Controllers\Admin\Nursery\NurseryController;
+use \App\Http\Controllers\Admin\Inspections\InspectionController;
 //Route::get('test_sms', function () {
 //    $OTP = '1234';
 //    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
@@ -44,3 +31,23 @@ Route::get('/clear-cache', function () {
     return 'DONE'; //Return anything
 });
 
+Route::get('adminLogin', [AdminAuthController::class, 'adminLoginFrom'])->name('adminLogin');
+Route::post('adminLogin', [AdminAuthController::class, 'adminLogin'])->name('adminLogin.store');
+
+Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],
+    function () {
+        Route::prefix('__bh_')->name('__bh_' . '.')->middleware(['auth:dashboard', 'web'])->group(function () {
+            Route::get('/', [HomeController::class, 'index'])->name('index');
+            Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+
+            Route::resource('nurseries',NurseryController::class);
+            Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');
+            Route::get('nursery/block/{id}', [NurseryController::class, 'block'])->name('nursery.block');
+            Route::get('nursery/inspector', [NurseryController::class, 'inspector_view'])->name('nursery.inspector');
+            Route::post('nursery/inspector', [NurseryController::class, 'set_inspector'])->name('nursery.inspector.store');
+            Route::get('inspections', [InspectionController::class, 'index'])->name('inspections.index');
+            Route::post('inspections', [InspectionController::class, 'store'])->name('inspections.store');
+            Route::get('inspections/{id}', [InspectionController::class, 'show'])->name('inspections.show');
+
+        });
+    });

@@ -2,17 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
-
     'accepted' => 'The :attribute must be accepted.',
     'accepted_if' => 'The :attribute must be accepted when :other is :value.',
     'active_url' => 'The :attribute is not a valid URL.',
@@ -198,6 +187,71 @@ return [
         'degree'               => 'الدرجة العملية',
         'country_id'           => 'الدولة',
         'city_id'              => 'المدينة',
+
+        'capacity'  =>'capacity',
+        'acceptance_age_type' => 'year/month',
+        'acceptance_age' => 'acceptance age',
+        'country_id' => 'country',
+        'city_id' => 'city',
+        'neighborhood_id' => 'neighborhood',
+        'user_id' => 'user',
+        // 'street_number',
+        'address_description' => 'address',
+        'latitude' => 'latitude',
+        'longitude' => 'longitude',
+        // 'disabilities_acceptance',
+        'status' => 'status',
+        'is_active' => 'is_active',
+        'acceptance_age_from' => 'accept age from',
+        'acceptance_age_to' => 'accept age to',
+        'national_address' => 'national address',
+        'building_type'  => 'building type',
+        'price' => 'price',
+        'nationality_id' => 'nationality',
+        'years_of_experince' => 'years of experience',
+        'date_of_birth' => 'birth day',
+        'free_of_disease' => 'disease',
+        'nursery_id' => 'nursery',
+        'national_id' => 'national',
+        'nationality' => 'nationality',
+        'inspector_id' => 'inspector',
+        'notes' => 'notes',
+        'from' => 'from',
+        'to' => 'to',
+        'inspection_result_id' => 'inspection result',
+        'criteria' => 'criteria',
+        'rating' => 'rating',
+        'matching' => 'matching',
+        'recommendation' => 'recommendation',
+        'comment' => 'comment',
+        'username' => 'username',
+        'email' => 'email',
+        'phone' => 'phone',
+        'password' => 'password',
+        'title' => 'title',
+        'description' => 'description',
+        'link' => 'link',
+        'mark_as_read'  => 'mark as read',
+        'unit' => 'unit',
+        'is_paid' => 'is paid',
+        'type_id' => 'type',
+        'is_required' => 'is required',
+        'logo' => 'logo',
+        'flag' => 'flag',
+        'parent_id' => 'parent',
+        'sub_category_id' => 'sub category',
+        'gender_id' => 'gender',
+        'relation_id' => 'relation',
+        'has_disability' => 'has disability',
+        'child_id' => 'child',
+        'allergy_name' => 'allergy name',
+        'sickness_name' => 'sickness name',
+        'sickness_date' => 'sickness date',
+        'sickness_desc'  => 'sickness description',
+        'sickness_status'  => 'sickness status',
+        'preferred_language' => 'preferred language',
+        'is_verified' => 'is verified',
+        'activation_code' => 'activation code',
     ],
 
 ];

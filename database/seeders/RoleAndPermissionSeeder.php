@@ -62,6 +62,12 @@ class RoleAndPermissionSeeder extends Seeder
             'name'       => 'superAdmin',
             'guard_name' => 'admin',
         ]);
+
+//        $inspector = Role::firstOrCreate([
+//            'name'       => 'inspector',
+//            'guard_name' => 'admin',
+//        ]);
+
         $superAdmin->givePermissionTo(Permission::where('guard_name', 'admin')->get());
 
         $superAdminAccount = Admin::first();

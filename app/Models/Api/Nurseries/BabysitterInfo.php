@@ -47,7 +47,7 @@ class BabysitterInfo  extends BaseModel
                 return asset('storage/baby-sitters/' . $image->path);
             }
         }
-        return null;
+        return asset('photo.svg');
     }
 
     public function getImage()

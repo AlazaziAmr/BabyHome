@@ -26,6 +26,18 @@ class Inspection extends BaseModel
         3 => 'completed',
     ];
 
+    public function getStatusLabel(){
+        if($this->status == 0){
+            return '<span class="badge badge-sm bg-gradient-secondary">assigned</span>';
+        }else if($this->status == 1){
+            return '<span class="badge badge-sm bg-gradient-warning">inprogress</span>';
+        }else if($this->status == 2){
+            return '<span class="badge badge-sm bg-gradient-danger">incomplete</span>';
+        }else if($this->status == 3){
+            return '<span class="badge badge-sm bg-gradient-success">completed</span>';
+        }
+    }
+
 
 
     /**
