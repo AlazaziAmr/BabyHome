@@ -12,5 +12,6 @@ class Phone extends Model
     protected $fillable = [
         'child_id',
         'phone',
+        'name',
     ];
 }

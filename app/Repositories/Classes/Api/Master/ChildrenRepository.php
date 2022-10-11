@@ -74,6 +74,7 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                     Phone::create([
                         'child_id' => $child['id'],
                         'phone' => $phone,
+//                        'name' => $phone,
                     ]);
                 }
             }
