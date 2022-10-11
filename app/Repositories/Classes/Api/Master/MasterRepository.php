@@ -28,6 +28,7 @@ class MasterRepository extends BaseRepository implements IMasterRepository
                 'longitude' => $payload['longitude'],
                 'password'     => Hash::make($payload['password']),
                 'activation_code'  => $payload['activation_code'],
+                'nationality_id'  => $payload['nationality_id'],
                 "preferred_language" => "ar",
                 'created_at'     => date("Y-m-d h:i:s"),
                 'updated_at'     => date("Y-m-d h:i:s"),
