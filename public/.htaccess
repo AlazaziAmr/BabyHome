@@ -19,9 +19,9 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
-   RewriteCond %{SERVER_ADDR} !^127\.0\.0\.1
-   RewriteCond %{HTTPS} !on [OR]
-   RewriteCond %{HTTP_HOST} !^babyhomeadmin.unicomg.com
-   RewriteRule ^(.*)$ "https://babyhomeadmin.unicomg.com/$1" [R=301,L]
+#   RewriteCond %{SERVER_ADDR} !^127\.0\.0\.1
+#   RewriteCond %{HTTPS} !on [OR]
+#   RewriteCond %{HTTP_HOST} !^babyhomeadmin.unicomg.com
+#   RewriteRule ^(.*)$ "https://babyhomeadmin.unicomg.com/$1" [R=301,L]
 
 </IfModule>
