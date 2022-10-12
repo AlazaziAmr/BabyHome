@@ -101,4 +101,6 @@ return [
     'prev' => 'prev',
     'home' => 'home',
     'nursery_name' => 'nursery_name',
+    'select' => 'select',
+    'inspector' => 'inspector',
 ];

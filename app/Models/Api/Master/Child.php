@@ -85,7 +85,7 @@ class Child  extends BaseModel
     {
 
         if ($this->date_of_birth)
-            return Carbon::createFromDate($this->date_of_birth)->diff(Carbon::now())->format('%y years, %m months and %d days');
+            return Carbon::createFromDate($this->date_of_birth)->diff(Carbon::now())->format('%y سنة, %m شهر and %d يوم');
         else
             return 'Unknown';
     }

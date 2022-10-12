@@ -51,14 +51,18 @@
             <textarea id="comment_{{ $c }}_input" class="form-control" name="comment_{{ $c }}"></textarea>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="image_{{ $c }}_input" class="form-control-label">
-                المرفقات
-            </label>
-            <input id="image_{{ $c }}_input" type="file" name="image_{{ $c }}[]">
+
+    @if(isset($submit) and $submit)
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="attachments_input" class="form-control-label">
+                    المرفقات
+                </label>
+                <input id="attachments_input" type="file" name="attachments[]">
+            </div>
         </div>
-    </div>
+    @endif
+
     <div class="col-md-6">
         @if(isset($prev) and $prev)
             <a class="nav-link btn btn-sm btn-success"
@@ -67,6 +71,7 @@
             </a>
         @endif
     </div>
+
     <div class="col-md-6">
         @if(isset($next) and $next)
             <a class="nav-link btn btn-sm btn-success"

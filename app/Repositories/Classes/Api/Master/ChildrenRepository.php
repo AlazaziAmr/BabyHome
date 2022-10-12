@@ -68,12 +68,13 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
             //Languages
             if ($payload['languages']) $child->languages()->sync($payload['languages']);
 
-            //phones
+//            phones
             if ($payload['phones']) {
                 foreach ($payload['phones'] as $phone) {
                     Phone::create([
                         'child_id' => $child['id'],
-                        'phone' => $phone,
+                        'phone' => $phone['value'],
+                        'name' => $phone['name'],
 //                        'name' => $phone,
                     ]);
                 }

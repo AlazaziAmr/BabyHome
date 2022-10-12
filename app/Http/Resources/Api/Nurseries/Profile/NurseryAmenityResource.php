@@ -13,7 +13,7 @@ class NurseryAmenityResource extends JsonResource
             'id' => $this->id,
             'name' => $this->amenity->name,
             'required' => $this->amenity->is_required ? true : false,
-            'images' => $this->amenity->getImages()
+            'images' => $this->getImages()
         ];
     }
 }

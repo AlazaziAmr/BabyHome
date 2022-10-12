@@ -51,7 +51,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
 
     public function NurseryAmenity($nursery_id){
         return NurseryAmenity::where('nursery_id',$nursery_id)
-            ->with(['amenity'])->get();
+            ->with(['amenity','attachmentable'])->get();
     }
 
     public function profile($id){

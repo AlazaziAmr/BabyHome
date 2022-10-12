@@ -27,6 +27,7 @@ Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('view:clear');
     $exitCode = Artisan::call('route:clear');
     $exitCode = Artisan::call('clear-compiled');
+    $exitCode = Artisan::call('storage:link');
     //$exitCode = Artisan::call('config:cache');
     return 'DONE'; //Return anything
 });

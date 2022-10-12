@@ -42,86 +42,93 @@ class InspectionController extends Controller
     public function index(InspectionDataTable $dataTable)
     {
         $data['title'] = __('site.inspections');
-        $data['inspections']  = Inspection::with(['nursery.owner'])
+        $data['inspections'] = Inspection::with(['nursery.owner'])
 //            ->where('inspector_id ',auth()->guard('dashboard')->user()->id)
             ->get();
-        return  view('dashboard.nurseries.inspections.index',compact('data'));
+        return view('dashboard.nurseries.inspections.index', compact('data'));
 
     }
 
-    public function store(Request $request){
-        return response()->json(array('success' => true), 200);
+    public function store(Request $request)
+    {
         $ins = Inspection::findOrFail($request->id);
         $lat = 0;
         $lng = 0;
-        try{
-            $new_arr[]= unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$_SERVER['REMOTE_ADDR']));
+
+
+        try {
+            $new_arr[] = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR']));
             $lat = $new_arr[0]['geoplugin_latitude'];
             $lng = $new_arr[0]['geoplugin_longitude'];
-        }
-        catch (\Exception $ex){
+        } catch (\Exception $ex) {
 
         }
+
         $result = InspectionResult::create([
-            'inspection_id' => $ins,
-            'latitude' => $lat,
-            'longitude' => $lng,
+            'inspection_id' => $ins->id,
+            'latitude' => ($lat) ? $lat : 0,
+            'longitude' => ($lng) ? $lng : 0,
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 0,
             'rating' => $request->general_amenity,
-            'matching'  => $request->match_amenity,
-            'recommendation'  => $request->recommend_amenity,
-            'comment'  => $request->comment_amenity
+            'matching' => $request->match_amenity,
+            'recommendation' => $request->recommend_amenity,
+            'comment' => $request->comment_amenity
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 1,
             'rating' => $request->general_babysitter,
-            'matching'  => $request->match_babysitter,
-            'recommendation'  => $request->recommend_babysitter,
-            'comment'  => $request->comment_babysitter
+            'matching' => $request->match_babysitter,
+            'recommendation' => $request->recommend_babysitter,
+            'comment' => $request->comment_babysitter
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 2,
             'rating' => $request->general_nursery,
-            'matching'  => $request->match_nursery,
-            'recommendation'  => $request->recommend_nursery,
-            'comment'  => $request->comment_nursery
+            'matching' => $request->match_nursery,
+            'recommendation' => $request->recommend_nursery,
+            'comment' => $request->comment_nursery
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 2,
             'rating' => $request->general_nursery,
-            'matching'  => $request->match_nursery,
-            'recommendation'  => $request->recommend_nursery,
-            'comment'  => $request->comment_nursery
+            'matching' => $request->match_nursery,
+            'recommendation' => $request->recommend_nursery,
+            'comment' => $request->comment_nursery
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 3,
             'rating' => $request->general_utility,
-            'matching'  => $request->match_utility,
-            'recommendation'  => $request->recommend_utility,
-            'comment'  => $request->comment_utility
+            'matching' => $request->match_utility,
+            'recommendation' => $request->recommend_utility,
+            'comment' => $request->comment_utility
         ]);
 
         InspectionResultDetail::create([
-            'inspection_result_id' => $request->id,
+            'inspection_result_id' => $result->id,
             'criteria' => 4,
             'rating' => $request->general_service,
-            'matching'  => $request->match_service,
-            'recommendation'  => $request->recommend_service,
-            'comment'  => $request->comment_service
+            'matching' => $request->match_service,
+            'recommendation' => $request->recommend_service,
+            'comment' => $request->comment_service
         ]);
+        if (!empty($result['attachments'])) uploadAttachment($result, $ins, 'attachments', 'inspections-results');
+
+//        image_
+        return response()->json(array('success' => true), 200);
     }
+
     public function statusUpdate(Request $request)
     {
         try {
@@ -165,28 +172,33 @@ class InspectionController extends Controller
         $ins = Inspection::findOrFail($id);
         $data['title'] = __('site.inspections');
         $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone'])->findOrFail($ins->nursery_id);
-        $data['babysitter'] = BabysitterInfo::with(['languages','nationalitydata','attachmentable'])
-            ->where('nursery_id',$ins->nursery_id)
+        $data['babysitter'] = BabysitterInfo::with(['languages', 'nationalitydata', 'attachmentable'])
+            ->where('nursery_id', $ins->nursery_id)
             ->first();
         $data['ins'] = $ins;
-        $data['amenities'] = NurseryAmenity::with(['amenity','attachmentable'])
-            ->where('nursery_id',$ins->nursery_id)
+        $data['amenities'] = NurseryAmenity::with(['amenity', 'attachmentable'])
+            ->where('nursery_id', $ins->nursery_id)
             ->get();
 
-        $data['utilities'] = NurseryUtility::with(['utility'])->where('nursery_id',$ins->nursery_id)
+        $data['utilities'] = NurseryUtility::with(['utility'])->where('nursery_id', $ins->nursery_id)
             ->get();
 
-        $data['services'] = NurseryService::with(['service.attachmentable'])->where('nursery_id',$ins->nursery_id)
+        $data['services'] = NurseryService::with(['service.attachmentable'])->where('nursery_id', $ins->nursery_id)
             ->get();
 
-        if($data['babysitter']){
-            $data['skills'] = BabysitterSkill::where('babysitter_id',$data['babysitter']->id)
+        if ($data['babysitter']) {
+            $data['skills'] = BabysitterSkill::where('babysitter_id', $data['babysitter']->id)
                 ->get();
-            $data['qualifications'] =BabysitterQualification::with(['qualification'])
-                ->where('babysitter_id',$data['babysitter']->id)
+            $data['qualifications'] = BabysitterQualification::with(['qualification'])
+                ->where('babysitter_id', $data['babysitter']->id)
                 ->get();
         }
-        return view('dashboard.nurseries.inspections.show',compact('data'));
+
+        $result = InspectionResult::with(['details','attachmentable'])->where('inspection_id', $id)->first();
+        if ($result)
+            return view('dashboard.nurseries.inspections.result', compact('data','result'));
+        else
+            return view('dashboard.nurseries.inspections.show', compact('data'));
 
     }
 }
