@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Nurseries\Profile;
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Nurseries\NurseryRequest;
+use App\Http\Resources\Api\Generals\ActivityResource;
 use App\Http\Resources\Api\Generals\AmenityResource;
 use App\Http\Resources\Api\Nurseries\BabysitterInfoResource;
 use App\Http\Resources\Api\Nurseries\BabysitterQulificationResource;
@@ -34,9 +35,10 @@ class ProfileController extends Controller
             $data['qualifications'] = array();
             $data['skills'] = array();
             $data['amenities'] = array();
+            $data['activities'] = array();
 
 
-            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities']);
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities']);
             if ($nursery) {
                 $data['nursery'] = new NurseryResource($nursery);
             }
@@ -45,6 +47,7 @@ class ProfileController extends Controller
                 if ($babysitter) {
                     $data['babysitter'] = new BabysitterInfoResource($babysitter);
                 }
+                $data['activities'] = ActivityResource::collection($data['nursery']->customerActivities());
                 $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
                 if ($amenities) {
                     $data['amenities'] = NurseryAmenityResource::collection($amenities);

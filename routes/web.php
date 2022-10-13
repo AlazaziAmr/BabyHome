@@ -6,6 +6,10 @@ use \App\Http\Controllers\Admin\Auth\AdminAuthController;
 use \App\Http\Controllers\Admin\HomeController;
 use \App\Http\Controllers\Admin\Nursery\NurseryController;
 use \App\Http\Controllers\Admin\Inspections\InspectionController;
+use \App\Http\Controllers\Admin\User\AdminController;
+use \App\Http\Controllers\Admin\User\InspectorController;
+use \App\Http\Controllers\Admin\Master\MasterController;
+use \App\Http\Controllers\Admin\Master\ChildController;
 //Route::get('test_sms', function () {
 //    $OTP = '1234';
 //    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
@@ -50,5 +54,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::post('inspections', [InspectionController::class, 'store'])->name('inspections.store');
             Route::get('inspections/{id}', [InspectionController::class, 'show'])->name('inspections.show');
 
+            Route::resource('admins',AdminController::class);
+            Route::resource('inspectors',InspectorController::class);
+            Route::resource('masters',MasterController::class);
+            Route::resource('children',ChildController::class);
         });
     });

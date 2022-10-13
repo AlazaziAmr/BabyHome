@@ -106,4 +106,8 @@ return [
     'inspect_result' => 'inspection result',
     'submit' => 'submit',
     'copy' => 'All right reserved',
+    //
+    'role' => 'role',
+    'admins' => 'admins',
+    'one_admins' => 'admin',
 ];

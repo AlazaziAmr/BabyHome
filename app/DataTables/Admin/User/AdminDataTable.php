@@ -1,7 +1,8 @@
 <?php
 
-namespace App\DataTables\Admin\Nursery;
+namespace App\DataTables\Admin\User;
 
+use App\Models\Api\Admin\Admin;
 use App\Models\Api\Nurseries\Nursery;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -12,35 +13,27 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class NurseryDataTable extends DataTable
+class AdminDataTable extends DataTable
 {
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('owner_name', function ($data) {
-                if($data->owner){
-                    return $data->owner->name;
-                }else{
-                    return  '';
+            ->addColumn('role',function ($data){
+                $result = '';
+                foreach ($data->getRoleNames() as $name){
+                    $result .= '-'.$name.'<br>';
                 }
-            })->addColumn('owner_phone', function ($data) {
-                if($data->owner){
-                    return $data->owner->phone;
-                }else{
-                    return  '';
-                }
-            })->addColumn('status_lable', function ($data) {
-               return $data->getStatusLabel();
+                return $result;
             })
-            ->addColumn('action', 'dashboard.nurseries.nurseries.partials._action')
-            ->rawColumns(['action','status_lable'])
+            ->addColumn('action', 'dashboard.users.admins.partials._action')
+            ->rawColumns(['action','role'])
             ->setRowId('id');
     }
 
-    public function query(Nursery $model): QueryBuilder
+    public function query(Admin $model): QueryBuilder
     {
         $q = $model->newQuery();
-        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name']);
+        $q->with('roles');
         return  $q;
     }
 
@@ -62,11 +55,10 @@ class NurseryDataTable extends DataTable
     {
         return [
             Column::make('id')->title('#')->data('id')->name('id'),
-            Column::make('owner_name')->title(__('site.owner_name'))->data('owner_name')->name('owner_name'),
-            Column::make('owner_phone')->title(__('site.owner_phone'))->data('owner_phone')->name('owner_phone'),
-            Column::make('national_address')->title(__('site.national_address'))->data('national_address')->name('national_address'),
-            Column::make('capacity')->title(__('site.capacity'))->data('capacity')->name('capacity'),
-            Column::make('status_lable')->title(__('site.status_lable'))->data('status_lable')->name('status_lable'),
+            Column::make('name')->title(__('site.name'))->data('name')->name('name'),
+            Column::make('phone')->title(__('site.phone'))->data('phone')->name('phone'),
+            Column::make('email')->title(__('site.email'))->data('email')->name('email'),
+            Column::make('role')->title(__('site.role'))->data('role')->name('role'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
