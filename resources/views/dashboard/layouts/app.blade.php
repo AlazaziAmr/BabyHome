@@ -11,20 +11,20 @@
     </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="https://babyhomeadmin.unicomg.com/admin/css/nucleo-icons.css?v=2.0.5" rel="stylesheet"/>
+    <link href="{{ asset('admin/css/nucleo-icons.css') }}?v=2.0.6" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="https://babyhomeadmin.unicomg.com/admin/css/nucleo-svg.css?v=2.0.5" rel="stylesheet"/>
+    <link href="{{ asset('admin/css/nucleo-svg.css') }}?v=2.0.6" rel="stylesheet"/>
     @if(app()->getLocale() == 'en')
         <link rel="stylesheet" type="text/css"
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
 
-        <link id="pagestyle" href="https://babyhomeadmin.unicomg.com/admin/css/argon-dashboard.css?v=2.0.5" rel="stylesheet"/>
+        <link id="pagestyle" href="{{ asset('admin/css/argon-dashboard.css') }}?v=2.0.6" rel="stylesheet"/>
     @else
         <link rel="stylesheet" type="text/css"
-              href="https://babyhomeadmin.unicomg.com/admin/css/ar_bootstrap.min.css?v=2.0.5">
+              href="{{ asset('admin/css/ar_bootstrap.min.css') }}?v=2.0.6">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
-        <link id="pagestyle" href="https://babyhomeadmin.unicomg.com/admin/css/ar_argon-dashboard.css?v=2.0.5" rel="stylesheet"/>
+        <link id="pagestyle" href="{{ asset('admin/css/ar_argon-dashboard.css') }}?v=2.0.6" rel="stylesheet"/>
     @endif
 </head>
 
@@ -126,10 +126,10 @@
 </main>
 <!--   Core JS Files   -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://babyhomeadmin.unicomg.com/admin/js/core/popper.min.js"></script>
-<script src="https://babyhomeadmin.unicomg.com/admin/js/core/bootstrap.min.js"></script>
-<script src="https://babyhomeadmin.unicomg.com/admin/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="https://babyhomeadmin.unicomg.com/admin/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="{{ asset('admin/js/core/popper.min.js') }}"></script>
+<script src="{{ asset('admin/js/core/bootstrap.min.js') }}"></script>
+<script src="{{ asset('admin/js/plugins/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('plugins/smooth-scrollbar.min.js') }}"></script>
 <script>
 
 </script>
@@ -145,7 +145,7 @@
 <!-- Github buttons -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="https://babyhomeadmin.unicomg.com/admin/js/argon-dashboard.min.js?v=2.0.4"></script>
+<script src="{{ asset('admin/js/argon-dashboard.min.js') }}?v=2.0.4"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"
       integrity="sha512-gOQQLjHRpD3/SEOtalVq50iDn4opLVup2TF8c4QPI3/NmUPNZOk2FG0ihi8oCU/qYEsw4P6nuEZT2lAG0UNYaw=="
       crossorigin="anonymous" referrerpolicy="no-referrer"/>

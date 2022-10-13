@@ -89,7 +89,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     }
     public function nurseriesCloseToMaster($with = [], $columns = array('*'))
     {
-        return !empty($with) ? $this->model->with($with)->orderBy('created_at', 'DESC')->get($columns) : $this->model->orderBy('created_at', 'DESC')->get($columns);
+        return !empty($with) ? $this->model->with($with)->orderBy('created_at', 'DESC')->select($columns)->paginate() : $this->model->orderBy('created_at', 'DESC')->select($columns)->paginate();
     }
     public function approveJoinigRequest($id)
     {

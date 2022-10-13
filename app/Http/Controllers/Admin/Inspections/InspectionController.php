@@ -51,10 +51,11 @@ class InspectionController extends Controller
 
     public function store(Request $request)
     {
+        return response()->json(array('success' => true), 200);
+
         $ins = Inspection::findOrFail($request->id);
         $lat = 0;
         $lng = 0;
-
 
         try {
             $new_arr[] = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR']));
@@ -88,14 +89,6 @@ class InspectionController extends Controller
             'comment' => $request->comment_babysitter
         ]);
 
-        InspectionResultDetail::create([
-            'inspection_result_id' => $result->id,
-            'criteria' => 2,
-            'rating' => $request->general_nursery,
-            'matching' => $request->match_nursery,
-            'recommendation' => $request->recommend_nursery,
-            'comment' => $request->comment_nursery
-        ]);
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
@@ -106,14 +99,15 @@ class InspectionController extends Controller
             'comment' => $request->comment_nursery
         ]);
 
-        InspectionResultDetail::create([
+        $data3 = [
             'inspection_result_id' => $result->id,
             'criteria' => 3,
             'rating' => $request->general_utility,
             'matching' => $request->match_utility,
             'recommendation' => $request->recommend_utility,
             'comment' => $request->comment_utility
-        ]);
+        ];
+        InspectionResultDetail::create($data3);
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
@@ -194,10 +188,10 @@ class InspectionController extends Controller
                 ->get();
         }
 
-        $result = InspectionResult::with(['details','attachmentable'])->where('inspection_id', $id)->first();
-        if ($result)
-            return view('dashboard.nurseries.inspections.result', compact('data','result'));
-        else
+        $result = InspectionResult::with(['details','attachmentable','inspector'])->where('inspection_id', $id)->first();
+//        if ($result)
+//            return view('dashboard.nurseries.inspections.result', compact('data','result'));
+//        else
             return view('dashboard.nurseries.inspections.show', compact('data'));
 
     }

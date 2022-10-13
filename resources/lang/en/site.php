@@ -103,4 +103,7 @@ return [
     'nursery_name' => 'nursery_name',
     'select' => 'select',
     'inspector' => 'inspector',
+    'inspect_result' => 'inspection result',
+    'submit' => 'submit',
+    'copy' => 'All right reserved',
 ];

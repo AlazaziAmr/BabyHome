@@ -8,7 +8,9 @@ use App\Http\Requests\Api\Nurseries\NurseryRequest;
 use App\Http\Resources\Api\Generals\ActivityResource;
 use App\Http\Resources\Api\Master\Children\ChildResource;
 use App\Http\Resources\Api\Master\Nursery\PackageResource;
+use App\Http\Resources\Api\Nurseries\AllNurseriesResources;
 use App\Http\Resources\Api\Nurseries\NurseryResource;
+use App\Http\Resources\Api\Nurseries\NurseryResourceCollection;
 use App\Models\Api\Generals\PackagesType;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
@@ -121,7 +123,10 @@ class NurseryController extends Controller
     public function nurseriesCloseToMaster()
     {
         try {
-            return JsonResponse::successfulResponse('', NurseryResource::collection($this->nurseryRepository->nurseriesCloseToMaster(['country', 'city', 'neighborhood'])));
+            $data = $this->nurseryRepository->nurseriesCloseToMaster(['country', 'city', 'neighborhood','owner:id,name','babysitter','babySitter.attachmentable']);
+//            echo json_encode($data);
+//            return;
+            return JsonResponse::successfulResponse('', AllNurseriesResources::collection($data));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
