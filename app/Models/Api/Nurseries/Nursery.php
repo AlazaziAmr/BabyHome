@@ -60,7 +60,7 @@ class Nursery extends BaseModel
     ];
 
     public function getStatusLabel(){
-        if($this->status == 0){
+        if($this->status == 'submitted'){
             return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
         }else if($this->status == 1){
             return '<span class="badge badge-sm bg-gradient-warning">reviewing</span>';
@@ -73,6 +73,7 @@ class Nursery extends BaseModel
         }else if($this->status == 5){
             return '<span class="badge badge-sm bg-gradient-success">approved</span>';
         }
+        return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
     }
     /**
      * Get the status.

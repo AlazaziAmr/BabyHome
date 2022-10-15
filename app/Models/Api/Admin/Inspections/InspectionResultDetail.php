@@ -40,10 +40,10 @@ class InspectionResultDetail extends BaseModel
     {
         return  $this->attributes['criteria']  = array_search($value, $this->criteria);
     }
-//    public function getCriteriaAttribute($value)
-//    {
-//        return trans('responses.' . $this->criteria[$value]);
-//    }
+    public function getCriteriaAttribute($value)
+    {
+        return trans('responses.' . $this->criteria[$value]);
+    }
     public function getMatchingAttribute($value)
     {
         return trans('responses.' . $this->matching[$value]);

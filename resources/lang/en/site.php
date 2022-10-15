@@ -110,4 +110,13 @@ return [
     'role' => 'role',
     'admins' => 'admins',
     'one_admins' => 'admin',
+    'date' => 'date',
+    'users' => 'users',
+    'request_joins' => 'request joins',
+    'latest_request_joins' => 'latest request joins',
+    'latest_nurseries' => 'latest nurseries',
+    'children' => 'children',
+    'masters' => 'masters',
+    'one_roles' => 'role',
+    'edit' => 'edit',
 ];

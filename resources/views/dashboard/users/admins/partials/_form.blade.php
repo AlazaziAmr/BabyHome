@@ -1,8 +1,10 @@
 @php
 $name = isset($form_data)  ? $form_data->name : '';
+$username = isset($form_data)  ? $form_data->username : '';
 $email = isset($form_data)  ? $form_data->email : '';
 $phone = isset($form_data)  ? $form_data->phone : '';
-$gender = isset($form_data)  ? $form_data->gender : '';
+$role = isset($form_data)  ? $form_data->role : '';
+$is_active = isset($form_data)  ? $form_data->is_active : '';
 @endphp
 <div class="row mg-tb-30">
 
@@ -16,6 +18,17 @@ $gender = isset($form_data)  ? $form_data->gender : '';
         </div>
     </div>
 
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="username_div">
+        <div class="nk-int-mk sl-dp-mn">
+            <label>@lang('site.username')</label>
+        </div>
+        <div class="bootstrap-select fm-cmp-mg">
+            <input value="{{ $username }}" type="text" id="username_input" name="username" class="form-control" placeholder="@lang('site.username')">
+            <span class="help-block" id="username_error"></span>
+        </div>
+    </div>
+</div>
+<div class="row mg-tb-30">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="email_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.email')</label>
@@ -25,8 +38,7 @@ $gender = isset($form_data)  ? $form_data->gender : '';
             <span class="help-block" id="email_error"></span>
         </div>
     </div>
-</div>
-<div class="row mg-tb-30">
+
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="phone_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.phone')</label>
@@ -37,17 +49,28 @@ $gender = isset($form_data)  ? $form_data->gender : '';
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="gender_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="is_active_div">
         <div class="nk-int-mk sl-dp-mn">
-            <label>@lang('site.gender')</label>
+            <label>@lang('site.is_active')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <select id="gender_input" name="gender" class="form-control">
-                <option value="">@lang('site.select') @lang('site.gender')</option>
-                <option {{ $gender == 1 ? 'selected' :'' }} value="1">@lang('site.male')</option>
-                <option {{ $gender == 2 ? 'selected' :'' }} value="2">@lang('site.female')</option>
+            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_input" name="is_active"  placeholder="@lang('site.is_active')">
+            <span class="help-block" id="is_active_error"></span>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="role_div">
+        <div class="nk-int-mk sl-dp-mn">
+            <label>@lang('site.role')</label>
+        </div>
+        <div class="bootstrap-select fm-cmp-mg">
+            <select id="role_input" name="role" class="form-control">
+                <option value="">@lang('site.select') @lang('site.one_roles')</option>
+              @foreach($data['roles'] as $role)
+                <option  value="{{ $role->id  }}">{{ $role->name  }}</option>
+                @endforeach
             </select>
-            <span class="help-block" id="gender_error"></span>
+            <span class="help-block" id="role_error"></span>
         </div>
     </div>
 
@@ -77,66 +100,3 @@ $gender = isset($form_data)  ? $form_data->gender : '';
 
     </div>
 @endif
-    <div class="row mg-tb-30">
-    @php
-        $models = __('models');
-        $maps = ['create', 'read', 'update', 'delete'];
-    @endphp
-
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="row">
-            <div class="col-md-8">
-                <label>@lang('site.privileges')</label>
-            </div>
-            <div class="col-md-4">
-                <label class="pull-right text-danger form-group ichack-input">
-                    <input class="minimal" value="0" id="permissions_all" type="checkbox" name="permissions_all"
-                    > {{ __('site.select_all') }}
-                </label>
-            </div>
-        </div>
-
-        <div class="row">
-            @foreach ($models as $index=>$model)
-
-                <div class="col-md-4 container_check">
-                    <h4>
-                        <label class="form-group ichack-input">
-                            <input class="minimal container_check" type="checkbox" name="permissions_{{ $model }}"
-                                   data-model="{{ $model }}" value=""/>
-                            <span> {{ __('site.'.$model) }} </span>
-                        </label>
-                    </h4>
-                    <div id="{{ $model }}" style="margin: 10px;">
-                        @foreach ($maps as $map)
-                            <br>
-                            <label class="form-group ichack-input">
-                                <input  class="minimal container_check chk_{{ $model }}" type="checkbox" name="permissions[]"
-                                        @if(!empty($form_data)) {{ $form_data->hasPermission($model.'-'.$map) ? 'checked' : '' }} @endif value="{{ $model.'-'.$map }}"/>
-                                <span>@lang('site.' . $map)</span>
-                            </label>
-                        @endforeach
-
-                    </div>
-                    <hr>
-                </div>
-            @endforeach
-
-        </div>
-    </div>
-
-</div>
-
-
-<div class="row mg-tb-30">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="name_div">
-        <div class="form-group">
-            <input type="file" name="image" id="image_file" class="image">
-        </div>
-
-        <div class="form-group">
-            @php $image_path = isset($form_data) ? $form_data->image_path : asset('public/photo.svg'); @endphp
-            <img class="image-preview" width="200" height="200" src="{{ $image_path }}">
-        </div>
-    </div>
-</div>

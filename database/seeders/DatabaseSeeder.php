@@ -16,13 +16,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         $this->call([
-            DaysSeeder::class,
-            PackageTypesSeeder::class,
-            AdminSeeder::class,
-            CountriesSeeder::class,
-            CitiesSeeder::class,
-            GeneralSeeder::class,
-            RoleAndPermissionSeeder::class
+//            DaysSeeder::class,
+//            PackageTypesSeeder::class,
+//            AdminSeeder::class,
+//            CountriesSeeder::class,
+//            CitiesSeeder::class,
+//            GeneralSeeder::class,
+//            RoleAndPermissionSeeder::class,
+            InspectorRoleAndPermissionSeeder::class
         ]);
     }
 }

@@ -30,7 +30,7 @@
                     <div class="col-auto my-auto">
                         <div class="h-100">
                             <h5 class="mb-1" style="text-align: center">
-                                @lang('site.date'): {{ date('Y-m-d',strtotime(($result->inspector)->created_at)) }}
+                                @lang('site.date'): {{ date('Y-m-d',strtotime($result->created_at)) }}
                             </h5>
                         </div>
                     </div>

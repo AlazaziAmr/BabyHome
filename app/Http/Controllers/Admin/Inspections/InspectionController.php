@@ -43,7 +43,7 @@ class InspectionController extends Controller
     {
         $data['title'] = __('site.inspections');
         $data['inspections'] = Inspection::with(['nursery.owner'])
-//            ->where('inspector_id ',auth()->guard('dashboard')->user()->id)
+            ->where('inspector_id',auth()->guard('dashboard')->user()->id)
             ->get();
         return view('dashboard.nurseries.inspections.index', compact('data'));
 
@@ -51,7 +51,7 @@ class InspectionController extends Controller
 
     public function store(Request $request)
     {
-        return response()->json(array('success' => true), 200);
+//        return response()->json(array('success' => true), 200);
 
         $ins = Inspection::findOrFail($request->id);
         $lat = 0;
@@ -73,7 +73,7 @@ class InspectionController extends Controller
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
-            'criteria' => 0,
+            'criteria' => 'amenities',
             'rating' => $request->general_amenity,
             'matching' => $request->match_amenity,
             'recommendation' => $request->recommend_amenity,
@@ -82,7 +82,7 @@ class InspectionController extends Controller
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
-            'criteria' => 1,
+            'criteria' => 'babySetter',
             'rating' => $request->general_babysitter,
             'matching' => $request->match_babysitter,
             'recommendation' => $request->recommend_babysitter,
@@ -92,7 +92,7 @@ class InspectionController extends Controller
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
-            'criteria' => 2,
+            'criteria' => 'nurseryInfo',
             'rating' => $request->general_nursery,
             'matching' => $request->match_nursery,
             'recommendation' => $request->recommend_nursery,
@@ -101,7 +101,7 @@ class InspectionController extends Controller
 
         $data3 = [
             'inspection_result_id' => $result->id,
-            'criteria' => 3,
+            'criteria' => 'utilities',
             'rating' => $request->general_utility,
             'matching' => $request->match_utility,
             'recommendation' => $request->recommend_utility,
@@ -111,7 +111,7 @@ class InspectionController extends Controller
 
         InspectionResultDetail::create([
             'inspection_result_id' => $result->id,
-            'criteria' => 4,
+            'criteria' => 'services',
             'rating' => $request->general_service,
             'matching' => $request->match_service,
             'recommendation' => $request->recommend_service,
@@ -189,9 +189,9 @@ class InspectionController extends Controller
         }
 
         $result = InspectionResult::with(['details','attachmentable','inspector'])->where('inspection_id', $id)->first();
-//        if ($result)
-//            return view('dashboard.nurseries.inspections.result', compact('data','result'));
-//        else
+        if ($result)
+            return view('dashboard.nurseries.inspections.result', compact('data','result'));
+        else
             return view('dashboard.nurseries.inspections.show', compact('data'));
 
     }

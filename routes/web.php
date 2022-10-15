@@ -55,6 +55,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::get('inspections/{id}', [InspectionController::class, 'show'])->name('inspections.show');
 
             Route::resource('admins',AdminController::class);
+            Route::get('admins/remove/{id}', [AdminController::class,'remove'])->name('admins.remove');
             Route::resource('inspectors',InspectorController::class);
             Route::resource('masters',MasterController::class);
             Route::resource('children',ChildController::class);

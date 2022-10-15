@@ -6,7 +6,10 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <p class="mb-0">{{ $data['title'] }}</p>
-                        <a href="{{ route('__bh_.admins.create') }}" class="btn btn-primary btn-sm ms-auto">{{ __('site.create').' '.__('site.one_admins') }}</a>
+                        <button onclick="$('#create-model').modal('show')"
+                           class="btn btn-primary btn-sm ms-auto">{{ __('site.create').' '.__('site.one_admins') }}</button>
+                    @if(auth()->user()->can('create admin'))
+                            @endif
                     </div>
                 </div>
                 <div class="card-body pb-2">
@@ -18,12 +21,15 @@
         </div>
     </div>
 
-    @if (auth()->user()->hasPermission('cities-create'))
-        @include('dashboard.cities.create_model')
-    @endif
-    @if (auth()->user()->hasPermission('cities-update'))
-        @include('dashboard.cities.edit_model')
-    @endif
+    @can('createadmin')
+        )
+
+    @endcan
+    @include('dashboard.users.admins.create_model')
+    @include('dashboard.users.admins.edit_model')
+    {{--    @if (auth()->user()->hasPermission('cities-update'))--}}
+    {{--        --}}
+    {{--    @endif--}}
 @endsection
 
 

@@ -28,9 +28,9 @@
         });
         var actionurl = e.currentTarget.action;
         $.ajax({
-            type: 'put',
+            type: 'post',
             url: actionurl,
-            data: $("#set_inspector_form").serialize(),
+            data: new FormData(this),
             dataType: 'text',
             processData: false,
             contentType: false,

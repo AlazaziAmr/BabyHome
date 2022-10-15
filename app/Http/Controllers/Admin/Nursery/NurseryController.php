@@ -84,7 +84,7 @@ class NurseryController extends Controller
 
             $request_data = [
                 'nursery_id' => $request->nursery_id,
-                'inspector_id' => auth()->guard('dashboard')->user()->id,
+                'inspector_id' => $request->admin_id,
                 'notes' => $request->notes,
                 'from' => $request->from,
                 'to' => $request->to,
