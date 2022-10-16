@@ -67,7 +67,7 @@
                 <div class="card">
                     <div class="card-body">
                         @php $inspect = true; @endphp
-                        <form id="add_new_form" enctype="multipart/form-data" method="post" action="{{ route(env('DASH_URL').'.inspections.store') }}" novalidate>
+                        <form id="add_new_form" enctype="multipart/form-data" method="post" action="{{ route('__bh_.inspections.store') }}" novalidate>
                             {{ csrf_field() }}
                             {{ method_field('post') }}
                             <input type="hidden" name="id" value="{{ $data['ins']->id }}">

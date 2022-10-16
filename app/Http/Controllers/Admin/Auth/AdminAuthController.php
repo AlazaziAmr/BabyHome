@@ -29,7 +29,7 @@ class AdminAuthController extends Controller
 
         if (Auth::guard('dashboard')->attempt(['username' => $request->username, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect(route(env('DASH_URL') . '.index'));
+            return redirect(route( '__bh_.index'));
         }
         return back()->withInput($request->only('email', 'remember'));
     }

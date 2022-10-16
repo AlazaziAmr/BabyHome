@@ -1,7 +1,7 @@
 <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link " href="{{ route(env('DASH_URL').'.index') }}">
+            <a class="nav-link " href="{{ route('__bh_.index') }}">
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="@lang('icon.home')"></i>
@@ -30,7 +30,7 @@
                 <div class="collapse show" id="users_menu" style="">
                     <ul class="nav ms-4">
                         <li class="nav-item ">
-                            <a class="nav-link " href="{{ route(env('DASH_URL').'.admins.index') }}">
+                            <a class="nav-link " href="{{ route('__bh_.admins.index') }}">
                                 <span class="sidenav-mini-icon"> # </span>
                                 <span class="sidenav-normal">
                                 @lang('site.admins')
@@ -42,7 +42,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link " href="{{ route(env('DASH_URL').'.nurseries.index') }}">
+                <a class="nav-link " href="{{ route('__bh_.nurseries.index') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="@lang('icon.nurseries')"></i>
@@ -53,7 +53,7 @@
         @endif
 
         <li class="nav-item">
-            <a class="nav-link " href="{{ route(env('DASH_URL').'.inspections.index') }}">
+            <a class="nav-link " href="{{ route('__bh_.inspections.index') }}">
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-active-40 text-success text-sm opacity-10"></i>
@@ -64,7 +64,7 @@
 
 
         {{--        <li class="nav-item">--}}
-        {{--            <a class="nav-link " href="{{ route(env('DASH_URL').'.masters.index') }}">--}}
+        {{--            <a class="nav-link " href="{{ route('__bh_.masters.index') }}">--}}
         {{--                <div--}}
         {{--                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">--}}
         {{--                    <i class="ni ni-favourite-28 text-info text-sm opacity-10"></i>--}}
@@ -74,7 +74,7 @@
         {{--        </li>--}}
 
         {{--        <li class="nav-item">--}}
-        {{--            <a class="nav-link " href="{{ route(env('DASH_URL').'.children.index') }}">--}}
+        {{--            <a class="nav-link " href="{{ route('__bh_.children.index') }}">--}}
         {{--                <div--}}
         {{--                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">--}}
         {{--                    <i class="fa fa-heart text-success text-sm opacity-10"></i>--}}

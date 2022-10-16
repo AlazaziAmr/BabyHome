@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data" id="set_inspector_form" role="form" method="post"
-                      action="{{ route(env('DASH_URL').'.nursery.inspector.store') }}">
+                      action="{{ route('__bh_.nursery.inspector.store') }}">
                     {{ csrf_field() }}
                     {{ method_field('post') }}
                     <div id="set_inspector_model_body">
