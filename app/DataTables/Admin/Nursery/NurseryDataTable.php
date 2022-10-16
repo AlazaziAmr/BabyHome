@@ -51,6 +51,7 @@ class NurseryDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
+            ->ajax(['url' => route('__bh_.nurseries.index')])
             ->orderBy(1)
             ->buttons(
                 Button::make('print'),

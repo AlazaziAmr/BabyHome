@@ -45,6 +45,7 @@ class AdminDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(1)
+            ->ajax(['url' => route('__bh_.admins.index')])
             ->buttons(
                 Button::make('print'),
                 Button::make('reload')
