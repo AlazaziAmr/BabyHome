@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Api\Admin\Admin;
+use App\Models\Api\Generals\City;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
@@ -21,6 +22,10 @@ class HomeController extends Controller
         $data['title'] = __('site.home');
         $data['children'] = Child::count();
         $data['nurseries'] = Nursery::count();
+        $data['inspectors'] = Admin::whereHas('roles',function ($query){
+            return $query->where('name','inspector');
+        })->count();
+        $data['cities'] = City::whereIn('id',Nursery::get()->pluck('city_id')->toArray())->get();
         $data['latest_nurseries'] = Nursery::with('owner')->latest()->get()->take(5);
         $data['masters'] = Master::count();
         return view('dashboard.index', compact('data'));

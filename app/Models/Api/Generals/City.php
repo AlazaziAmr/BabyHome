@@ -2,6 +2,8 @@
 
 namespace App\Models\Api\Generals;
 
+use App\Models\Api\Master\Master;
+use App\Models\Api\Nurseries\Nursery;
 use App\Models\BaseModel;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -37,4 +39,9 @@ class City extends BaseModel
     {
         return $this->hasMany(Neighborhood::class, 'city_id', 'id');
     }
+
+    public function getNurseries(){
+        return Nursery::where('city_id',$this->id)->count();
+    }
+
 }
