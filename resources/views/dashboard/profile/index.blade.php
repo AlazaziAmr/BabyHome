@@ -19,7 +19,7 @@
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center "  href="{{ route(env('DASH_URL').'.profile') }}" >
+                                <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center "  href="{{ route('__bh_.profile') }}" >
                                     <i class="ni ni-single-02"></i>
                                     <span class="ms-2">@lang('site.profile')</span>
                                 </a>

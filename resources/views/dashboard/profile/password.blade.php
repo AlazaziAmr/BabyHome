@@ -19,13 +19,13 @@
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1  d-flex align-items-center justify-content-center " href="{{ route(env('DASH_URL').'.profile') }}" >
+                                <a class="nav-link mb-0 px-0 py-1  d-flex align-items-center justify-content-center " href="{{ route('__bh_.profile') }}" >
                                     <i class="ni ni-single-02"></i>
                                     <span class="ms-2">@lang('site.profile')</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center "  href="{{ route(env('DASH_URL').'.profile.password') }}" >
+                                <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center "  href="{{ route('__bh_.profile.password') }}" >
                                     <i class="ni ni-key-25"></i>
                                     <span class="ms-2">@lang('site.change_password')</span>
                                 </a>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="card-body">
                         <form id="edit_new_form" class="form" method="post" enctype="multipart/form-data"
-                              action="{{ route('__bh_.profile.password') }}">
+                              action="{{ route('__bh_.profile.update_password') }}">
                             {{ csrf_field() }}
                             {{ method_field('post') }}
                             <div class="row">

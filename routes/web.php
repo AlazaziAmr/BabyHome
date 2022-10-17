@@ -46,7 +46,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::get('profile', [HomeController::class, 'profile'])->name('profile');
             Route::post('profile', [HomeController::class, 'update_profile'])->name('update_profile');
             Route::get('profile/password',  [HomeController::class, 'change_password'])->name('profile.password');
-            Route::post('profile/password', [HomeController::class, 'update_password'])->name('profile.password');
+            Route::post('profile/password', [HomeController::class, 'update_password'])->name('profile.update_password');
 
             Route::resource('nurseries',NurseryController::class);
             Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');

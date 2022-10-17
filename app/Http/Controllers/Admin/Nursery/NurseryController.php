@@ -92,7 +92,7 @@ class NurseryController extends Controller
             ];
 
             Inspection::create($request_data);
-            $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 1]);
+            $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 2]);
             return response()->json(array('success' => true), 200);
         }
     }
