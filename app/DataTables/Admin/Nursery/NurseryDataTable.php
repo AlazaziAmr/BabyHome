@@ -29,6 +29,8 @@ class NurseryDataTable extends DataTable
                 }else{
                     return  '';
                 }
+            })->addColumn('inspector', function ($data) {
+                return $data->getInspector();
             })->addColumn('status_lable', function ($data) {
                 if($data->status == 0){
                     return '<span class="badge badge-sm bg-gradient-secondary">'.__('site.submitted').'</span>';
@@ -52,7 +54,7 @@ class NurseryDataTable extends DataTable
     public function query(Nursery $model): QueryBuilder
     {
         $q = $model->newQuery();
-        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name']);
+        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name','inspection.inspector']);
         return  $q;
     }
 
@@ -77,7 +79,7 @@ class NurseryDataTable extends DataTable
             Column::make('id')->title('#')->data('id')->name('id'),
             Column::make('owner_name')->title(__('site.owner_name'))->data('owner_name')->name('owner_name'),
             Column::make('owner_phone')->title(__('site.owner_phone'))->data('owner_phone')->name('owner_phone'),
-            Column::make('national_address')->title(__('site.national_address'))->data('national_address')->name('national_address'),
+            Column::make('inspector')->title(__('site.inspector'))->data('inspector')->name('inspector'),
             Column::make('capacity')->title(__('site.capacity'))->data('capacity')->name('capacity'),
             Column::make('status_lable')->title(__('site.status_lable'))->data('status_lable')->name('status_lable'),
             Column::computed('action')

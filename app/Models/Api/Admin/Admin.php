@@ -3,6 +3,7 @@
 namespace App\Models\Api\Admin;
 
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,4 +49,5 @@ class Admin extends Authenticatable
     {
         return $this->notifiable()->select(['id', 'title', 'description', 'link', 'mark_as_read']);
     }
+
 }

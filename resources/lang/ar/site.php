@@ -148,4 +148,7 @@ return [
     'inprogress' => 'قيد العمل',
     'incomplete' => 'غير مكتمل',
     'completed' => 'مكتمل',
+    'inspectors' => 'مفتشين',
+    'city_name' => 'المدينه',
+    'total_nurseries' => 'إجمالي الحاضنات',
 ];

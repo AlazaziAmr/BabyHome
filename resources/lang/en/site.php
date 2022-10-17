@@ -148,4 +148,8 @@ return [
     'inprogress' => 'in progress',
     'incomplete' => 'incomplete',
     'completed' => 'completed',
+    'inspectors' => 'inspectors',
+    'city_name' => 'city name',
+    'total_nurseries' => 'total nurseries',
+
 ];

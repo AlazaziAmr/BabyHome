@@ -2,6 +2,8 @@
 
 namespace App\Models\Api\Nurseries;
 
+use App\Models\Api\Admin\Admin;
+use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\BaseModel;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
@@ -74,6 +76,19 @@ class Nursery extends BaseModel
             return '<span class="badge badge-sm bg-gradient-success">approved</span>';
         }
 //        return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
+    }
+
+    public function inspection(){
+        return $this->belongsTo(Inspection::class);
+    }
+
+    public function getInspector(){
+        $inspection = Inspection::where('nursery_id',$this->id)->first();
+        if($inspection){
+            $admin = Admin::where('id',$inspection->inspector_id)->first();
+            return ($admin) ? $admin->name : '';
+        }
+        return '';
     }
     /**
      * Get the status.
