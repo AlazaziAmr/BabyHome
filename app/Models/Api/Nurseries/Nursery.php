@@ -60,7 +60,7 @@ class Nursery extends BaseModel
     ];
 
     public function getStatusLabel(){
-        if($this->status == 'submitted'){
+        if($this->status == 0){
             return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
         }else if($this->status == 1){
             return '<span class="badge badge-sm bg-gradient-warning">reviewing</span>';
@@ -73,7 +73,7 @@ class Nursery extends BaseModel
         }else if($this->status == 5){
             return '<span class="badge badge-sm bg-gradient-success">approved</span>';
         }
-        return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
+//        return '<span class="badge badge-sm bg-gradient-secondary">submitted</span>';
     }
     /**
      * Get the status.
@@ -81,10 +81,10 @@ class Nursery extends BaseModel
      * @param  string  $value
      * @return string
      */
-    public function getStatusAttribute($value)
-    {
-        return $this->status[$value];
-    }
+//    public function getStatusAttribute($value)
+//    {
+//        return $this->status[$value];
+//    }
 
     /**
      * Get the country that owns the Nursery

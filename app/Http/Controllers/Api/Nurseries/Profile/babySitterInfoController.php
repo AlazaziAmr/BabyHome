@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class babySitterInfoController extends Controller
 {
-    //
+    public function update(){
+
+    }
 }

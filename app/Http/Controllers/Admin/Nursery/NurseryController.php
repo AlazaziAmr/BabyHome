@@ -56,8 +56,8 @@ class NurseryController extends Controller
             'nursery_id' => 'required',
             'inspector_id',
             'notes' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date',
+            'from' => 'required',
+            'to' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -92,6 +92,7 @@ class NurseryController extends Controller
             ];
 
             Inspection::create($request_data);
+            $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 1]);
             return response()->json(array('success' => true), 200);
         }
     }

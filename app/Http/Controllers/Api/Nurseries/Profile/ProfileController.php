@@ -71,6 +71,53 @@ class ProfileController extends Controller
         }
     }
 
+    public function nursery_profile($id){
+        try {
+            $user_id = Nursery::findOrFail($id)->user_id;
+            if (!$user_id) {
+                return JsonResponse::errorResponse('');
+            }
+            $data['nursery'] = array();
+            $data['babysitter'] = array();
+            $data['qualifications'] = array();
+            $data['skills'] = array();
+            $data['amenities'] = array();
+            $data['activities'] = array();
+
+
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities'],$user_id);
+            if ($nursery) {
+                $data['nursery'] = new NurseryResource($nursery);
+            }
+            if ($data['nursery']) {
+                $babysitter = $this->nurseryRepository->BabySitter($data['nursery']->id);
+                if ($babysitter) {
+                    $data['babysitter'] = new BabysitterInfoResource($babysitter);
+                }
+                $data['activities'] = ActivityResource::collection($data['nursery']->customerActivities());
+                $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
+                if ($amenities) {
+                    $data['amenities'] = NurseryAmenityResource::collection($amenities);
+                }
+                if ($data['babysitter']) {
+                    $skills = $this->nurseryRepository->skills($data['babysitter']->id);
+                    if ($skills) {
+                        $data['skills'] = BabySitterSkillResource::collection($skills);
+                    }
+                    $qualifications = $this->nurseryRepository->qualifications($data['babysitter']->id);
+                    if ($qualifications) {
+                        $data['qualifications'] = BabysitterQulificationResource::collection($qualifications);
+                    }
+                }
+
+            }
+
+            return JsonResponse::successfulResponse('msg_success', $data);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
     public function babySitterInfo()
     {
         try {

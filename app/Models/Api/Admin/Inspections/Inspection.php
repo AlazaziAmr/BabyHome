@@ -77,8 +77,8 @@ class Inspection extends BaseModel
      * @param  string  $value
      * @return string
      */
-    public function getStatusAttribute($value)
-    {
-        return $this->status[$value];
-    }
+//    public function getStatusAttribute($value)
+//    {
+//        return $this->status[$value];
+//    }
 }

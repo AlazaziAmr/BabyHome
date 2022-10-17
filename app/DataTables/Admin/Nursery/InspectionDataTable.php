@@ -19,14 +19,23 @@ class InspectionDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('nursery_name', function ($data) {
-//                if(($data->nursery) and $data->nursery->user){
-//                    return $data->nursery->user->name;
-//                }else{
-//                    return  '';
-//                }
+                if(($data->nursery) and $data->nursery->user){
+                    return $data->nursery->user->name;
+                }else{
+                    return  '';
+                }
                 return '';
             })->addColumn('status_lable', function ($data) {
-               return $data->getStatusLabel();
+                if($data->status == 0){
+                    return '<span class="badge badge-sm bg-gradient-secondary">'.__('site.assigned').'</span>';
+                }else if($data->status == 1){
+                    return '<span class="badge badge-sm bg-gradient-warning">'.__('site.inprogress').'</span>';
+                }else if($data->status == 2){
+                    return '<span class="badge badge-sm bg-gradient-danger">'.__('site.incomplete').'</span>';
+                }else if($data->status == 3){
+                    return '<span class="badge badge-sm bg-gradient-success">'.__('site.completed').'</span>';
+                }
+                return $data->status;
             })
             ->addColumn('action', 'dashboard.nurseries.inspections.partials._action')
             ->rawColumns(['action','status_lable'])

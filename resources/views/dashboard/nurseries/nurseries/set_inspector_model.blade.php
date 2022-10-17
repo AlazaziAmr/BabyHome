@@ -15,7 +15,7 @@
                     <div id="set_inspector_model_body">
                     </div>
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">@lang('site.edit')</button>
+                        <button type="submit" class="btn btn-primary">@lang('site.save')</button>
                     </div>
                 </form>
             </div>

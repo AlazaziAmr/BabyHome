@@ -30,7 +30,19 @@ class NurseryDataTable extends DataTable
                     return  '';
                 }
             })->addColumn('status_lable', function ($data) {
-               return $data->getStatusLabel();
+                if($data->status == 0){
+                    return '<span class="badge badge-sm bg-gradient-secondary">'.__('site.submitted').'</span>';
+                }else if($data->status == 1){
+                    return '<span class="badge badge-sm bg-gradient-warning">'.__('site.reviewing').'</span>';
+                }else if($data->status == 2){
+                    return '<span class="badge badge-sm bg-gradient-primary">'.__('site.inspecting').'</span>';
+                }else if($data->status == 3){
+                    return '<span class="badge badge-sm bg-gradient-info">'.__('site.inspected').'</span>';
+                }else if($data->status == 4){
+                    return '<span class="badge badge-sm bg-gradient-danger">'.__('site.suspended').'</span>';
+                }else if($data->status == 5){
+                    return '<span class="badge badge-sm bg-gradient-success">'.__('site.approved').'</span>';
+                }
             })
             ->addColumn('action', 'dashboard.nurseries.nurseries.partials._action')
             ->rawColumns(['action','status_lable'])

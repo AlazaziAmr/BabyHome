@@ -314,6 +314,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {
     Route::get('/profile',[\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class,'profile']);
+    Route::get('/nursery-profile/{id}',[\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class,'nursery_profile']);
 });
 
 

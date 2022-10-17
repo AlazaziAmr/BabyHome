@@ -22,6 +22,8 @@ use App\Http\Resources\Api\Admin\Inspections\AdminInspectionResource;
 use App\Http\Requests\Api\Admin\Inspections\AdminInspectionResultRequest;
 use App\Http\Resources\Api\Admin\Inspections\AdminInspectionResultArrayResource;
 use App\Http\Resources\Api\Admin\Inspections\AdminInspectionResultResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class InspectionController extends Controller
 {
@@ -43,7 +45,7 @@ class InspectionController extends Controller
     {
         $data['title'] = __('site.inspections');
         $data['inspections'] = Inspection::with(['nursery.owner'])
-            ->where('inspector_id',auth()->guard('dashboard')->user()->id)
+            ->where('inspector_id', auth()->guard('dashboard')->user()->id)
             ->get();
         return view('dashboard.nurseries.inspections.index', compact('data'));
 
@@ -51,76 +53,106 @@ class InspectionController extends Controller
 
     public function store(Request $request)
     {
-//        return response()->json(array('success' => true), 200);
-
-        $ins = Inspection::findOrFail($request->id);
-        $lat = 0;
-        $lng = 0;
-
-        try {
-            $new_arr[] = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR']));
-            $lat = $new_arr[0]['geoplugin_latitude'];
-            $lng = $new_arr[0]['geoplugin_longitude'];
-        } catch (\Exception $ex) {
-
-        }
-
-        $result = InspectionResult::create([
-            'inspection_id' => $ins->id,
-            'latitude' => ($lat) ? $lat : 0,
-            'longitude' => ($lng) ? $lng : 0,
-        ]);
-
-        InspectionResultDetail::create([
-            'inspection_result_id' => $result->id,
-            'criteria' => 'amenities',
-            'rating' => $request->general_amenity,
-            'matching' => $request->match_amenity,
-            'recommendation' => $request->recommend_amenity,
-            'comment' => $request->comment_amenity
-        ]);
-
-        InspectionResultDetail::create([
-            'inspection_result_id' => $result->id,
-            'criteria' => 'babySetter',
-            'rating' => $request->general_babysitter,
-            'matching' => $request->match_babysitter,
-            'recommendation' => $request->recommend_babysitter,
-            'comment' => $request->comment_babysitter
-        ]);
-
-
-        InspectionResultDetail::create([
-            'inspection_result_id' => $result->id,
-            'criteria' => 'nurseryInfo',
-            'rating' => $request->general_nursery,
-            'matching' => $request->match_nursery,
-            'recommendation' => $request->recommend_nursery,
-            'comment' => $request->comment_nursery
-        ]);
-
-        $data3 = [
-            'inspection_result_id' => $result->id,
-            'criteria' => 'utilities',
-            'rating' => $request->general_utility,
-            'matching' => $request->match_utility,
-            'recommendation' => $request->recommend_utility,
-            'comment' => $request->comment_utility
+        $rules = [
+            'general_amenity' => 'required|integer',
+            'match_amenity' => 'required|integer',
+            'recommend_amenity' => 'required|integer',
+            'comment_amenity' => 'required|integer',
+            'general_babysitter' => 'required|integer',
+            'match_babysitter' => 'required|integer',
+            'recommend_babysitter' => 'required|integer',
+            'comment_babysitter' => 'required|integer',
+            'general_nursery' => 'required|integer',
+            'match_nursery' => 'required|integer',
+            'recommend_nursery' => 'required|integer',
+            'comment_nursery' => 'required|integer',
+            'general_utilit' => 'required|integer',
+            'match_utilit' => 'required|integer',
+            'recommend_utilit' => 'required|integer',
+            'comment_utilit' => 'required|integer',
+            'general_service' => 'required|integer',
+            'match_service' => 'required|integer',
+            'recommend_service' => 'required|integer',
+            'comment_service' => 'required|integer',
         ];
-        InspectionResultDetail::create($data3);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
 
-        InspectionResultDetail::create([
-            'inspection_result_id' => $result->id,
-            'criteria' => 'services',
-            'rating' => $request->general_service,
-            'matching' => $request->match_service,
-            'recommendation' => $request->recommend_service,
-            'comment' => $request->comment_service
-        ]);
-        if (!empty($result['attachments'])) uploadAttachment($result, $ins, 'attachments', 'inspections-results');
+            ), 200);
+        } else {
+            $ins = Inspection::findOrFail($request->id);
+            $lat = 0;
+            $lng = 0;
 
-//        image_
-        return response()->json(array('success' => true), 200);
+            try {
+                $new_arr[] = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR']));
+                $lat = $new_arr[0]['geoplugin_latitude'];
+                $lng = $new_arr[0]['geoplugin_longitude'];
+            } catch (\Exception $ex) {
+
+            }
+
+            $result = InspectionResult::create([
+                'inspection_id' => $ins->id,
+                'latitude' => ($lat) ? $lat : 0,
+                'longitude' => ($lng) ? $lng : 0,
+            ]);
+
+            InspectionResultDetail::create([
+                'inspection_result_id' => $result->id,
+                'criteria' => 'amenities',
+                'rating' => $request->general_amenity,
+                'matching' => $request->match_amenity,
+                'recommendation' => $request->recommend_amenity,
+                'comment' => $request->comment_amenity
+            ]);
+
+            InspectionResultDetail::create([
+                'inspection_result_id' => $result->id,
+                'criteria' => 'babySetter',
+                'rating' => $request->general_babysitter,
+                'matching' => $request->match_babysitter,
+                'recommendation' => $request->recommend_babysitter,
+                'comment' => $request->comment_babysitter
+            ]);
+
+
+            InspectionResultDetail::create([
+                'inspection_result_id' => $result->id,
+                'criteria' => 'nurseryInfo',
+                'rating' => $request->general_nursery,
+                'matching' => $request->match_nursery,
+                'recommendation' => $request->recommend_nursery,
+                'comment' => $request->comment_nursery
+            ]);
+
+            InspectionResultDetail::create([
+                'inspection_result_id' => $result->id,
+                'criteria' => 'utilities',
+                'rating' => $request->general_utility,
+                'matching' => $request->match_utility,
+                'recommendation' => $request->recommend_utility,
+                'comment' => $request->comment_utility
+            ]);
+
+            InspectionResultDetail::create([
+                'inspection_result_id' => $result->id,
+                'criteria' => 'services',
+                'rating' => $request->general_service,
+                'matching' => $request->match_service,
+                'recommendation' => $request->recommend_service,
+                'comment' => $request->comment_service
+            ]);
+            if (!empty($result['attachments'])) uploadAttachment($result, $ins, 'attachments', 'inspections-results');
+
+            $this->iNurseryRepository->update(['status' => 3], $ins->nursery_id);
+            $this->inspectionRepository->update(['status' => 3], $ins->id);
+
+            return response()->json(array('success' => true), 200);
+        }
     }
 
     public function statusUpdate(Request $request)
@@ -188,9 +220,9 @@ class InspectionController extends Controller
                 ->get();
         }
 
-        $result = InspectionResult::with(['details','attachmentable','inspector'])->where('inspection_id', $id)->first();
+        $result = InspectionResult::with(['details', 'attachmentable', 'inspector'])->where('inspection_id', $id)->first();
         if ($result)
-            return view('dashboard.nurseries.inspections.result', compact('data','result'));
+            return view('dashboard.nurseries.inspections.result', compact('data', 'result'));
         else
             return view('dashboard.nurseries.inspections.show', compact('data'));
 

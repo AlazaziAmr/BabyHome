@@ -3,7 +3,7 @@
     $username = isset($form_data)  ? $form_data->username : '';
     $email = isset($form_data)  ? $form_data->email : '';
     $phone = isset($form_data)  ? $form_data->phone : '';
-    $role = isset($form_data)  ? $form_data->role : '';
+    $role = isset($form_data)  ? array($form_data->getRoleNames()) : '';
     $is_active = isset($form_data)  ? $form_data->is_active : '';
 @endphp
 <input type="hidden" value="{{ $form_data->id }}" name="id">
@@ -52,10 +52,10 @@
 
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="is_active_edit_div">
         <div class="nk-int-mk sl-dp-mn">
-            <label>@lang('site.is_active')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"  placeholder="@lang('site.is_active')">
+            <label>@lang('site.is_active')</label>
+            @lang('site.is_active') <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"  placeholder="@lang('site.is_active')">
             <span class="help-block" id="is_active_edit_error"></span>
         </div>
     </div>
@@ -67,10 +67,14 @@
         <div class="bootstrap-select fm-cmp-mg">
             <select id="role_edit_input" name="role" class="form-control">
                 <option value="">@lang('site.select') @lang('site.one_roles')</option>
-                @foreach($data['roles'] as $role)
-                    <option  value="{{ $role->id  }}">{{ $role->name  }}</option>
-                @endforeach
-            </select>
+                <option {{ in_array('superAdmin',$role) ? 'selected'  :'' }} value="1">@lang('site.super_admin')</option>
+                <option {{ in_array('inspector',$role) ? 'selected'  :'' }} value="2">@lang('site.inspector')</option>
+                <option {{ in_array('admin',$role) ? 'selected'  :'' }} value="3">@lang('site.admin')</option>
+
+{{--            @foreach($data['roles'] as $role)--}}
+{{--                    <option  value="{{ $role->id  }}">{{ $role->name  }}</option>--}}
+{{--                @endforeach--}}
+{{--            </select>--}}
             <span class="help-block" id="role_edit_error"></span>
         </div>
     </div>

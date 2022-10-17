@@ -26,10 +26,16 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         return Nursery::class;
     }
 
-    public function FindOne($with = []){
-        return $this->model->with($with)
-            ->where('user_id',user()->id)
-            ->first();
+    public function FindOne($with = [],$user_id = 0){
+       if($user_id == 0){
+           return $this->model->with($with)
+               ->where('user_id',user()->id)
+               ->first();
+       } else{
+           return $this->model->with($with)
+               ->where('user_id',$user_id)
+               ->first();
+       }
     }
 
     public function BabySitter($nursery_id){

@@ -24,7 +24,19 @@
                                     <td>{{ $in->from }}</td>
                                     <td>{{ $in->to }}</td>
                                     <td>{{ $in->notes }}</td>
-                                    <td>{{ $in->getStatusLabel() }}</td>
+                                    <td>
+                                        @php
+                                            if($in->status == 0){
+                       echo '<span class="badge badge-sm bg-gradient-secondary">'.__('site.assigned').'</span>';
+                   }else if($in->status == 1){
+                       echo '<span class="badge badge-sm bg-gradient-warning">'.__('site.inprogress').'</span>';
+                   }else if($in->status == 2){
+                       echo '<span class="badge badge-sm bg-gradient-danger">'.__('site.incomplete').'</span>';
+                   }else if($in->status == 3){
+                       echo '<span class="badge badge-sm bg-gradient-success">'.__('site.completed').'</span>';
+                   }
+                                        @endphp
+                                    </td>
                                     <td>
                                         @php $id = $in->id@endphp
                                         @include('dashboard.nurseries.inspections.partials._action')
@@ -42,7 +54,7 @@
 @endsection
 
 @push('scripts')
-{{--    @include('dashboard.app.js._table_form')--}}
-{{--    @include('dashboard.nurseries.nurseries.partials._js')--}}
-{{--    {!! $dataTable->scripts()  !!}--}}
+    {{--    @include('dashboard.app.js._table_form')--}}
+    {{--    @include('dashboard.nurseries.nurseries.partials._js')--}}
+    {{--    {!! $dataTable->scripts()  !!}--}}
 @endpush

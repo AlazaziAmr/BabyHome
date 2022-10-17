@@ -26,6 +26,11 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
         <link id="pagestyle" href="{{ asset('admin/css/ar_argon-dashboard.css') }}?v=2.0.6" rel="stylesheet"/>
     @endif
+    <style>
+        .has-error{
+            color: red;
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show {{ app()->getLocale() == 'ar' ? 'rtl' : ''}} bg-gray-100">

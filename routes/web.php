@@ -44,6 +44,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::prefix('__bh_')->name('__bh_.')->middleware(['auth:dashboard', 'web'])->group(function () {
             Route::get('/', [HomeController::class, 'index'])->name('index');
             Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+            Route::post('profile', [HomeController::class, 'update_profile'])->name('update_profile');
+            Route::get('profile/password',  [HomeController::class, 'change_password'])->name('profile.password');
+            Route::post('profile/password', [HomeController::class, 'update_password'])->name('profile.password');
 
             Route::resource('nurseries',NurseryController::class);
             Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');

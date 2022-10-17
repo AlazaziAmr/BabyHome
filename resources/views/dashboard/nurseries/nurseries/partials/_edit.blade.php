@@ -16,7 +16,7 @@
     <div class="col-md-6">
         <div class="form-group" id="from_div">
             <label for="from_input" class="form-control-label">@lang('site.from')</label>
-            <input class="form-control" type="date" id="from_input" name="from">
+            <input class="form-control" type="datetime-local" id="from_input" name="from">
             <span id="from_error"></span>
         </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="col-md-6">
         <div class="form-group" id="to_div">
             <label for="to_input" class="form-control-label">@lang('site.to')</label>
-            <input class="form-control" type="date" id="to_input" name="to">
+            <input class="form-control" type="datetime-local" id="to_input" name="to">
             <span id="to_error"></span>
         </div>
     </div>

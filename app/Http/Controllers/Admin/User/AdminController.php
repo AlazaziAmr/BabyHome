@@ -19,13 +19,12 @@ class AdminController extends Controller
         return $dataTable->render('dashboard.users.admins.index', compact('data'));
     }
 
-    private function validate_page($request, $data)
+    private function validate_page($request, $data = '')
     {
         $rules = [
             'name' => 'required|string|max:255|min:4',
             // 'password_confirmation' => 'required',
             'role' => 'required|exists:roles,id',
-
         ];
 
         if ($data) {

@@ -252,6 +252,29 @@ return [
         'preferred_language' => 'preferred language',
         'is_verified' => 'is verified',
         'activation_code' => 'activation code',
+
+
+        'general_amenity' => 'general',
+        'match_amenity' => 'match',
+        'recommend_amenity' => 'recommend',
+        'comment_amenity' => 'comment',
+        'general_babysitter' => 'general',
+        'match_babysitter' => 'match',
+        'recommend_babysitter' => 'recommend',
+        'comment_babysitter' => 'comment',
+        'general_nursery' => 'general',
+        'match_nursery' => 'match',
+        'recommend_nursery' => 'recommend',
+        'comment_nursery' => 'comment',
+        'general_utility' => 'general',
+        'match_utility' => 'match',
+        'recommend_utility' => 'recommend',
+        'comment_utility' => 'comment',
+        'general_service' => 'general',
+        'match_service' => 'match',
+        'recommend_service' => 'recommend',
+        'comment_service' => 'comment',
+
     ],
 
 ];
