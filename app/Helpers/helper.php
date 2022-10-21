@@ -63,8 +63,8 @@ if (!function_exists('OTPGenrator')) {
      */
     function OTPGenrator()
     {
-        return '1234';
-        // return rand(1000, 9999);
+//        return '1234';
+         return rand(1000, 9999);
     }
 }
 

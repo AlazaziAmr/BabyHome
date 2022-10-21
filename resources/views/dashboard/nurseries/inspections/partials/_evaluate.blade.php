@@ -83,7 +83,7 @@
                 @lang('site.next')
             </a>
         @elseif(isset($submit) and $submit)
-            <button class="nav-link btn btn-sm btn-primary">
+            <button type="submit" class="nav-link btn btn-sm btn-primary">
                 @lang('site.submit')
             </button>
         @endif

@@ -38,6 +38,7 @@ Route::get('/clear-cache', function () {
 
 Route::get('adminLogin', [AdminAuthController::class, 'adminLoginFrom'])->name('adminLogin');
 Route::post('adminLogin', [AdminAuthController::class, 'adminLogin'])->name('adminLogin.store');
+Route::post('adminLogout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],
     function () {

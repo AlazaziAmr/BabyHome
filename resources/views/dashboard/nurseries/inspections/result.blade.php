@@ -47,29 +47,30 @@
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">{{ $d->criteria }}</h6>
                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
-                                    <i class="fa {{ ($d->ratings >= 1) ? 'fa-star' : 'fa-star-o' }} "
+                                    <i class="fa {{ ($d->rating >= 1) ? 'fa-star' : 'fa-star-o' }} "
                                        aria-hidden="true"></i>
-                                    <i class="fa {{ ($d->ratings >= 2) ? 'fa-star' : 'fa-star-o' }} "
+                                    <i class="fa {{ ($d->rating >= 2) ? 'fa-star' : 'fa-star-o' }} "
                                        aria-hidden="true"></i>
-                                    <i class="fa {{ ($d->ratings >= 3) ? 'fa-star' : 'fa-star-o' }} "
+                                    <i class="fa {{ ($d->rating >= 3) ? 'fa-star' : 'fa-star-o' }} "
                                        aria-hidden="true"></i>
-                                    <i class="fa {{ ($d->ratings >= 4) ? 'fa-star' : 'fa-star-o' }} "
+                                    <i class="fa {{ ($d->rating >= 4) ? 'fa-star' : 'fa-star-o' }} "
                                        aria-hidden="true"></i>
-                                    <i class="fa {{ ($d->ratings >= 5) ? 'fa-star' : 'fa-star-o' }} "
+                                    <i class="fa {{ ($d->rating >= 5) ? 'fa-star' : 'fa-star-o' }} "
                                        aria-hidden="true"></i>
                                 </p>
                                 <p class="text-sm mt-3 mb-2">
                                     {{ $d->comment }}
                                 </p>
-                                @if($d->matching == 1)
+
+                                @if($d->matching == "Matched")
                                     <span class="badge badge-sm bg-gradient-success">مطابق للمواصفات</span>
-                                @elseif($d->matching == 2)
+                                @elseif($d->matching == "Partially Matched")
                                     <span class="badge badge-sm bg-gradient-warning">مطابق جزئيا</span>
-                                @elseif($d->matching == 3)
+                                @elseif($d->matching == "Not Matched")
                                     <span class="badge badge-sm bg-gradient-danger">غير مطابق</span>
                                 @endif
 
-                                @if($d->recommendation == 1)
+                                @if($d->recommendation == "Recommended")
                                     <span class="badge badge-sm bg-gradient-success">يوصى به</span>
                                 @else
                                     <span class="badge badge-sm bg-gradient-danger">لا يوصى به</span>

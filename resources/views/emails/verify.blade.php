@@ -82,7 +82,7 @@
                                             </p>
                                             <p
                                                 style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin: 0; margin-bottom: 24px;">
-                                                Please verify your email address by clicking the below button and join
+                                                Please verify your account using the below activation code and join
                                                 our creative community,
                                                 start exploring the resources or showcasing your work.
                                             </p>
@@ -98,9 +98,9 @@
                                                 <tr>
                                                     <td
                                                         style="mso-line-height-rule: exactly; mso-padding-alt: 16px 24px; border-radius: 4px; background-color: #f1c8bf; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
-                                                        <a href="{{ $url }}"
-                                                            style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #000000; text-decoration: none;">Verify
-                                                            Email Now &rarr;</a>
+                                                        <p
+                                                            style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #000000; text-decoration: none;">
+                                                            Your Activation Code:  {{ $code }}</p>
                                                     </td>
                                                 </tr>
                                             </table>

@@ -3,6 +3,7 @@ return [
 
     'remember_me' => 'تذكرني',
     'login' => 'تسجيل الدخول',
+    'logout' => 'تسجيل الخروج',
     'updated_successfully' => 'تم التعديل بنجاح',
     'added_successfully' => 'تم الإضافة بنجاح',
     'deleted_successfully' => 'تم الحذف بنجاح',
@@ -90,7 +91,7 @@ return [
     'nurseries' => 'الحاضنات',
     'dashboard' => 'لوحة التحكم',
     'profile' => 'الحساب',
-    'owner' => 'المالك',
+    'owner' => 'البيانات الشخصية',
     'babysitter' => 'الحاضنه',
     'services' => 'الخدمات',
     'amenities' => 'المرافق',

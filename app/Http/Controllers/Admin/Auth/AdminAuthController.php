@@ -38,11 +38,13 @@ class AdminAuthController extends Controller
     public function adminLogout()
     {
         try {
-            admin()->update([
-                'fcm_token' => null
-            ]);
-            admin()->tokens()->delete();
-            return JsonResponse::successfulResponse('msg_logged_out_succssfully');
+            Auth::guard('dashboard')->logout();
+            return redirect(route( 'adminLogin'));
+//            admin()->update([
+//                'fcm_token' => null
+//            ]);
+//            admin()->tokens()->delete();
+//            return JsonResponse::successfulResponse('msg_logged_out_succssfully');
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             return (new MailMessage)
                 ->subject('Verify Email Address')
                 ->line('Click the button below to verify your email address.')
-                ->markdown('emails.verify', ['url' =>$url]);
+                ->markdown('emails.verify', ['code' =>$notifiable->activation_code]);
         });
     }
 }

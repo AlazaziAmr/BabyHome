@@ -55,8 +55,8 @@ class UserAuthController extends Controller
             $data = $request->validated();
             $data['activation_code'] = OTPGenrator();
             $user = $this->userRepository->register($data);
-//            $user->sendEmailVerificationNotification();
-//            sendOTP($user['activation_code'], $user['phone']);
+            $user->sendEmailVerificationNotification();
+            sendOTP($user['activation_code'], $user['phone']);
             return $this->userWithToken($user);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -78,7 +78,7 @@ class UserAuthController extends Controller
             if ($user) {
                 if (!$user['is_verified']) {
                     $user->update(['activation_code' => OTPGenrator()]);
-                    // sendOTP($user['activation_code'], $user['phone'],$message = '');
+                     sendOTP($user['activation_code'], $user['phone'],$message = '');
                     if (Hash::check($request['password'], $user['password'])) {
                         return $this->userWithToken($user);
                     } else {
@@ -132,7 +132,7 @@ class UserAuthController extends Controller
             $user =  $this->userRepository->findBy('phone', $request['phone']);
             if ($user) {
                 $user->update(['activation_code' => OTPGenrator()]);
-                // sendOTP($user['activation_code'], $user['phone'],$message = '');
+                 sendOTP($user['activation_code'], $user['phone'],$message = '');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');

@@ -3,6 +3,7 @@ return [
 
     'remember_me' => 'remember me',
     'login' => 'login',
+    'logout' => 'logout',
     'updated_successfully' => 'updated successfully',
     'added_successfully' => 'added successfully',
     'create' => 'create',
@@ -88,7 +89,7 @@ return [
     'nurseries' => 'nurseries',
     'dashboard' => 'dashboard',
     'profile' => 'profile',
-    'owner' => 'owner',
+    'owner' => 'personal_information',
     'babysitter' => 'babysitter',
     'services' => 'services',
     'amenities' => 'amenities',

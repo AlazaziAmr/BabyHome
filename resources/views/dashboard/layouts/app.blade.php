@@ -67,13 +67,40 @@
 
                 </div>
                 <ul class="navbar-nav  justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="{{ route('__bh_.profile') }}"
-                           class="nav-link text-white font-weight-bold px-0">
-                            <i class="fa fa-user me-sm-1"></i>
-                            <span class="d-sm-inline d-none">@lang('site.profile')</span>
+                    <li class="nav-item dropdown pe-2 d-flex align-items-center">
+                        <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user me-sm-1"></i> {{Auth::user()->name}}
                         </a>
+                        <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
+                            aria-labelledby="dropdownMenuButton">
+                            <li class="dropdown-item">
+                                <a href="{{ route('__bh_.profile') }}"
+                                   class="nav-link text-dark font-weight-bold px-0">
+                                    <i class="fa fa-user me-sm-1"></i>
+                                    <span class="d-sm-inline d-none">@lang('site.profile')</span>
+                                </a>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="{{ route('adminLogout') }}"
+                                   class="nav-link text-dark font-weight-bold px-0"
+                                   onclick="event.preventDefault(); document.getElementById('form-logout').submit();">
+                                    <i class="fa fa-sign-out me-sm-1"></i>
+                                    <span class="d-sm-inline d-none">@lang('site.logout')</span>
+                                </a>
+                                <form id="form-logout" action="{{ route('adminLogout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        </ul>
                     </li>
+{{--                    <li class="nav-item d-flex align-items-center">--}}
+{{--                        <a href="{{ route('__bh_.profile') }}"--}}
+{{--                           class="nav-link text-white font-weight-bold px-0">--}}
+{{--                            <i class="fa fa-user me-sm-1"></i>--}}
+{{--                            <span class="d-sm-inline d-none">@lang('site.profile')</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                             <div class="sidenav-toggler-inner">
