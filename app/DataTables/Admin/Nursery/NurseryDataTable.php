@@ -54,7 +54,7 @@ class NurseryDataTable extends DataTable
     public function query(Nursery $model): QueryBuilder
     {
         $q = $model->newQuery();
-        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name','inspection.inspector']);
+        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name','inspection','inspection.inspector']);
         return  $q;
     }
 
