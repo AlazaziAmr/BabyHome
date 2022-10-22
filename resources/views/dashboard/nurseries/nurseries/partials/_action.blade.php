@@ -5,7 +5,7 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item" href="{{ route('__bh_.nurseries.show',$id) }}">@lang('site.show')</a></li>
         @if($status == 3)
-            <li><a class="dropdown-item" href="{{ route('__bh_.inspections.show',$id) }}">@lang('site.show') @lang('site.inspection')</a></li>
+            <li><a class="dropdown-item" href="{{ route('__bh_.inspections.show',$id) }}">@lang('site.show') @lang('site.inspections')</a></li>
         @else
             @php $i_id = $inspection ? $inspection->id : 0 @endphp
             <li><a class="dropdown-item" onclick="return set_inspector('{{ route('__bh_.nursery.inspector',['id' => $i_id]) }}')" href="#">@lang('site.set_inspector')</a></li>

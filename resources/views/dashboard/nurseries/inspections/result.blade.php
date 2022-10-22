@@ -62,15 +62,15 @@
                                     {{ $d->comment }}
                                 </p>
 
-                                @if($d->matching == "Matched")
+                                @if($d->matching == "Matched" || "مطابق للمواصفات")
                                     <span class="badge badge-sm bg-gradient-success">مطابق للمواصفات</span>
-                                @elseif($d->matching == "Partially Matched")
+                                @elseif($d->matching == "Partially Matched" || "مطابق للمواصفات جزئياً")
                                     <span class="badge badge-sm bg-gradient-warning">مطابق جزئيا</span>
-                                @elseif($d->matching == "Not Matched")
+                                @elseif($d->matching == "Not Matched" || "غير مطابق للمواصفات")
                                     <span class="badge badge-sm bg-gradient-danger">غير مطابق</span>
                                 @endif
 
-                                @if($d->recommendation == "Recommended")
+                                @if($d->recommendation == "Recommended" || "ينصح به")
                                     <span class="badge badge-sm bg-gradient-success">يوصى به</span>
                                 @else
                                     <span class="badge badge-sm bg-gradient-danger">لا يوصى به</span>

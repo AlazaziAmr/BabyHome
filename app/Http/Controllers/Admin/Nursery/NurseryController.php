@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Nursery;
 
 use App\DataTables\Admin\Nursery\NurseryDataTable;
 use App\Http\Controllers\Controller;
+use App\Mail\NurseryMail;
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\Api\Nurseries\BabysitterInfo;
@@ -13,7 +14,9 @@ use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Nurseries\NurseryAmenity;
 use App\Models\Api\Nurseries\NurseryService;
 use App\Models\Api\Nurseries\NurseryUtility;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -100,12 +103,26 @@ class NurseryController extends Controller
     public function active($id){
         $nursery = Nursery::findOrFail($id);
         $nursery->update(['status' => 5]);
+        $user = User::find($nursery->user_id);
+        $data = [
+            'name' => $user->name,
+            'message' => 'تم قبولك في منصة بيبي هوم.',
+            'details' => 'أهلاً بك.'
+        ];
+        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 
     public function block($id){
         $nursery = Nursery::findOrFail($id);
         $nursery->update(['status' => 4]);
+        $user = User::find($nursery->user_id);
+        $data = [
+            'name' => $user->name,
+            'message' => 'تم رفضكِ في منصة بيبي هوم.',
+            'details' => 'سيتم التواصل معكم وتوضيح الأسباب.'
+        ];
+        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 }
