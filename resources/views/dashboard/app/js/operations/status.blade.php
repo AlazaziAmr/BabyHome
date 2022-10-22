@@ -2,16 +2,18 @@
     function status_row(url,type){
         msg = type == 1 ? "{{ __('site.confirm_active') }}" : "{{ __('site.confirm_block') }}";
         swal({
-            title: msg,
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                status_process(url,type);
-            } else {
-            }
+            title: "",
+            text: msg,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "@lang('site.yes')",
+            closeOnConfirm: false,
+            html: false
+        }, function () {
+            status_process(url,type);
         });
+
     }
 
     function status_process(actionurl,type){

@@ -96,4 +96,16 @@ class NurseryController extends Controller
             return response()->json(array('success' => true), 200);
         }
     }
+
+    public function active($id){
+        $nursery = Nursery::findOrFail($id);
+        $nursery->update(['status' => 5]);
+        return response()->json(array('success' => true), 200);
+    }
+
+    public function block($id){
+        $nursery = Nursery::findOrFail($id);
+        $nursery->update(['status' => 4]);
+        return response()->json(array('success' => true), 200);
+    }
 }

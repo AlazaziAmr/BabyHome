@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        if (Auth::guard('dashboard')->attempt(['username' => $request->username, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('dashboard')->attempt(['username' => $request->username, 'password' => $request->password])) {
 
             return redirect(route( '__bh_.index'));
         }
