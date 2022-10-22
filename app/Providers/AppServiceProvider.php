@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
        \URL::forceScheme('https');
-        if($this->app->environment('production')) {
-        }
+//        if($this->app->environment('production')) {
+//        }
 
         Schema::defaultStringLength(191);
         \Illuminate\Support\Facades\Validator::extend('phone_number', function($attribute, $value, $parameters)
