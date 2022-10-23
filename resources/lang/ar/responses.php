@@ -59,9 +59,9 @@ return [
     "utilities" => "وسائل الراحة",
     "services" => 'الخدمات',
     "recommended" => 'ينصح به',
-    "not_recommended" => 'لا يتصح به',
+    "not_recommended" => 'لا ينصح به',
     "matched" => 'مطابق للمواصفات',
-    "partially_matched" => 'مطابق للمواصفات جزئاً',
+    "partially_matched" => 'مطابق للمواصفات جزئياً',
     "not_matched" => 'غير مطابق للمواصفات',
 
     "nursery_created" => 'تم إنشاء حضانه جديدة',
