@@ -10,6 +10,9 @@ use \App\Http\Controllers\Admin\User\AdminController;
 use \App\Http\Controllers\Admin\User\InspectorController;
 use \App\Http\Controllers\Admin\Master\MasterController;
 use \App\Http\Controllers\Admin\Master\ChildController;
+use \App\Http\Controllers\Admin\General\CityController;
+use \App\Http\Controllers\Admin\General\NationalityController;
+use \App\Http\Controllers\Admin\General\CountryController;
 //Route::get('test_sms', function () {
 //    $OTP = '1234';
 //    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
@@ -48,7 +51,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::post('profile', [HomeController::class, 'update_profile'])->name('update_profile');
             Route::get('profile/password',  [HomeController::class, 'change_password'])->name('profile.password');
             Route::post('profile/password', [HomeController::class, 'update_password'])->name('profile.update_password');
-
+            Route::any('notifications/read',[HomeController::class,'read_note'])->name('notifications.read');
             Route::resource('nurseries',NurseryController::class);
             Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');
             Route::get('nursery/block/{id}', [NurseryController::class, 'block'])->name('nursery.block');
@@ -60,6 +63,19 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::resource('admins',AdminController::class);
             Route::get('admins/remove/{id}', [AdminController::class,'remove'])->name('admins.remove');
+
+            Route::resource('cities',CityController::class);
+            Route::get('cities/remove/{id}', [CityController::class,'remove'])->name('cities.remove');
+
+            Route::resource('countries',CountryController::class);
+            Route::get('countries/remove/{id}', [CountryController::class,'remove'])->name('countries.remove');
+
+            Route::resource('neighborhoods',AdminController::class);
+            Route::get('neighborhoods/remove/{id}', [AdminController::class,'remove'])->name('neighborhoods.remove');
+
+            Route::resource('nationalities',NationalityController::class);
+            Route::get('nationalities/remove/{id}', [NationalityController::class,'remove'])->name('nationalities.remove');
+
             Route::resource('inspectors',InspectorController::class);
             Route::resource('masters',MasterController::class);
             Route::resource('children',ChildController::class);

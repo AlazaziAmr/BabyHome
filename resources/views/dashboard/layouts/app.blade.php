@@ -17,17 +17,19 @@
     @if(app()->getLocale() == 'en')
         <link rel="stylesheet" type="text/css"
               href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
 
         <link id="pagestyle" href="{{ asset('admin/css/argon-dashboard.css') }}?v=2.0.6" rel="stylesheet"/>
     @else
         <link rel="stylesheet" type="text/css"
               href="{{ asset('admin/css/ar_bootstrap.min.css') }}?v=2.0.6">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
         <link id="pagestyle" href="{{ asset('admin/css/ar_argon-dashboard.css') }}?v=2.0.6" rel="stylesheet"/>
     @endif
     <style>
-        .has-error{
+        .has-error {
             color: red;
         }
     </style>
@@ -41,9 +43,9 @@
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
            aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0 text-center" href="#" target="_blank">
-        <a class="navbar-brand m-0 text-center" href="#" target="_blank">
-            <img src="{{ asset("baby-home.3fd18143.png")}}" class="navbar-brand-img" alt="main_logo">
-        </a>
+            <a class="navbar-brand m-0 text-center" href="#" target="_blank">
+                <img src="{{ asset("baby-home.3fd18143.png")}}" class="navbar-brand-img" alt="main_logo">
+            </a>
     </div>
     <hr class="horizontal dark mt-0">
     @include('dashboard.layouts.menu.side')
@@ -88,19 +90,20 @@
                                     <i class="fa fa-sign-out me-sm-1"></i>
                                     <span class="d-sm-inline d-none">@lang('site.logout')</span>
                                 </a>
-                                <form id="form-logout" action="{{ route('adminLogout') }}" method="POST" style="display: none;">
+                                <form id="form-logout" action="{{ route('adminLogout') }}" method="POST"
+                                      style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>
                         </ul>
                     </li>
-{{--                    <li class="nav-item d-flex align-items-center">--}}
-{{--                        <a href="{{ route('__bh_.profile') }}"--}}
-{{--                           class="nav-link text-white font-weight-bold px-0">--}}
-{{--                            <i class="fa fa-user me-sm-1"></i>--}}
-{{--                            <span class="d-sm-inline d-none">@lang('site.profile')</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
+                    {{--                    <li class="nav-item d-flex align-items-center">--}}
+                    {{--                        <a href="{{ route('__bh_.profile') }}"--}}
+                    {{--                           class="nav-link text-white font-weight-bold px-0">--}}
+                    {{--                            <i class="fa fa-user me-sm-1"></i>--}}
+                    {{--                            <span class="d-sm-inline d-none">@lang('site.profile')</span>--}}
+                    {{--                        </a>--}}
+                    {{--                    </li>--}}
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
                             <div class="sidenav-toggler-inner">
@@ -128,10 +131,32 @@
                     <li class="nav-item dropdown pe-2 d-flex align-items-center">
                         <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-bell cursor-pointer"></i>
+                            <i class="ni ni-bell-55 cursor-pointer"></i>
                         </a>
                         <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                             aria-labelledby="dropdownMenuButton">
+                            @if(isset($settings['notifications']) and $settings['notifications'])
+                                @foreach($settings['notifications'] as $n)
+                                   @if($n->type == 1 and $n->mark_as_read == 0)
+                                        <li class="mb-2">
+                                            <a class="dropdown-item border-radius-md" href="#" onclick="make_as_read('{{ $n->link }}','{{ $n->id }}')">
+                                                <div class="d-flex py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="text-sm font-weight-normal mb-1">
+                                                            {{ $n->title ? __('site.'.$n->title)  : '' }}
+                                                            {{ $n->description ? __('site.'.$n->description)  : '' }}
+                                                        </h6>
+                                                        <p class="text-xs text-secondary mb-0">
+                                                            <i class="fa fa-clock me-1"></i>
+                                                            {{ date('Y-m-d',strtotime($n->created_at)) }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
                         </ul>
                     </li>
                 </ul>
@@ -184,7 +209,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"
         integrity="sha512-7VTiy9AhpazBeKQAlhaLRUk+kAMAb8oczljuyJHPsVPWox/QIXDFOnT9DUk1UC8EbnHKRdQowT7sOBe7LAjajQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    function make_as_read(url,id){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('__bh_.notifications.read') }}?id="+id,
+            dataType: 'text',
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $('#value').show();
+            },
+            complete: function () {
+                $('#value').hide();
+                $('button').removeAttr('disabled');
+            },
+            success: function (data) {
+                window.open(url,'_self');
+            },
+            error: function (data) {
 
+            }
+        });
+    }
+</script>
 @stack('scripts')
 </body>
 

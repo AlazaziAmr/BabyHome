@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Nursery;
 
 use App\DataTables\Admin\Nursery\NurseryDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\AdminNotification;
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\Api\Nurseries\BabysitterInfo;
@@ -91,7 +92,19 @@ class NurseryController extends Controller
                 'status' =>0
             ];
 
-            Inspection::create($request_data);
+
+            $ins = Inspection::create($request_data);
+
+            AdminNotification::create([
+                'notifiable_type' => 'App\Models\Api\Admin\Admin',
+                'notifiable_id' => $request->admin_id,
+                'title' => 'set_inspector',
+                'description' => 'check_nursery',
+                'link' => route('__bh_.inspections.show',$ins->id),
+                'mark_as_read' => 0,
+                'type' => 1,
+            ]);
+
             $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 2]);
             return response()->json(array('success' => true), 200);
         }

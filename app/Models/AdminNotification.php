@@ -2,10 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class AdminNotification extends Model
+use App\Models\Api\Admin\Admin;
+
+class AdminNotification extends BaseModel
 {
-    use HasFactory;
+    protected $fillable = [
+        'notifiable_type',
+        'notifiable_id',
+        'title',
+        'description',
+        'link',
+        'mark_as_read',
+        'type'
+    ];
+
+    public function admin(){
+        return $this->belongsTo(Admin::class,'notifiable_id ','id');
+    }
 }

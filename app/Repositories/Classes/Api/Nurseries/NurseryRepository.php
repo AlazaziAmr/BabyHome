@@ -3,6 +3,7 @@
 namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Helpers\JsonResponse;
+use App\Models\AdminNotification;
 use App\Models\Api\Generals\Activity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -183,6 +184,8 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                 return ['status' => false, 'error' => 'no_user'];
             }
 
+            $name = user()->name;
+
             $nursery = $this->model->create([
                 'capacity' => $request['capacity'],
                 'acceptance_age_from' => $request['acceptance_age_from'],
@@ -247,6 +250,16 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                     $nursery->services()->sync($additional_services);
                 }
             }
+
+            AdminNotification::create([
+                'notifiable_type' => 'App\Models\Api\Admin\Admin',
+                'notifiable_id' => 0,
+                'title' => 'new_nursery',
+                'description' => '',
+                'link' => route('__bh_.nurseries.index'),
+                'mark_as_read' => 0,
+                'type' => 1,
+            ]);
             DB::commit();
             return ['status' => true];
         } catch (\Exception $e) {

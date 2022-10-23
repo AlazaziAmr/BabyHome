@@ -152,5 +152,9 @@ return [
     'inspectors' => 'inspectors',
     'city_name' => 'city name',
     'total_nurseries' => 'total nurseries',
+    'new_nursery' => 'new nursery',
+    'check_nursery' => 'check nursery',
+    'check_inspection' => 'check inspection',
+    'check_nursery_inspection' => 'check nursery inspection',
 
 ];

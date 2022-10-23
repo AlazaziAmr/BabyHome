@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AdminNotification;
 use App\Models\Api\Nurseries\Nursery;
 use App\Observers\Api\Nurseries\NurseryObserver;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterRepository;
@@ -20,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['request']->server->set('HTTPS', true);
+//        $this->app['request']->server->set('HTTPS', true);
     }
 
     /**
@@ -30,16 +31,39 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       \URL::forceScheme('https');
-        if($this->app->environment('production')) {
+//       \URL::forceScheme('https');
+        if ($this->app->environment('production')) {
         }
 
         Schema::defaultStringLength(191);
-        \Illuminate\Support\Facades\Validator::extend('phone_number', function($attribute, $value, $parameters)
-        {
+        \Illuminate\Support\Facades\Validator::extend('phone_number', function ($attribute, $value, $parameters) {
             return substr($value, 0, 1) == '+';
         });
-        Model::preventLazyLoading(! $this->app->isProduction());
+        \View::composer('*', function ($view) {
+            if (auth('dashboard')->user()) {
+                $all = false;
+                foreach (auth('dashboard')->user()->getRoleNames() as $n) {
+                    if ($n == 'superAdmin') {
+                        $all = true;
+                    }
+                }
+               if($all){
+                   $settings['notifications'] = AdminNotification::whereNotNull('type')->where('notifiable_id', 0)
+                       ->orWhere('notifiable_id', auth('dashboard')->user()->id)
+                       ->where('mark_as_read',0)
+                       ->get();
+                   $view->with('settings', $settings);
+               }else{
+                   $settings['notifications'] = AdminNotification::whereNotNull('type')
+                       ->where('notifiable_id', auth('dashboard')->user()->id)
+                       ->where('mark_as_read',0)
+                       ->get();
+                   $view->with('settings', $settings);
+               }
+            }
+
+        });
+        Model::preventLazyLoading(!$this->app->isProduction());
         Nursery::observe(NurseryObserver::class);
 
     }

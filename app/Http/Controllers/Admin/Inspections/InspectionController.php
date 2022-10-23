@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Inspections;
 
 use App\DataTables\Admin\Nursery\InspectionDataTable;
+use App\Models\AdminNotification;
 use App\Models\Api\Admin\Inspections\InspectionResult;
 use App\Models\Api\Admin\Inspections\InspectionResultDetail;
 use App\Models\Api\Nurseries\BabysitterInfo;
@@ -151,6 +152,16 @@ class InspectionController extends Controller
             $this->iNurseryRepository->update(['status' => 3], $ins->nursery_id);
             $this->inspectionRepository->update(['status' => 3], $ins->id);
 
+            AdminNotification::create([
+                'notifiable_type' => 'App\Models\Api\Admin\Admin',
+                'notifiable_id' => 0,
+                'title' => 'check_inspection',
+                'description' => 'check_nursery_inspection',
+                'link' => route('__bh_.inspections.show',$ins->id),
+                'mark_as_read' => 0,
+                'type' => 1,
+            ]);
+
             return response()->json(array('success' => true), 200);
         }
     }
@@ -205,6 +216,7 @@ class InspectionController extends Controller
         $data['amenities'] = NurseryAmenity::with(['amenity', 'attachmentable'])
             ->where('nursery_id', $ins->nursery_id)
             ->get();
+
 
         $data['utilities'] = NurseryUtility::with(['utility'])->where('nursery_id', $ins->nursery_id)
             ->get();

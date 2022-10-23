@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminNotification;
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Master\Child;
@@ -39,6 +40,12 @@ class HomeController extends Controller
         $form_data = auth()->user();
         return view('dashboard.profile.index', compact('data', 'form_data'));
 
+    }
+
+    public function read_note(Request $request){
+        $note = AdminNotification::find($request->id);
+        $note->update(['mark_as_read' => 1]);
+        return response()->json(array('success' => true), 200);
     }
 
     public function update_profile(Request $request)
