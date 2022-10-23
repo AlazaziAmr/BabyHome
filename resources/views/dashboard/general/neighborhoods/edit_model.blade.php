@@ -2,14 +2,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">@lang('site.edit') @lang('site.one_nationalities')</h4>
+                <h4 class="modal-title">@lang('site.edit') @lang('site.one_neighborhoods')</h4>
                 <button onclick="$('#edit-model').modal('hide')" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data" id="edit_new_form" role="form" method="post"
-                      action="{{ route('__bh_.nationalities.update',0) }}">
+                      action="{{ route('__bh_.neighborhoods.update',0) }}">
                     {{ csrf_field() }}
                     {{ method_field('put') }}
                     <div id="edit_model_body">

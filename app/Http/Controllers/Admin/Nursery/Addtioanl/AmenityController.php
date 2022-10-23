@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Admin\General;
+namespace App\Http\Controllers\Admin\Nursery\Addtioanl;
 
-use App\DataTables\Admin\General\NationalityDataTable;
+use App\DataTables\Admin\Nursery\Adtional\AmenityDataTable;
 use App\Http\Controllers\Controller;
-use App\Models\Api\Generals\Nationality;
+use App\Models\Api\Generals\Amenity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-
-class NationalityController extends Controller
+class AmenityController extends Controller
 {
-    public function index(NationalityDataTable $dataTable,Request $request){
-        $data['title'] = __('site.nationalities');
-        $data['icon'] = __('icon.nationalities');
-        return $dataTable->render('dashboard.general.nationalities.index',compact('data'));
+    public function index(AmenityDataTable $dataTable,Request $request){
+        $data['title'] = __('site.amenities');
+        $data['icon'] = __('icon.amenities');
+        return $dataTable->render('dashboard.nurseries.addtional.amenities.index',compact('data'));
     }
 
     private function validate_page($request)
@@ -32,7 +31,7 @@ class NationalityController extends Controller
     }
 
     public function show($id){
-        $form_data = Nationality::findOrFail($id);
+        $form_data = Amenity::findOrFail($id);
         return json_encode($form_data);
     }
 
@@ -46,27 +45,26 @@ class NationalityController extends Controller
 
             ), 200);
         } else {
-
             $request_data['name'] = [
                 'ar' => $request->ar_name,
                 'en' => $request->en_name,
             ];
-
-            Nationality::create($request_data);
+            $request_data['is_required']  = ($request->is_required) ? 1 : 0;
+            Amenity::create($request_data);
             return response()->json(array('success' => true), 200);
         }
     }
 
     public function edit($id)
     {
-        $form_data = Nationality::findOrFail($id);
-        $returnHTML = view('dashboard.general.nationalities.partials._edit',compact('form_data'))->render();
+        $form_data = Amenity::findOrFail($id);
+        $returnHTML = view('dashboard.nurseries.addtional.amenities.partials._edit',compact('form_data'))->render();
         return $returnHTML;
     }
 
     public function update($id,Request $request)
     {
-        $nationality = Nationality::findOrFail($request->id);
+        $amenity = Amenity::findOrFail($request->id);
         $validator = $this->validate_page($request);
         if ($validator->fails()) {
             return response()->json(array(
@@ -79,15 +77,16 @@ class NationalityController extends Controller
                 'ar' => $request->ar_name,
                 'en' => $request->en_name,
             ];
-            $nationality->update($request_data);
+            $request_data['is_required']  = ($request->is_required) ? 1 : 0;
+            $amenity->update($request_data);
             return response()->json(array('success' => true), 200);
         }
     }
 
     public function remove($id)
     {
-        $nationality = Nationality::findOrFail($id);
-        $nationality->delete();
+        $amenity = Amenity::findOrFail($id);
+        $amenity->delete();
         return response()->json(array('success' => true));
     }
 }

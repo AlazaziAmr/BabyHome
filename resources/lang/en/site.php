@@ -156,5 +156,23 @@ return [
     'check_nursery' => 'check nursery',
     'check_inspection' => 'check inspection',
     'check_nursery_inspection' => 'check nursery inspection',
+    'cities' => 'cities',
+    'one_cities' => 'city',
+    'confirm_active' => 'Are you sure you want active this nursery?',
+    'confirm_block' => 'Are you sure you want block this nursery?',
+    'done_active' => 'Activated successfully',
+    'done_block' => 'Blocked successfully',
+    'en' => [
+        'name' => 'name'
+    ],
+    'ar' => [
+        'name' => 'الاسم'
+    ],
+    'deleted_successfully' => 'deleted successfully',
+    'nationalities' => 'nationalities',
+    'one_nationalities' => 'nationality',
+    'neighborhoods' => 'neighborhoods',
+    'one_neighborhoods' => 'neighborhood',
+    'one_amenities' => 'amenity',
 
 ];

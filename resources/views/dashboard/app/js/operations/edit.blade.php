@@ -56,6 +56,9 @@
                 if (result.success) {
                     $('#edit-model').modal('hide');
                     swal("{{ __('site.edit') }}", "{{ __('site.updated_successfully') }}", "success");
+                    $("table").DataTable().ajax.reload()
+                    $('.image-preview').attr('src', '{{ asset('public/photo.svg') }}');
+                    $('.image-preview1').attr('src','{{ asset('public/photo.svg') }}');
                     $("#table").DataTable().ajax.reload();
                     $('.form-group').removeClass('has-error');
                     $('.help-block').text('');

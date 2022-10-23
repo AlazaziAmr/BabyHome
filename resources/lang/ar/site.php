@@ -152,4 +152,25 @@ return [
     'inspectors' => 'مفتشين',
     'city_name' => 'المدينه',
     'total_nurseries' => 'إجمالي الحاضنات',
+    'new_nursery' => 'تم تسجيل حاضنه جديده',
+    'check_nursery' => 'تحقق من الحاضنه',
+    'check_inspection' => 'تحقق من التفتيش',
+    'check_nursery_inspection' => 'تحقق من التفتيش',
+    'cities' => 'المدن',
+    'one_cities' => 'المدينه',
+    'confirm_active' => 'هل انت متأكد بإنك تريد تفعيل هذا؟',
+    'confirm_block' => 'هل انت متأكد بإنك تريد خظر هذا؟',
+    'done_active' =>'تم التفعيل بنجاح',
+    'done_block' =>'تم التفعيل بنجاح',
+    'en' => [
+        'name' => 'name'
+    ],
+    'ar' => [
+        'name' => 'الاسم'
+    ],
+    'nationalities' => 'الجنسيات',
+    'one_nationalities' => 'الجنسية',
+    'neighborhoods' => 'الاحياء',
+    'one_neighborhoods' => 'الحي',
+    'one_amenities' => 'المرفق',
 ];

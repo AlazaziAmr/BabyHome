@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <form enctype="multipart/form-data" id="edit_new_form" role="form" method="post"
-                      action="{{ route(env('DASH_URL').'.cities.update',0) }}">
+                      action="{{ route('__bh_.cities.update',0) }}">
                     {{ csrf_field() }}
                     {{ method_field('put') }}
                     <div id="edit_model_body">

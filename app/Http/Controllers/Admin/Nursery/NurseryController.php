@@ -119,7 +119,7 @@ class NurseryController extends Controller
             'message' => 'تم قبولك في منصة بيبي هوم.',
             'details' => 'أهلاً بك.'
         ];
-        Mail::to($user->email)->send(new NurseryMail($data));
+//        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 
@@ -132,7 +132,7 @@ class NurseryController extends Controller
             'message' => 'تم رفضكِ في منصة بيبي هوم.',
             'details' => 'سيتم التواصل معكم وتوضيح الأسباب.'
         ];
-        Mail::to($user->email)->send(new NurseryMail($data));
+//        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 }

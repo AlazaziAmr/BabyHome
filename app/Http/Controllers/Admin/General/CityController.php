@@ -8,6 +8,7 @@ use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class CityController extends Controller
 {
@@ -15,13 +16,15 @@ class CityController extends Controller
         $data['title'] = __('site.cities');
         $data['icon'] = __('icon.cities');
         $data['countries'] = Country::all();
-        return $dataTable->render('dashboard.cities.index',compact('data'));
+        return $dataTable->render('dashboard.general.cities.index',compact('data'));
     }
 
     private function validate_page($request)
     {
         $rules = array();
-
+        foreach(LaravelLocalization::getSupportedLocales() as $locale => $properties) {
+            $rules += [$locale . '_name' => ['required']];
+        }//end of for each
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -45,7 +48,8 @@ class CityController extends Controller
             ), 200);
         } else {
 
-            $request_data['country_id'] = $request->country_id;
+//            $request_data['country_id'] = $request->country_id;
+            $request_data['country_id'] = 1;
             $request_data['name'] = [
                 'ar' => $request->ar_name,
                 'en' => $request->en_name,
@@ -60,7 +64,7 @@ class CityController extends Controller
     {
         $form_data = City::findOrFail($id);
         $data['countries'] = Country::all();
-        $returnHTML = view('dashboard.cities.partials._edit',compact('form_data','data'))->render();
+        $returnHTML = view('dashboard.general.cities.partials._edit',compact('form_data','data'))->render();
         return $returnHTML;
     }
 
@@ -79,7 +83,8 @@ class CityController extends Controller
                 'ar' => $request->ar_name,
                 'en' => $request->en_name,
             ];
-            $request_data['country_id'] = $request->country_id;
+//            $request_data['country_id'] = $request->country_id;
+            $request_data['country_id'] = 1;
             $city->update($request_data);
             return response()->json(array('success' => true), 200);
         }

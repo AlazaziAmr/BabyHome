@@ -2,7 +2,9 @@
 
 namespace App\DataTables\Admin\General;
 
-use App\Models\Api\Generals\City;
+use App\Models\Api\Generals\Nationality;
+use App\Models\Api\Generals\Neighborhood;
+use App\Models\City;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CityDataTable extends DataTable
+class NeighborhoodDataTable extends DataTable
 {
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
@@ -23,20 +25,21 @@ class CityDataTable extends DataTable
                 } else {
                     return '';
                 }
-            })->addColumn('country_name', function ($data) {
-                if ($data->country) {
-                    return $data->country->getTranslation('name',app()->getLocale(),false);
+            })
+            ->addColumn('city_name', function ($data) {
+                if ($data->city) {
+                    return $data->city->getTranslation('name',app()->getLocale(),false);
                 } else {
                     return '';
                 }
             })
-            ->addColumn('action', 'dashboard.general.cities.partials._action')
+            ->addColumn('action', 'dashboard.general.neighborhoods.partials._action')
             ->rawColumns(['action']);
     }
 
-    public function query(City $model): QueryBuilder
+    public function query(Neighborhood $model): QueryBuilder
     {
-        return $model->with('country')->newQuery();
+        return $model->with('city')->newQuery();
     }
 
     public function html(): HtmlBuilder
@@ -58,6 +61,7 @@ class CityDataTable extends DataTable
         return [
             Column::make('id')->title('#')->data('id')->name('id'),
             Column::make('name')->title(__('site.name'))->data('name')->name('name'),
+            Column::make('city_name')->title(__('site.city_name'))->data('city_name')->name('city_name'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

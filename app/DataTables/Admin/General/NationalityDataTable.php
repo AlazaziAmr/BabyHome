@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Admin\General;
 
+use App\Models\Api\Generals\Nationality;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -24,11 +25,11 @@ class NationalityDataTable extends DataTable
                     return '';
                 }
             })
-            ->addColumn('action', 'dashboard.cities.partials._action')
+            ->addColumn('action', 'dashboard.general.nationalities.partials._action')
             ->rawColumns(['action']);
     }
 
-    public function query(City $model): QueryBuilder
+    public function query(Nationality $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -36,7 +37,7 @@ class NationalityDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('fajer-table')
+                    ->setTableId('table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')

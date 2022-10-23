@@ -13,6 +13,8 @@ use \App\Http\Controllers\Admin\Master\ChildController;
 use \App\Http\Controllers\Admin\General\CityController;
 use \App\Http\Controllers\Admin\General\NationalityController;
 use \App\Http\Controllers\Admin\General\CountryController;
+use \App\Http\Controllers\Admin\General\NeighborhoodController;
+use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
 //Route::get('test_sms', function () {
 //    $OTP = '1234';
 //    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
@@ -70,8 +72,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::resource('countries',CountryController::class);
             Route::get('countries/remove/{id}', [CountryController::class,'remove'])->name('countries.remove');
 
-            Route::resource('neighborhoods',AdminController::class);
-            Route::get('neighborhoods/remove/{id}', [AdminController::class,'remove'])->name('neighborhoods.remove');
+            Route::resource('neighborhoods',NeighborhoodController::class);
+            Route::get('neighborhoods/remove/{id}', [NeighborhoodController::class,'remove'])->name('neighborhoods.remove');
+
+            Route::resource('amenities',AmenityController::class);
+            Route::get('amenities/remove/{id}', [AmenityController::class,'remove'])->name('amenities.remove');
+
 
             Route::resource('nationalities',NationalityController::class);
             Route::get('nationalities/remove/{id}', [NationalityController::class,'remove'])->name('nationalities.remove');

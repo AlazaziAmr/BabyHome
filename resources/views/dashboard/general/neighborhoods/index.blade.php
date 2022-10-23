@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 @section('content')
-    @php $create = __('site.create').' '.__('site.one_nationalities'); @endphp
+    @php $create = __('site.create').' '.__('site.one_neighborhoods'); @endphp
     @include('dashboard.app.breadcumb')
     <div class="row">
         <div class="col-12">
@@ -22,8 +22,8 @@
     </div>
 
 
-    @include('dashboard.general.nationalities.create_model')
-    @include('dashboard.general.nationalities.edit_model')
+    @include('dashboard.general.neighborhoods.create_model')
+    @include('dashboard.general.neighborhoods.edit_model')
 @endsection
 
 
