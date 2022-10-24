@@ -68,7 +68,7 @@ class InspectionDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('id')->title('#')->data('id')->name('id'),
+            Column::make('id')->title('الرقم التسلسلي')->data('id')->name('id'),
             Column::make('nursery_name')->title(__('site.nursery_name'))->data('nursery_name')->name('nursery_name'),
             Column::make('from')->title(__('site.from'))->data('from')->name('from'),
             Column::make('to')->title(__('site.to'))->data('to')->name('to'),

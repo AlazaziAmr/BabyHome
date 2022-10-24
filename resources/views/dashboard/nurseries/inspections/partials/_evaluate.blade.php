@@ -55,6 +55,23 @@
             <span class="has-error" id="comment_{{ $c }}_error"></span>
         </div>
     </div>
+  <div class="col-md-12">
+        <div class="form-group">
+            <label for="recommend_{{ $c }}_input" class="form-control-label">
+                @lang('site.recommend')
+            </label>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="radio" name="recommend_{{ $c }}" value="1"> @lang('site.recommend_one')
+                </div>
+                <div class="col-md-6 text-left" style="display: flex;
+    justify-content: center;">
+                    <input type="radio" name="recommend_{{ $c }}" value="2"> @lang('site.recommend_two')
+                </div>
+                <span class="has-error" id="recommend_{{ $c }}_error"></span>
+            </div>
+        </div>
+    </div>
 
     @if(isset($submit) and $submit)
         <div class="col-md-12">
