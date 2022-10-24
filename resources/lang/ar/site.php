@@ -89,6 +89,7 @@ return [
     'active' => 'مفعل',
     'block' => 'مرفوض',
     'nurseries' => 'الحاضنات',
+    'babyhome' => 'بيبي هوم ',
     'dashboard' => 'لوحة التحكم',
     'profile' => 'الحساب',
     'owner' => 'البيانات الشخصية',

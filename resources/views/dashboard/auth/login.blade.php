@@ -13,12 +13,35 @@
     <link href="{{ asset('admin/css/nucleo-svg.css')}}" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link id="pagestyle" href="{{ asset('admin/css/argon-dashboard.css')}}?v=2.0.5" rel="stylesheet"/>
+    <style>
+        .top-position{
+                position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 163px;
+    height: 155px;
+    background-repeat: no-repeat;
+        background-size: cover;
+        }
+        .bottom-position{
+                position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 163px;
+    height: 155px;
+     transform: rotate(180.4deg);
+    background-repeat: no-repeat;
+        background-size: cover;
+        }
+    </style>
 </head>
 
 <body  class="{{ app()->getLocale() == 'ar' ? 'rtl' : ''}}">
 <main class="main-content  mt-0">
     <section>
-        <div class="page-header min-vh-100">
+        <div class="page-header min-vh-100" >
+            <div class="top-position" style="background-image:url(/admin/img/profile-baby-home-final.gif)"></div>
+            <div  class="bottom-position" style="background-image:url(/admin/img/profile-baby-home-final.gif)"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
@@ -49,7 +72,12 @@
                         </div>
                     </div>
                     <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                        <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden";>
+                        <div class="position-relative text-center  h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden";>
+                     <div class="text-center">
+                                               <img src="{{ url('/') }}/admin/img/baby-home.3fd18143.png" width="400">
+
+                          <h4>@lang('site.babyhome')</h4>
+                     </div>
                         </div>
                     </div>
                 </div>

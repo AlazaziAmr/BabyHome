@@ -20,6 +20,8 @@ return [
     'address_description' => 'address',
     'latitude' => 'latitude',
     'longitude' => 'longitude',
+        'babyhome' => ' Baby home ',
+
     // 'disabilities_acceptance',
     'status' => 'status',
     'is_active' => 'is_active',
