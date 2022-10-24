@@ -42,9 +42,9 @@ div.dataTables_wrapper div.dataTables_filter input{
         .box-body{
             padding: 0 15px;
         }
-        .table-responsive {
+        /* .table-responsive {
     overflow-x: hidden;
-        }
+        } */
         .page-item:first-child .page-link{
                 background: none;
     border: none;
