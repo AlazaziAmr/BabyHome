@@ -130,6 +130,12 @@ margin-top:20px
 .timeline:before{
     border-left: none;
 }
+.navbar-vertical .navbar-brand .navbar-brand-img, .navbar-vertical .navbar-brand span{
+       background: white;
+    padding: 10px;
+    border-radius: 10px
+}
+
     </style>
 </head>
 
