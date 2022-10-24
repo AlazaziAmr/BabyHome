@@ -42,6 +42,28 @@ div.dataTables_wrapper div.dataTables_filter input{
         .box-body{
             padding: 0 15px;
         }
+        .table-responsive {
+    overflow-x: hidden;
+        }
+        .page-item:first-child .page-link{
+                background: none;
+    border: none;
+    margin-left:  11px;
+    color: #000;
+        }
+        div.dataTables_wrapper div.dataTables_paginate ul.pagination{
+                margin: 14px 0;
+        }
+        .page-item:last-child .page-link{
+              background: none;
+    border: none;
+    color: #000;
+        }
+        .pagination{
+                position: absolute;
+    left: 0;
+    margin-top: 27px;
+        }
         .modal{
             --bs-modal-width: 820px  !important;
         }
