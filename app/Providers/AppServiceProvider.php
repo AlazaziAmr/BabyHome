@@ -10,7 +10,6 @@ use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
