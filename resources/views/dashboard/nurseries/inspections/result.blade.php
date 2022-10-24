@@ -41,9 +41,9 @@
                 @if($result->details)
                     @foreach($result->details as $d)
                         <div class="timeline-block mb-3">
-<span class="timeline-step">
-<i class="fa fa-bell text-success text-gradient"></i>
-</span>
+                            <span class="timeline-step">
+                            <i class="fa fa-bell text-success text-gradient"></i>
+                            </span>
                             <div class="timeline-content">
                                 <h6 class="text-dark text-sm font-weight-bold mb-0">{{ $d->criteria }}</h6>
                                 <p class="text-secondary font-weight-bold text-xs mt-1 mb-0">
@@ -77,6 +77,7 @@
                                 @endif
                             </div>
                         </div>
+                        <hr>
                     @endforeach
                 @endif
             </div>

@@ -9,11 +9,10 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
-    <link href="{{ asset("admin/css/nucleo-icons.css")}}" rel="stylesheet"/>
-    <link href="{{ asset("admin/css/nucleo-svg.css")}}" rel="stylesheet"/>
+    <link href="{{ asset('admin/css/nucleo-icons.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('admin/css/nucleo-svg.css')}}" rel="stylesheet"/>
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="{{ asset("admin/css/nucleo-svg.css")}}" rel="stylesheet"/>
-    <link id="pagestyle" href="{{ asset("admin/css/argon-dashboard.css")}}?v=2.0.5" rel="stylesheet"/>
+    <link id="pagestyle" href="{{ asset('admin/css/argon-dashboard.css')}}?v=2.0.5" rel="stylesheet"/>
 </head>
 
 <body  class="{{ app()->getLocale() == 'ar' ? 'rtl' : ''}}">
@@ -59,8 +58,8 @@
     </section>
 </main>
 <!--   Core JS Files   -->
-<script src="{{ asset("admin/js/core/popper.min.js")}}"></script>
-<script src="{{ asset("admin/js/core/bootstrap.min.js")}}"></script>
+<script src="{{ asset('admin/js/core/popper.min.js')}}"></script>
+<script src="{{ asset('admin/js/core/bootstrap.min.js')}}"></script>
 <script src="{{ asset("admin/js/plugins/perfect-scrollbar.min.js")}}"></script>
 <script src="{{ asset("admin/js/plugins/smooth-scrollbar.min.js")}}"></script>
 
