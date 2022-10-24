@@ -8,7 +8,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
 @endphp
 <div class="row mg-tb-30">
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="name_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="name_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.name')</label>
         </div>
@@ -18,7 +18,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="username_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3  col-xs-12" id="username_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.username')</label>
         </div>
@@ -29,7 +29,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
     </div>
 </div>
 <div class="row mg-tb-30">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="email_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="email_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.email')</label>
         </div>
@@ -39,7 +39,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="phone_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="phone_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.phone')</label>
         </div>
@@ -49,7 +49,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="is_active_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="is_active_div">
         <div class="nk-int-mk sl-dp-mn">
             <br>
         </div>
@@ -60,7 +60,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="role_div">
+    <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="role_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.role')</label>
         </div>
@@ -82,7 +82,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
 
 @if(!isset($form_data))
     <div class="row mg-tb-30">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="password_div">
+        <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="password_div">
             <div class="nk-int-mk sl-dp-mn">
                 <label>@lang('site.password')</label>
             </div>
@@ -92,7 +92,7 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="password_confirmation_div">
+        <div class="col-lg-6 col-md-6 col-sm-6 mb-3 col-xs-12" id="password_confirmation_div">
             <div class="nk-int-mk sl-dp-mn">
                 <label>@lang('site.password_confirmation')</label>
             </div>

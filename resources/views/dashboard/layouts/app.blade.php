@@ -32,9 +32,24 @@
     margin-right: 68px  !important;
     margin-left: 0 !important;
 }
+div.dataTables_wrapper div.dataTables_filter input{
+    margin-right: 0.5em;
+    margin-left:unset;
+}
 </style>
     @endif
     <style>
+        .box-body{
+            padding: 0 15px;
+        }
+        .modal{
+            --bs-modal-width: 820px  !important;
+        }
+        .close{
+            border: 0;
+    background: unset;
+    font-size: 37px;
+        }
         hr{
             border-top: 3px solid #405165;
         }

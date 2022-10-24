@@ -7,8 +7,8 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form role="form" id="add_new_form" method="post" action="{{ route('__bh_.admins.store') }}"
+            <div class="modal-body  ">
+                <form role="form" id="add_new_form" method="post"  action="{{ route('__bh_.admins.store') }}"
                       enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{ method_field('post') }}
