@@ -176,5 +176,13 @@ return [
     'neighborhoods' => 'neighborhoods',
     'one_neighborhoods' => 'neighborhood',
     'one_amenities' => 'amenity',
+    'one_qualifications' => 'qualification',
+    'add' => 'add',
+    'general' => 'general',
+    'nursery_data' => 'nursery data',
+    'user_management' => 'accounts management',
+    'create_delete_accounts' => 'create delete accounts',
+    'app_dashboard' => 'app dashboard',
+    'inspection' => 'inspection',
 
 ];

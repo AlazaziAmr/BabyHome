@@ -14,48 +14,63 @@ use Yajra\DataTables\Services\DataTable;
 
 class NurseryDataTable extends DataTable
 {
+    public $status;
+    public function __construct($status = 0)
+    {
+        $this->status = $status;
+    }
+
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('owner_name', function ($data) {
-                if($data->owner){
+                if ($data->owner) {
                     return $data->owner->name;
-                }else{
-                    return  '';
+                } else {
+                    return '';
                 }
             })->addColumn('owner_phone', function ($data) {
-                if($data->owner){
+                if ($data->owner) {
                     return $data->owner->phone;
-                }else{
-                    return  '';
+                } else {
+                    return '';
                 }
             })->addColumn('inspector', function ($data) {
                 return $data->getInspector();
             })->addColumn('status_lable', function ($data) {
-                if($data->status == 0){
-                    return '<span class="badge badge-sm bg-gradient-secondary">'.__('site.submitted').'</span>';
-                }else if($data->status == 1){
-                    return '<span class="badge badge-sm bg-gradient-warning">'.__('site.reviewing').'</span>';
-                }else if($data->status == 2){
-                    return '<span class="badge badge-sm bg-gradient-primary">'.__('site.inspecting').'</span>';
-                }else if($data->status == 3){
-                    return '<span class="badge badge-sm bg-gradient-info">'.__('site.inspected').'</span>';
-                }else if($data->status == 4){
-                    return '<span class="badge badge-sm bg-gradient-danger">'.__('site.suspended').'</span>';
-                }else if($data->status == 5){
-                    return '<span class="badge badge-sm bg-gradient-success">'.__('site.approved').'</span>';
+                if ($data->status == 0) {
+                    return '<span class="badge badge-sm bg-gradient-secondary">' . __('site.submitted') . '</span>';
+                } else if ($data->status == 1) {
+                    return '<span class="badge badge-sm bg-gradient-warning">' . __('site.reviewing') . '</span>';
+                } else if ($data->status == 2) {
+                    return '<span class="badge badge-sm bg-gradient-warning">' . __('site.inspecting') . '</span>';
+                } else if ($data->status == 3) {
+                    return '<span class="badge badge-sm bg-gradient-warning">' . __('site.inspected') . '</span>';
+                } else if ($data->status == 4) {
+                    return '<span class="badge badge-sm bg-gradient-danger">' . __('site.suspended') . '</span>';
+                } else if ($data->status == 5) {
+                    return '<span class="badge badge-sm bg-gradient-success">' . __('site.approved') . '</span>';
                 }
             })
             ->addColumn('action', 'dashboard.nurseries.nurseries.partials._action')
-            ->rawColumns(['action','status_lable'])
+            ->rawColumns(['action', 'status_lable'])
             ->setRowId('id');
     }
 
     public function query(Nursery $model): QueryBuilder
     {
         $q = $model->newQuery();
-        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name','inspection','inspection.inspector']);
-        return  $q;
+        $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name', 'inspection', 'inspection.inspector']);
+        $q->orderByDesc('id');
+
+        if ($this->status) {
+            if ($this->status == 6)
+                $q->where('status', '=', 0);
+            else{
+                $q->where('status', '=', $this->status);
+            }
+        }
+        return $q;
     }
 
     public function html(): HtmlBuilder

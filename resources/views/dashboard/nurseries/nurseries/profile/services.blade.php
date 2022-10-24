@@ -7,10 +7,10 @@
                         <a href="javascript:;">
                             <div class="blur-shadow-image">
                                 @if($service->service and $service->service->getMainAttachmentAttribute())
-                                    <img class="img border-radius-lg move-on-hover"
+                                    <img width="100" height="100" class="img border-radius-lg move-on-hover"
                                          src="{{ $service->service->getMainAttachmentAttribute() }}">
                                 @else
-                                    <img class="img border-radius-lg move-on-hover"
+                                    <img width="100" height="100" class="img border-radius-lg move-on-hover"
                                          src="{{ asset('photo.svg') }}">
                                 @endif
                             </div>

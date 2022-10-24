@@ -38,9 +38,9 @@
         });
         var actionurl = e.currentTarget.action;
         $.ajax({
-            type: 'put',
+            type: 'post',
             url: actionurl,
-            data: $("#edit_new_form").serialize(),
+            data: new FormData(this),
             dataType: 'text',
             processData: false,
             contentType: false,

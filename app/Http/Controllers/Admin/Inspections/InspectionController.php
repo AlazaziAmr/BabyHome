@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Inspections;
 
 use App\DataTables\Admin\Nursery\InspectionDataTable;
 use App\Models\AdminNotification;
+use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\InspectionResult;
 use App\Models\Api\Admin\Inspections\InspectionResultDetail;
 use App\Models\Api\Nurseries\BabysitterInfo;
@@ -55,25 +56,25 @@ class InspectionController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'general_amenity' => 'required|integer',
+//            'general_amenity' => 'required|integer',
             'match_amenity' => 'required|integer',
-            'recommend_amenity' => 'required|integer',
+//            'recommend_amenity' => 'required|integer',
             'comment_amenity' => 'required|string',
-            'general_babysitter' => 'required|integer',
+//            'general_babysitter' => 'required|integer',
             'match_babysitter' => 'required|integer',
-            'recommend_babysitter' => 'required|integer',
+//            'recommend_babysitter' => 'required|integer',
             'comment_babysitter' => 'required|string',
-            'general_nursery' => 'required|integer',
+//            'general_nursery' => 'required|integer',
             'match_nursery' => 'required|integer',
-            'recommend_nursery' => 'required|integer',
+//            'recommend_nursery' => 'required|integer',
             'comment_nursery' => 'required|string',
-            'general_utility' => 'required|integer',
+//            'general_utility' => 'required|integer',
             'match_utility' => 'required|integer',
-            'recommend_utility' => 'required|integer',
+//            'recommend_utility' => 'required|integer',
             'comment_utility' => 'required|string',
-            'general_service' => 'required|integer',
+//            'general_service' => 'required|integer',
             'match_service' => 'required|integer',
-            'recommend_service' => 'required|integer',
+//            'recommend_service' => 'required|integer',
             'comment_service' => 'required|string',
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -105,18 +106,18 @@ class InspectionController extends Controller
             InspectionResultDetail::create([
                 'inspection_result_id' => $result->id,
                 'criteria' => 'amenities',
-                'rating' => $request->general_amenity,
+                'rating' => 0,
                 'matching' => $request->match_amenity,
-                'recommendation' => $request->recommend_amenity,
+                'recommendation' => 0,
                 'comment' => $request->comment_amenity
             ]);
 
             InspectionResultDetail::create([
                 'inspection_result_id' => $result->id,
                 'criteria' => 'babySetter',
-                'rating' => $request->general_babysitter,
+                'rating' => 0,
                 'matching' => $request->match_babysitter,
-                'recommendation' => $request->recommend_babysitter,
+                'recommendation' => 0,
                 'comment' => $request->comment_babysitter
             ]);
 
@@ -124,27 +125,27 @@ class InspectionController extends Controller
             InspectionResultDetail::create([
                 'inspection_result_id' => $result->id,
                 'criteria' => 'nurseryInfo',
-                'rating' => $request->general_nursery,
+                'rating' => 0,
                 'matching' => $request->match_nursery,
-                'recommendation' => $request->recommend_nursery,
+                'recommendation' => 0,
                 'comment' => $request->comment_nursery
             ]);
 
             InspectionResultDetail::create([
                 'inspection_result_id' => $result->id,
                 'criteria' => 'utilities',
-                'rating' => $request->general_utility,
+                'rating' => 0,
                 'matching' => $request->match_utility,
-                'recommendation' => $request->recommend_utility,
+                'recommendation' => 0,
                 'comment' => $request->comment_utility
             ]);
 
             InspectionResultDetail::create([
                 'inspection_result_id' => $result->id,
                 'criteria' => 'services',
-                'rating' => $request->general_service,
+                'rating' => 0,
                 'matching' => $request->match_service,
-                'recommendation' => $request->recommend_service,
+                'recommendation' => 0,
                 'comment' => $request->comment_service
             ]);
             if (!empty($result['attachments'])) uploadAttachment($result, $ins, 'attachments', 'inspections-results');
@@ -152,15 +153,21 @@ class InspectionController extends Controller
             $this->iNurseryRepository->update(['status' => 3], $ins->nursery_id);
             $this->inspectionRepository->update(['status' => 3], $ins->id);
 
+            $admin = Admin::find($ins->inspector_id);
+            $nursery = Nursery::with('owner')->find($ins->nursery_id);
+            $name = ($nursery->owner) ? $nursery->owner->name  :'';
             AdminNotification::create([
                 'notifiable_type' => 'App\Models\Api\Admin\Admin',
                 'notifiable_id' => 0,
-                'title' => 'check_inspection',
-                'description' => 'check_nursery_inspection',
+                'title' => 'تفتيش الحاضنه',
+                'description' =>
+                    ' ( '.$name.' بتفتيش الحاضنه ( '.$admin->name.' لقد قام ',
                 'link' => route('__bh_.inspections.show',$ins->id),
                 'mark_as_read' => 0,
                 'type' => 1,
             ]);
+
+
 
             return response()->json(array('success' => true), 200);
         }
@@ -231,6 +238,7 @@ class InspectionController extends Controller
                 ->where('babysitter_id', $data['babysitter']->id)
                 ->get();
         }
+
 
         $result = InspectionResult::with(['details', 'attachmentable', 'inspector'])->where('inspection_id', $id)->first();
         if ($result)

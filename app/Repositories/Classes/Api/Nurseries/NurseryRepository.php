@@ -254,7 +254,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             AdminNotification::create([
                 'notifiable_type' => 'App\Models\Api\Admin\Admin',
                 'notifiable_id' => 0,
-                'title' => 'new_nursery',
+                'title' => 'حاضنه جديدة',
                 'description' => '',
                 'link' => route('__bh_.nurseries.index'),
                 'mark_as_read' => 0,

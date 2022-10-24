@@ -77,10 +77,12 @@
                     </svg>
                     <strong class="font-weight-bold">@lang('site.languages'):</strong>
                     &nbsp;
-                    @if($data['nursery']->languages)
-                        @foreach($data['nursery']->languages as $l)
+                    @if($data['babysitter']->languages)
+                        @foreach($data['babysitter']->languages as $l)
                             <span
-                                class="badge mx-1 badge-light-success"> {{ $l->name }} </span>
+                                class="badge badge-sm bg-gradient-info">
+                            {{ $l->getTranslation('name',app()->getLocale(),false) }}
+                            </span>
                         @endforeach
                     @endif
 
@@ -101,7 +103,7 @@
             <span class="font-weight-bold">@lang('site.skills')</span></div>
         <div class="col-sm-6 col-md-4 col-lg-2 col-xl-2 col-6">
             @foreach($data['skills'] as $skill)
-                <span class="badge mx-1 badge-light-success"> {{ $skill->name }} </span>
+                <span class="badge badge-sm bg-gradient-success"> {{ $skill->description }} </span>
             @endforeach
         </div>
     </div>

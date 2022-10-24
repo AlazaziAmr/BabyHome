@@ -15,20 +15,27 @@ use \App\Http\Controllers\Admin\General\NationalityController;
 use \App\Http\Controllers\Admin\General\CountryController;
 use \App\Http\Controllers\Admin\General\NeighborhoodController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
-//Route::get('test_sms', function () {
-//    $OTP = '1234';
-//    $message = " تم تسجيل الحاضنه بنجاح طلبك تحت المراجعه ";
-//    $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
-//        "userName"    => "babyhome",
-//        "apiKey"      => "0eacc90c694d720222a39c3b74241915",
-//        "numbers"     => '009660558229004',
-//        "userSender"  => "OTP",
-//        "msg"         => $message,
-//        "msgEncoding" => "UTF8",
-//        "lang" => "ar",
-//    ]);
-//    dd($response->body());
-//});
+use \App\Http\Controllers\Admin\Nursery\Addtioanl\QualificationController;
+Route::get('test_sms', function () {
+    $OTP = '1234';
+    $message = "رمز التحقق: $OTP";
+    $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
+        "userName"    => "babyhome",
+        "apiKey"      => "0eacc90c694d720222a39c3b74241915",
+        "numbers"     => '00966058773710',
+        "userSender"  => "OTP",
+        "msg"         => $message,
+        "msgEncoding" => "UTF8",
+        "lang" => "ar",
+    ]);
+    dd($response->body());
+});
+
+
+Route::get('test_notes',function (){
+    $fcm = new \App\Functions\FcmNotification();
+    $fcm->send_notification("test",'meesgae','all');
+});
 
 Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('config:clear');
@@ -42,6 +49,7 @@ Route::get('/clear-cache', function () {
 });
 
 Route::get('adminLogin', [AdminAuthController::class, 'adminLoginFrom'])->name('adminLogin');
+Route::get('/login',[AdminAuthController::class, 'adminLoginFrom'])->name('login');
 Route::post('adminLogin', [AdminAuthController::class, 'adminLogin'])->name('adminLogin.store');
 Route::post('adminLogout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
 
@@ -77,6 +85,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::resource('amenities',AmenityController::class);
             Route::get('amenities/remove/{id}', [AmenityController::class,'remove'])->name('amenities.remove');
+
+            Route::resource('qualifications',QualificationController::class);
+            Route::get('qualifications/remove/{id}', [QualificationController::class,'remove'])->name('qualifications.remove');
+
 
 
             Route::resource('nationalities',NationalityController::class);

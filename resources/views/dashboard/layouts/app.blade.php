@@ -208,8 +208,8 @@ margin-top:20px
                                                 <div class="d-flex py-1">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="text-sm font-weight-normal mb-1">
-                                                            {{ $n->title ? __('site.'.$n->title)  : '' }}
-                                                            {{ $n->description ? __('site.'.$n->description)  : '' }}
+                                                            {{ $n->title }}<br>
+                                                            {{ $n->description }}
                                                         </h6>
                                                         <p class="text-xs text-secondary mb-0">
                                                             <i class="fa fa-clock me-1"></i>

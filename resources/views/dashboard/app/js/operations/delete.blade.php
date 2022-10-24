@@ -39,7 +39,7 @@
                 success: function (data) {
                     result = jQuery.parseJSON(data);
                     if (result.success) {
-                        $("#fajer-table").DataTable().ajax.reload()
+                        $("#table").DataTable().ajax.reload()
                         swal({
                             icon: 'success',
                             title: '{{ __('site.deleted_successfully') }}',

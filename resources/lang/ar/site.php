@@ -46,7 +46,7 @@ return [
     'rating' => 'التقييم',
     'matching' => 'المطابقه',
     'recommendation' => 'التوصيه',
-    'comment' => 'التعليق',
+    'comment' => 'الملاحظات',
     'username' => 'اسم المستخدم',
     'email' => 'البريد الإلكتروني',
     'phone' => 'رقم الهاتف',
@@ -174,4 +174,13 @@ return [
     'neighborhoods' => 'الاحياء',
     'one_neighborhoods' => 'الحي',
     'one_amenities' => 'المرفق',
+    'one_qualifications' => 'المؤهلات',
+    'add' => 'إضافة',
+    'general' => 'عام',
+    'nursery_data' => 'معلومات الخاضنه العامه',
+    'user_management' => 'إداره الحسابات',
+    'create_delete_accounts' => 'إنشاء - حذف - الحسابات',
+    'app_dashboard' => 'لوحة التحكم التطبيق',
+    'inspection' => 'التفتيش',
+
 ];

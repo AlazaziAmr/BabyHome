@@ -23,14 +23,16 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class NurseryController extends Controller
 {
-    public function index(NurseryDataTable $dataTable){
+    public function index(Request $request){
+        $status = $request->get('status');
+        $dataTable = new NurseryDataTable($status);
         $data['title'] = __('site.nurseries');
         return $dataTable->render('dashboard.nurseries.nurseries.index',compact('data'));
     }
 
     public function show($id){
         $data['title'] = __('site.nurseries');
-        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone'])->findOrFail($id);
+        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone,email'])->findOrFail($id);
         $data['babysitter'] = BabysitterInfo::with(['languages','nationalitydata','attachmentable'])
             ->where('nursery_id',$id)
             ->first();
@@ -52,6 +54,7 @@ class NurseryController extends Controller
                 ->where('babysitter_id',$data['babysitter']->id)
                 ->get();
         }
+
         return view('dashboard.nurseries.nurseries.show',compact('data'));
     }
     private function validate_page($request)
@@ -94,17 +97,36 @@ class NurseryController extends Controller
                 'to' => $request->to,
                 'status' =>0
             ];
-
+            $nursery = Nursery::with('owner')->find($request->nursery_id);
+            $name = ($nursery->owner) ? ($nursery->owner->name) : '';
+            $admin = Admin::find($request->admin_id);
             $ins = Inspection::create($request_data);
             AdminNotification::create([
                 'notifiable_type' => 'App\Models\Api\Admin\Admin',
                 'notifiable_id' => $request->admin_id,
-                'title' => 'set_inspector',
-                'description' => 'check_nursery',
+                'title' => 'تم التكليف بتفتيش الحاضنه',
+                'description' => $request->to .' الى الفتره '. $request->from .'  من الفتره '.$name.'  تم التكليف بتفتيش الحاضنه ',
                 'link' => route('__bh_.inspections.show',$ins->id),
                 'mark_as_read' => 0,
                 'type' => 1,
             ]);
+
+            $message = 'from: '.auth('dashboard')->user()->email.' \r\n'.
+                'email :'.$admin->email.' \r\n'.
+                'subject: '.'تفتيش الحاضنه'.' \r\n'.
+                'message: '.$request->to .' الى الفتره '. $request->from .'  من الفتره '.$name.'  تم التكليف بتفتيش الحاضنه ';
+
+            $from = auth('dashboard')->user()->email;
+            $to = $admin->email;
+            $headers = "From:". $from . "\r\n";
+            $message = str_replace('\r\n', PHP_EOL, $message);
+
+
+            ini_set( 'display_errors', 1 );
+            error_reporting( E_ALL );
+
+            $success = mail($to,'تفتيش الحاضنه',$message,$headers);
+
             $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 2]);
             return response()->json(array('success' => true), 200);
         }
