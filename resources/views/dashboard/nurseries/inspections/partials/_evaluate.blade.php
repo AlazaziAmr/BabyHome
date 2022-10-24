@@ -45,10 +45,11 @@
                 @lang('site.recommend')
             </label>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <input type="radio" name="recommend_{{ $c }}" value="1"> @lang('site.recommend_one')
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6 text-left" style="display: flex;
+    justify-content: center;">
                     <input type="radio" name="recommend_{{ $c }}" value="2"> @lang('site.recommend_two')
                 </div>
                 <span class="has-error" id="recommend_{{ $c }}_error"></span>
@@ -67,23 +68,24 @@
         </div>
     @endif
 
-    <div class="col-md-6">
+    <div class="col-md-6 text-center">
         @if(isset($prev) and $prev)
-            <a class="nav-link btn btn-sm btn-success"
+            <a class="nav-link btn btn-sm btn-primary"
                onclick="activaTab('{{ $prev }}')">
                 @lang('site.prev')
             </a>
         @endif
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6  text-center">
         @if(isset($next) and $next)
-            <a class="nav-link btn btn-sm btn-success"
+            <a style= "background-color:#F1C8BF
+" class="nav-link btn btn-sm btn-primary"
                onclick="activaTab('{{ $next }}')">
                 @lang('site.next')
             </a>
         @elseif(isset($submit) and $submit)
-            <button type="submit" class="nav-link btn btn-sm btn-primary">
+            <button type="submit" class="btn-block btn btn-sm btn-primary">
                 @lang('site.submit')
             </button>
         @endif

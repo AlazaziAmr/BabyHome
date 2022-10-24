@@ -36,9 +36,15 @@ div.dataTables_wrapper div.dataTables_filter input{
     margin-right: 0.5em;
     margin-left:unset;
 }
+.form-control{
+    text-align: center;
+    font-size:20px
+}
+
 </style>
     @endif
     <style>
+
         ::-webkit-scrollbar {
   width: 10px;
   border-radius: 10px
@@ -74,6 +80,9 @@ div.dataTables_wrapper div.dataTables_filter input{
         .table.align-items-center td, .table.align-items-center th{
                             text-align: center
 
+        }
+        input, button, select, optgroup, textarea{
+margin: 10px !important;
         }
         div.dataTables_wrapper div.dataTables_paginate ul.pagination{
                 margin: 50px 0;
