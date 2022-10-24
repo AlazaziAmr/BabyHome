@@ -39,6 +39,22 @@ div.dataTables_wrapper div.dataTables_filter input{
 </style>
     @endif
     <style>
+        ::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 10px
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+        .dataTables_filter{
+                padding: 20px;
+        }
         .box-body{
             padding: 0 15px;
         }
@@ -51,8 +67,16 @@ div.dataTables_wrapper div.dataTables_filter input{
     margin-left:  11px;
     color: #000;
         }
+        .table> :not(:last-child)> :last-child>*{
+                font-size: 15px !important;
+                text-align: center
+        }
+        .table.align-items-center td, .table.align-items-center th{
+                            text-align: center
+
+        }
         div.dataTables_wrapper div.dataTables_paginate ul.pagination{
-                margin: 14px 0;
+                margin: 50px 0;
         }
         .page-item:last-child .page-link{
               background: none;
@@ -62,7 +86,7 @@ div.dataTables_wrapper div.dataTables_filter input{
         .pagination{
                 position: absolute;
     left: 0;
-    margin-top: 27px;
+    margin-top: 30px;
         }
         .modal{
             --bs-modal-width: 820px  !important;

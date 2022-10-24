@@ -29,7 +29,7 @@ return [
     'acceptance_age_to' => 'الى عمر',
     'national_address' => 'العنوان الوطني',
     'building_type'  => 'نوع المبنى',
-    'price' => 'السعر',
+    'price' => 'سعر الخدمة',
     'nationality_id' => 'الجنسية',
     'years_of_experince' => 'سنوات الخبره',
     'date_of_birth' => 'تاريخ الميلاد',

@@ -12,7 +12,7 @@
                 </svg>
                 @lang('site.name'):
             </span> &nbsp;
-                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }}</li>
+                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>
 
                 <li class="list-group-item border-0 ps-0 text-sm ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
@@ -23,7 +23,7 @@
                             d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
                     <strong class="font-weight-bold">@lang('site.phone'):</strong>
-                    &nbsp; {{ $data['nursery']->owner ? $data['nursery']->owner->phone : ''  }}</li>
+                    &nbsp; {{ $data['nursery']->owner ? $data['nursery']->owner->phone : ''  }} </li> <hr>
 
                 <li class="list-group-item border-0 ps-0 text-sm ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
@@ -35,7 +35,7 @@
                         <line x1="9" y1="15" x2="15" y2="15"></line>
                     </svg>
                     <strong class="font-weight-bold">@lang('site.email'):</strong>
-                    &nbsp; {{ $data['nursery']->owner ? $data['nursery']->owner->email : ''  }}</li>
+                    &nbsp; {{ $data['nursery']->owner ? $data['nursery']->owner->email : ''  }} </li> <hr>
 
             </ul>
         </div>
@@ -51,7 +51,7 @@
             </svg>
                 @lang('site.capacity'):
             </span> &nbsp;
-                    {{ $data['nursery']->capacity }}</li>
+                    {{ $data['nursery']->capacity }} </li> <hr>
 
                 <li class="list-group-item border-0 ps-0 text-sm ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
@@ -64,7 +64,7 @@
                         <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
                     <strong class="font-weight-bold">@lang('site.date_of_birth'):</strong>
-                    &nbsp; {{ $data['babysitter']->date_of_birth }} </li>
+                    &nbsp; {{ $data['babysitter']->date_of_birth }}  </li> <hr>
 
                 <li class="list-group-item border-0 ps-0 text-sm ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
@@ -84,12 +84,12 @@
                         @endforeach
                     @endif
 
-                </li>
+                 </li> <hr>
 
             </ul>
         </div>
     </div>
-    <hr>
+  
     <div class="row mt-2">
         <div class="col-sm-6 col-md-4 col-lg-2 col-xl-2 col-6">
             <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
@@ -110,7 +110,7 @@
         <span class="font-weight-bold">@lang('site.qualifications')</span>
         @foreach($data['qualifications'] as $q)
             <div class="col-md-6">
-                <li>{{ ($q->qualification) ? $q->qualification->name : '' }}</li>
+                <li>{{ ($q->qualification) ? $q->qualification->name : '' }} </li> <hr>
                 <p>{{ $q->description }}</p>
             </div>
         @endforeach

@@ -23,12 +23,6 @@ class NurseryDataTable extends DataTable
                 }else{
                     return  '';
                 }
-            })->addColumn('owner_phone', function ($data) {
-                if($data->owner){
-                    return $data->owner->phone;
-                }else{
-                    return  '';
-                }
             })->addColumn('inspector', function ($data) {
                 return $data->getInspector();
             })->addColumn('status_lable', function ($data) {
@@ -67,6 +61,7 @@ class NurseryDataTable extends DataTable
             ->dom('Bfrtip')
             ->ajax(['url' => route('__bh_.nurseries.index')])
             ->orderBy(1)
+
             ->buttons(
                 Button::make('print'),
                 Button::make('reload')
@@ -76,9 +71,8 @@ class NurseryDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('id')->title('#')->data('id')->name('id'),
+            Column::make('id')->title('الرقم التسلسلي')->data('id')->name('id'),
             Column::make('owner_name')->title(__('site.owner_name'))->data('owner_name')->name('owner_name'),
-            Column::make('owner_phone')->title(__('site.owner_phone'))->data('owner_phone')->name('owner_phone'),
             Column::make('inspector')->title(__('site.inspector'))->data('inspector')->name('inspector'),
             Column::make('capacity')->title(__('site.capacity'))->data('capacity')->name('capacity'),
             Column::make('status_lable')->title(__('site.status_lable'))->data('status_lable')->name('status_lable'),
