@@ -135,7 +135,13 @@ margin-top:20px
     padding: 10px;
     border-radius: 10px
 }
-
+.navbar-vertical .navbar-brand>img, .navbar-vertical .navbar-brand-img {
+    max-height: 7rem;
+    margin-top: -53px;
+}
+.rtl .sidenav .navbar-nav {
+    margin-top: 46px;
+}
     </style>
 </head>
 
