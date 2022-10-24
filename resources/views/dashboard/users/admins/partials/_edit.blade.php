@@ -9,7 +9,7 @@
 <input type="hidden" value="{{ $form_data->id }}" name="id">
 <div class="row mg-tb-30">
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="name_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="name_edit_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.name')</label>
         </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="username_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="username_edit_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.username')</label>
         </div>
@@ -30,7 +30,7 @@
     </div>
 </div>
 <div class="row mg-tb-30">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="email_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="email_edit_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.email')</label>
         </div>
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="phone_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="phone_edit_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.phone')</label>
         </div>
@@ -50,17 +50,17 @@
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="is_active_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="is_active_edit_div">
         <div class="nk-int-mk sl-dp-mn">
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <label>@lang('site.is_active')</label>
-            @lang('site.is_active') <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"  placeholder="@lang('site.is_active')">
+            <label>@lang('site.is_active')</label><br>
+            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"  placeholder="@lang('site.is_active')">
             <span class="help-block" id="is_active_edit_error"></span>
         </div>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="role_edit_div">
+    <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="role_edit_div">
         <div class="nk-int-mk sl-dp-mn">
             <label>@lang('site.role')</label>
         </div>
@@ -83,7 +83,7 @@
 
 @if(!isset($form_data))
     <div class="row mg-tb-30">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="password_edit_div">
+        <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="password_edit_div">
             <div class="nk-int-mk sl-dp-mn">
                 <label>@lang('site.password')</label>
             </div>
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="password_confirmation_edit_div">
+        <div class="col-lg-6 col-md-6  mb-3 col-sm-6 col-xs-12" id="password_confirmation_edit_div">
             <div class="nk-int-mk sl-dp-mn">
                 <label>@lang('site.password_confirmation')</label>
             </div>

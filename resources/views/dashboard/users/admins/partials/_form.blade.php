@@ -54,8 +54,8 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
             <br>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <label>@lang('site.is_active')</label>
-            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_input" name="is_active"  placeholder="@lang('site.is_active')">
+            <label>@lang('site.is_active')</label><br>
+            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_input" name="is_active"  placeholder="@lang('site.is_active')>
             <span class="help-block" id="is_active_error"></span>
         </div>
     </div>

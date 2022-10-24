@@ -24,7 +24,7 @@ return [
     'longitude' => 'خط العرض',
     // 'disabilities_acceptance',
     'status' => 'الحالة',
-    'is_active' => 'هل مفعل',
+    'is_active' => ' تفعيل',
     'acceptance_age_from' => 'من عمر',
     'acceptance_age_to' => 'الى عمر',
     'national_address' => 'العنوان الوطني',
