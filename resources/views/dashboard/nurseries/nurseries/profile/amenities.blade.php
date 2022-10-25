@@ -114,7 +114,7 @@ li
                                 <a href="javascript:;">
                                     <div class="blur-shadow-image">
 
-                                        <img id="myImg" class="img img-fluid border-radius-lg move-on-hover" src="{{ $image }}">
+                                        <img id="myImg" width="250" height="200" class="img img-fluid border-radius-lg move-on-hover" src="{{ $image }}">
 
                                     </div>
                                 </a>

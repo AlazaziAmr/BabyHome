@@ -155,7 +155,7 @@ margin-top:20px
     color: #fff;
 }
 .navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]:after{
-        color: #212529;
+        color: #fff;
 }
     </style>
 </head>
