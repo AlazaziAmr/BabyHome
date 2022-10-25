@@ -171,6 +171,9 @@ margin-top:20px
 .text-blue{
     color:#405165
 }
+.navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"]:after{
+        color: rgb(255 255 255) !important;
+}
     </style>
 </head>
 
