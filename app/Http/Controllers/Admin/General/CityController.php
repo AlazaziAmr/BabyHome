@@ -9,6 +9,7 @@ use App\Models\Api\Generals\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class CityController extends Controller
 {
@@ -95,5 +96,48 @@ class CityController extends Controller
         $city = City::findOrFail($id);
         $city->delete();
         return response()->json(array('success' => true));
+    }
+
+    public function store_excel(Request $request)
+    {
+
+        $this->validate($request, [
+            'file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        $the_file = $request->file('file');
+        try {
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $row_limit = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range = range(2, $row_limit);
+            $column_range = range('F', $column_limit);
+            $startcount = 2;
+            $data = array();
+            foreach ($row_range as $row) {
+                if( $sheet->getCell('A' . $row)->getValue()){
+                    $name_array['en'] = $sheet->getCell('B' . $row)->getValue();
+                    $name_array['ar'] = $sheet->getCell('A' . $row)->getValue();
+
+                    $request_data['name'] = [
+                        'ar' => $name_array['ar'],
+                        'en' => $name_array['en'],
+                    ];
+//            $request_data['country_id'] = $request->country_id;
+                    $request_data['country_id'] = 1;
+                    $city = City::where('name->en','LIKE','%'.$name_array['en'].'%')
+                        ->where('name->ar','LIKE','%'.$name_array['ar'].'%')->first();
+                    if(!$city){
+                        City::create($request_data);
+                    }
+                }
+                $startcount++;
+            }
+        } catch (\Exception $e) {
+            $error_code = $e->errorInfo[1];
+//            return back()->withErrors('There was a problem uploading the data!');
+        }
+
+        return response()->json(array('success' => true), 200);
     }
 }

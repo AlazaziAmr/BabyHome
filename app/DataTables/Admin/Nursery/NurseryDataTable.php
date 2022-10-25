@@ -31,9 +31,9 @@ class NurseryDataTable extends DataTable
                 }else if($data->status == 1){
                     return '<span class="badge badge-sm bg-gradient-warning">'.__('site.reviewing').'</span>';
                 }else if($data->status == 2){
-                    return '<span class="badge badge-sm bg-gradient-primary">'.__('site.inspecting').'</span>';
+                    return '<span class="badge badge-sm bg-gradient-warning">'.__('site.inspecting').'</span>';
                 }else if($data->status == 3){
-                    return '<span class="badge badge-sm bg-gradient-info">'.__('site.inspected').'</span>';
+                    return '<span class="badge badge-sm bg-gradient-warning">'.__('site.inspected').'</span>';
                 }else if($data->status == 4){
                     return '<span class="badge badge-sm bg-gradient-danger">'.__('site.suspended').'</span>';
                 }else if($data->status == 5){

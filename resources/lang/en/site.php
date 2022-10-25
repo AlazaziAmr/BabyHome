@@ -184,5 +184,6 @@ return [
     'create_delete_accounts' => 'create delete accounts',
     'app_dashboard' => 'app dashboard',
     'inspection' => 'inspection',
+    'add_excel' => 'add use excel',
 
 ];

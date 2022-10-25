@@ -182,5 +182,6 @@ return [
     'create_delete_accounts' => 'إنشاء - حذف - الحسابات',
     'app_dashboard' => 'لوحة التحكم التطبيق',
     'inspection' => 'التفتيش',
+    'add_excel' => 'إضافة ملف أكسل',
 
 ];

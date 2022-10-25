@@ -43,7 +43,7 @@ class QualificationDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(1)
-            ->ajax(['url' => route('__bh_.amenities.index')])
+            ->ajax(['url' => route('__bh_.qualifications.index')])
             ->buttons(
                 Button::make('print'),
                 Button::make('reload')

@@ -22,7 +22,7 @@ Route::get('test_sms', function () {
     $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
         "userName"    => "babyhome",
         "apiKey"      => "0eacc90c694d720222a39c3b74241915",
-        "numbers"     => '00966058773710',
+        "numbers"     => '00966581773710',
         "userSender"  => "OTP",
         "msg"         => $message,
         "msgEncoding" => "UTF8",
@@ -77,12 +77,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::resource('cities',CityController::class);
             Route::get('cities/remove/{id}', [CityController::class,'remove'])->name('cities.remove');
+            Route::post('cities/store_excel', [CityController::class,'store_excel'])->name('cities.store_excel');
 
             Route::resource('countries',CountryController::class);
             Route::get('countries/remove/{id}', [CountryController::class,'remove'])->name('countries.remove');
 
             Route::resource('neighborhoods',NeighborhoodController::class);
             Route::get('neighborhoods/remove/{id}', [NeighborhoodController::class,'remove'])->name('neighborhoods.remove');
+            Route::post('neighborhoods/store_excel', [NeighborhoodController::class,'store_excel'])->name('neighborhoods.store_excel');
 
             Route::resource('amenities',AmenityController::class);
             Route::get('amenities/remove/{id}', [AmenityController::class,'remove'])->name('amenities.remove');
@@ -94,6 +96,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::resource('nationalities',NationalityController::class);
             Route::get('nationalities/remove/{id}', [NationalityController::class,'remove'])->name('nationalities.remove');
+            Route::post('nationalities/store_excel', [NationalityController::class,'store_excel'])->name('nationalities.store_excel');
 
             Route::resource('inspectors',InspectorController::class);
             Route::resource('masters',MasterController::class);
