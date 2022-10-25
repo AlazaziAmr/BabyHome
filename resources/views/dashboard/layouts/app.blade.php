@@ -117,6 +117,9 @@ margin-top:20px
         .has-error {
             color: red;
         }
+        .navbar-vertical.navbar-expand-xs .navbar-collapse{
+    margin-top: 70px;
+        }
         .text-dark{
             color:black !important;
         }
@@ -142,12 +145,24 @@ margin-top:20px
 .rtl .sidenav .navbar-nav {
     margin-top: 46px;
 }
+.bg-custom{
+    background-color: #f1c8bf !important;
+}
+.navbar-vertical .navbar-nav .nav-link{
+       box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+           border-radius: 8px;
+    background-color: white;
+}
+.active {
+  background-color: #666;
+  color: white;
+}
     </style>
 </head>
 
 <body class="g-sidenav-show {{ app()->getLocale() == 'ar' ? 'rtl' : ''}} bg-gray-100">
 <div class="min-height-300 bg-primary position-absolute w-100"></div>
-<aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+<aside class="sidenav bg-custom navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
        id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -157,7 +172,7 @@ margin-top:20px
                 <img src="{{ asset("baby-home.3fd18143.png")}}" class="navbar-brand-img" alt="main_logo">
             </a>
     </div>
-    <hr class="horizontal dark mt-0">
+    {{-- <hr class="horizontal dark mt-0"> --}}
     @include('dashboard.layouts.menu.side')
 </aside>
 <main class="main-content position-relative border-radius-lg ">
@@ -301,6 +316,16 @@ margin-top:20px
 
 </script>
 <script>
+    // Add active class to the current button (highlight it)
+var header = document.getElementById("myDIV");
+var btns = header.getElementsByClassName("nav-item");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {

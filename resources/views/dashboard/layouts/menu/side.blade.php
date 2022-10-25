@@ -1,4 +1,4 @@
-<div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+<div id="myDIV" class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link " href="{{ route('__bh_.index') }}">
