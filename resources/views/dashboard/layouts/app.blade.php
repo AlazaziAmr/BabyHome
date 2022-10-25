@@ -28,6 +28,11 @@
               href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
         <link id="pagestyle" href="{{ asset('/admin/css/ar_argon-dashboard.css') }}?v=2.0.7" rel="stylesheet"/>
 <style>
+    .rtl .breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+    float: right;
+    padding-left: 0.5rem;
+    padding-right: 0;
+}
     .rtl .timeline .timeline-content {
     margin-right: 68px  !important;
     margin-left: 0 !important;
@@ -185,6 +190,12 @@ margin-top:20px
 .navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"]:after{
         color: rgb(255 255 255) !important;
 }
+.breadcrumb-item.active {
+    color: #415266;
+}
+.breadcrumb-item {
+    font-weight: 700
+}
     </style>
 </head>
 
@@ -193,7 +204,7 @@ margin-top:20px
 <aside class="sidenav bg-custom navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
        id="sidenav-main">
     <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        <i class="fas fa-times p-3 cursor-pointer text-secondary  position-absolute end-0 top-0 d-none d-xl-none"
            aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0 text-center" href="#" target="_blank">
             <a class="navbar-brand m-0 text-center" href="#" target="_blank">
@@ -210,7 +221,7 @@ margin-top:20px
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-blue"
+                    <li class="breadcrumb-item text-sm"><a class="text-blue"
                                                            href="javascript:;">@lang('site.dashboard')</a>
                     </li>
                     <li class="breadcrumb-item text-sm text-blue active" aria-current="page">{{ $data['title'] }}</li>
