@@ -31,8 +31,8 @@
                                 {{ ($service->service)  ? $service->service->name : ''}}
                             </a>
                         </h5>
-                        <ul style="
-    text-align: right;
+                        <ul style="{{ app()->getLocale() == 'ar' ? ' text-align: right;' : ' text-align: left;'}}
+
 ">
                             @if(($service->service)  and $service->service->price)
                                 <li>
