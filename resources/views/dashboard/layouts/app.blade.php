@@ -151,11 +151,12 @@ margin-top:20px
 .navbar-vertical .navbar-nav .nav-link{
        box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
            border-radius: 8px;
-    background-color: #f1c8bf;
-
-    color: #000;
+   background-color: #405165;
+    color: #fff;
 }
-
+.navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]:after{
+        color: #212529;
+}
     </style>
 </head>
 
