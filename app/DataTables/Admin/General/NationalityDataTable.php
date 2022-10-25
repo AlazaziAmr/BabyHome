@@ -20,7 +20,7 @@ class NationalityDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('name', function ($data) {
                 if ($data->name) {
-                    return $data->getTranslation('name',app()->getLocale(),false);
+                    return $data->getTranslation('name', app()->getLocale(), false);
                 } else {
                     return '';
                 }
@@ -37,15 +37,16 @@ class NationalityDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('print'),
-                        Button::make('reload')
-                    );
+            ->setTableId('table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->ajax(['url' => route('__bh_.nationalities.index')])
+            ->orderBy(1)
+            ->buttons(
+                Button::make('print'),
+                Button::make('reload')
+            );
     }
 
     protected function getColumns(): array
@@ -61,6 +62,7 @@ class NationalityDataTable extends DataTable
                 ->addClass('text-center')
         ];
     }
+
     protected function filename(): string
     {
         return 'City_' . date('YmdHis');

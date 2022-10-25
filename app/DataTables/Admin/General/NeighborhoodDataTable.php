@@ -21,14 +21,14 @@ class NeighborhoodDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('name', function ($data) {
                 if ($data->name) {
-                    return $data->getTranslation('name',app()->getLocale(),false);
+                    return $data->getTranslation('name', app()->getLocale(), false);
                 } else {
                     return '';
                 }
             })
             ->addColumn('city_name', function ($data) {
                 if ($data->city) {
-                    return $data->city->getTranslation('name',app()->getLocale(),false);
+                    return $data->city->getTranslation('name', app()->getLocale(), false);
                 } else {
                     return '';
                 }
@@ -45,15 +45,16 @@ class NeighborhoodDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('print'),
-                        Button::make('reload')
-                    );
+            ->setTableId('table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->ajax(['url' => route('__bh_.neighborhoods.index')])
+            ->buttons(
+                Button::make('print'),
+                Button::make('reload')
+            );
     }
 
     protected function getColumns(): array
@@ -70,6 +71,7 @@ class NeighborhoodDataTable extends DataTable
                 ->addClass('text-center')
         ];
     }
+
     protected function filename(): string
     {
         return 'City_' . date('YmdHis');

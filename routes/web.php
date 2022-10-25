@@ -34,6 +34,7 @@ Route::get('test_sms', function () {
 
 Route::get('test_notes',function (){
     $fcm = new \App\Functions\FcmNotification();
+
     $fcm->send_notification("test",'meesgae','all');
 });
 

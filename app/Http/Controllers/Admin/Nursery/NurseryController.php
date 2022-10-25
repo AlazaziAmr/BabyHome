@@ -142,7 +142,8 @@ class NurseryController extends Controller
             'details' => 'أهلاً بك.'
         ];
         $fcm = new \App\Functions\FcmNotification();
-        $fcm->send_notification("أهلاً بك.",'تم قبولك في منصة بيبي هوم.',$user->phone);
+        $phone = str_replace("+","",$user->phone);
+        $fcm->send_notification("أهلاً بك.",'تم قبولك في منصة بيبي هوم.',$phone);
 
 //        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
@@ -158,7 +159,8 @@ class NurseryController extends Controller
             'details' => 'سيتم التواصل معكم وتوضيح الأسباب.'
         ];
         $fcm = new \App\Functions\FcmNotification();
-        $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$user->phone);
+        $phone = str_replace("+","",$user->phone);
+        $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$phone);
 
 //        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
