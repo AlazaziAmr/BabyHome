@@ -23,7 +23,7 @@
                    role="button"
                    aria-expanded="true">
                     <div class="icon icon-shape icon-sm text-center d-flex align-items-center justify-content-center">
-                        <i class="ni ni-single-02 text-warning text-sm opacity-10"></i>
+                        <i class="ni ni-single-02 text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">@lang('site.user_management')</span>
                 </a>
@@ -138,7 +138,7 @@
             <a class="nav-link " href="{{ route('__bh_.inspections.index') }}">
                 <div
                     class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                    <i class="ni ni-active-40 text-success text-sm opacity-10"></i>
+                    <i class="ni ni-active-40  text-sm opacity-10"></i>
                 </div>
                 <span class="nav-link-text ms-1"> @lang('site.inspections')</span>
             </a>
@@ -164,7 +164,7 @@
         {{--            <a class="nav-link " href="{{ route('__bh_.masters.index') }}">--}}
         {{--                <div--}}
         {{--                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">--}}
-        {{--                    <i class="ni ni-favourite-28 text-info text-sm opacity-10"></i>--}}
+        {{--                    <i class="ni ni-favourite-28  text-sm opacity-10"></i>--}}
         {{--                </div>--}}
         {{--                <span class="nav-link-text ms-1"> @lang('site.masters')</span>--}}
         {{--            </a>--}}
@@ -174,7 +174,7 @@
         {{--            <a class="nav-link " href="{{ route('__bh_.children.index') }}">--}}
         {{--                <div--}}
         {{--                    class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">--}}
-        {{--                    <i class="fa fa-heart text-success text-sm opacity-10"></i>--}}
+        {{--                    <i class="fa fa-heart  text-sm opacity-10"></i>--}}
         {{--                </div>--}}
         {{--                <span class="nav-link-text ms-1"> @lang('site.children')</span>--}}
         {{--            </a>--}}
