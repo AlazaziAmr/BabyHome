@@ -146,17 +146,16 @@ margin-top:20px
     margin-top: 46px;
 }
 .bg-custom{
-    background-color: #f1c8bf !important;
+    background-color: #fff !important;
 }
 .navbar-vertical .navbar-nav .nav-link{
        box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
            border-radius: 8px;
-    background-color: white;
+    background-color: #f1c8bf;
+
+    color: #000;
 }
-.active {
-  background-color: #666;
-  color: white;
-}
+
     </style>
 </head>
 
@@ -316,16 +315,7 @@ margin-top:20px
 
 </script>
 <script>
-    // Add active class to the current button (highlight it)
-var header = document.getElementById("myDIV");
-var btns = header.getElementsByClassName("nav-item");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
-  });
-}
+
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
