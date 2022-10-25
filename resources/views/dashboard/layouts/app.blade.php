@@ -142,7 +142,7 @@ margin-top:20px
     border-left: none;
 }
 .navbar-main{
-   background: #fff;
+   background: #f1c8bf;
 }
 .navbar-vertical .navbar-brand .navbar-brand-img, .navbar-vertical .navbar-brand span{
        background: white;
@@ -157,7 +157,11 @@ margin-top:20px
     margin-top: 46px;
 }
 .bg-custom{
-    background-color: #fff !important;
+    background-color: #f1c8bf !important;
+}
+.navbar-vertical.navbar-expand-xs .navbar-nav .nav-link:hover{
+        box-shadow: rgb(255 255 255) -9px 6px 29px 8px;
+
 }
 .navbar-vertical .navbar-nav .nav-link{
        box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
@@ -167,6 +171,13 @@ margin-top:20px
 }
 .navbar-vertical .navbar-nav .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]:after{
         color: #fff;
+}
+.navbar-vertical .navbar-nav .nav-item .collapse .nav .nav-item .nav-link, .navbar-vertical .navbar-nav .nav-item .collapsing .nav .nav-item .nav-link{
+    position: relative;
+    background-color: #405165b5;
+    box-shadow: none;
+    color: rgb(255 255 255);
+    margin-right: -0.65rem;
 }
 .text-blue{
     color:#405165
