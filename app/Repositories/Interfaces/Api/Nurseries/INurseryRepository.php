@@ -29,6 +29,8 @@ interface INurseryRepository extends IBaseRepository
     public function qualifications($babysitter_id);
 
     public function skills($babysitter_id);
+
+    public function NurseryService($nursery_id);
     // Admin
 
     public function fetchAllForAdmin($with = [], $columns = array('*'));

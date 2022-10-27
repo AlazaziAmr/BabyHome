@@ -49,6 +49,9 @@ class NurseryDataTable extends DataTable
     {
         $q = $model->newQuery();
         $q->with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name','inspection','inspection.inspector']);
+        if($this->request->get('status')){
+            $q->where('status',$this->request->get('status'));
+        }
         return  $q;
     }
 

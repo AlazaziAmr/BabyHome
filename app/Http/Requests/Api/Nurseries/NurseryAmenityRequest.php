@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Nurseries;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BabysitterQulificationRequest extends FormRequest
+class NurseryAmenityRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,8 +14,9 @@ class BabysitterQulificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'qualification_id' => 'required|exists:qualifications,id',
-            'description' => 'required|string',
+            'amenity_id' => 'required|exists:amenities,id',
+            'attachments.*.file' => 'required|mimes:jpeg,png,jpg,gif,pdf',
         ];
     }
 }
+

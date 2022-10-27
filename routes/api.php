@@ -88,7 +88,6 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::get('/all-qualifications', [QualificationController::class, 'index']);
     Route::post('/qualifications', [QualificationController::class, 'store']);
 
-    Route::apiResource('/skills',BabySitterSkillController::class);
 
     // nationalities
     Route::get('nationalities',[\App\Http\Controllers\Api\Generals\NationalityController::class,'index']);
@@ -261,6 +260,14 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::get('/days', [DayController::class, 'index']);
 
      // Nurseries
+
+    Route::apiResource('nursery-amenity', \App\Http\Controllers\Api\Nurseries\Profile\AmenitieController::class);
+    Route::apiResource('/nursery-skills',BabySitterSkillController::class);
+    Route::apiResource('/nursery-services',\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class);
+    Route::delete('attachments/{id}',[\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class,'delete_attachment']);
+    Route::apiResource('/nursery-qualifications',\App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
+
+
     Route::apiResource('nurseries', NurseryController::class);
     Route::post('/join-request-approve/{id}', [NurseryController::class, 'approveJoinigRequest']);
     Route::get('nursery/{nursery}/children', [NurseryController::class, 'getNurseryChildren']);

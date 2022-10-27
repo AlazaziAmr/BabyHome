@@ -13,9 +13,11 @@ use \App\Http\Controllers\Admin\Master\ChildController;
 use \App\Http\Controllers\Admin\General\CityController;
 use \App\Http\Controllers\Admin\General\NationalityController;
 use \App\Http\Controllers\Admin\General\CountryController;
+use \App\Http\Controllers\Admin\User\UserController;
 use \App\Http\Controllers\Admin\General\NeighborhoodController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\QualificationController;
+
 Route::get('test_sms', function () {
     $OTP = '1234';
     $message = "رمز التحقق: $OTP";
@@ -64,6 +66,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::post('profile/password', [HomeController::class, 'update_password'])->name('profile.update_password');
             Route::any('notifications/read',[HomeController::class,'read_note'])->name('notifications.read');
             Route::resource('nurseries',NurseryController::class);
+            Route::get('nurseries/remove/{id}', [NurseryController::class, 'remove'])->name('nurseries.remove');
             Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');
             Route::get('nursery/block/{id}', [NurseryController::class, 'block'])->name('nursery.block');
             Route::get('nursery/inspector', [NurseryController::class, 'inspector_view'])->name('nursery.inspector');
@@ -74,6 +77,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             Route::resource('admins',AdminController::class);
             Route::get('admins/remove/{id}', [AdminController::class,'remove'])->name('admins.remove');
+
+            Route::resource('users',UserController::class);
+            Route::get('users/remove/{id}', [UserController::class,'remove'])->name('users.remove');
 
             Route::resource('cities',CityController::class);
             Route::get('cities/remove/{id}', [CityController::class,'remove'])->name('cities.remove');

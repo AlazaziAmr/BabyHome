@@ -110,22 +110,22 @@ class NurseryController extends Controller
                 'mark_as_read' => 0,
                 'type' => 1,
             ]);
-
-            $message = 'from: '.auth('dashboard')->user()->email.' \r\n'.
-                'email :'.$admin->email.' \r\n'.
-                'subject: '.'تفتيش الحاضنه'.' \r\n'.
-                'message: '.$request->to .' الى الفتره '. $request->from .'  من الفتره '.$name.'  تم التكليف بتفتيش الحاضنه ';
-
-            $from = auth('dashboard')->user()->email;
-            $to = $admin->email;
-            $headers = "From:". $from . "\r\n";
-            $message = str_replace('\r\n', PHP_EOL, $message);
-
-
-            ini_set( 'display_errors', 1 );
-            error_reporting( E_ALL );
-
-            $success = mail($to,'تفتيش الحاضنه',$message,$headers);
+//
+//            $message = 'from: '.auth('dashboard')->user()->email.' \r\n'.
+//                'email :'.$admin->email.' \r\n'.
+//                'subject: '.'تفتيش الحاضنه'.' \r\n'.
+//                'message: '.$request->to .' الى الفتره '. $request->from .'  من الفتره '.$name.'  تم التكليف بتفتيش الحاضنه ';
+//
+//            $from = auth('dashboard')->user()->email;
+//            $to = $admin->email;
+//            $headers = "From:". $from . "\r\n";
+//            $message = str_replace('\r\n', PHP_EOL, $message);
+//
+//
+//            ini_set( 'display_errors', 1 );
+//            error_reporting( E_ALL );
+//
+//            $success = mail($to,'تفتيش الحاضنه',$message,$headers);
 
             $nursery = Nursery::where('id',$request->nursery_id)->update(['status' => 2]);
             return response()->json(array('success' => true), 200);
@@ -163,6 +163,19 @@ class NurseryController extends Controller
         $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$phone);
 
 //        Mail::to($user->email)->send(new NurseryMail($data));
+        return response()->json(array('success' => true), 200);
+    }
+
+    public function remove($id){
+        $nursery = Nursery::findOrFail($id);
+        $user = User::find($nursery->user_id);
+        $user->update([
+            'email' => "deleted_account".rand(0,10000000).'@app.com',
+            'phone' => rand(0,10000000),
+        ]);
+
+        $nursery->delete();
+        $user->delete();
         return response()->json(array('success' => true), 200);
     }
 }

@@ -34,6 +34,11 @@ class Service extends BaseModel
         return $this->belongsTo(NurseryServiceType::class, 'type_id', 'id');
     }
 
+    public function sub_type(): BelongsTo
+    {
+        return $this->belongsTo(NurseryServiceType::class, 'sub_category_id', 'id');
+    }
+
     public function attachmentable()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');

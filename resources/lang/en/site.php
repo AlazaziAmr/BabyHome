@@ -185,5 +185,7 @@ return [
     'app_dashboard' => 'app dashboard',
     'inspection' => 'inspection',
     'add_excel' => 'add use excel',
+    'verified' => 'verified',
+    'registered_users' => 'registered users',
 
 ];

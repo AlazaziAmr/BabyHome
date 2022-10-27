@@ -12,7 +12,10 @@ use App\Http\Resources\Api\Nurseries\BabysitterQulificationResource;
 use App\Http\Resources\Api\Nurseries\NurseryResource;
 use App\Http\Resources\Api\Nurseries\Profile\NurseryAmenityResource;
 use App\Http\Resources\Api\Nurseries\Profile\BabySitterSkillResource;
+use App\Http\Resources\Api\Nurseries\Profile\NurseryServiceResource;
+use App\Models\Api\Generals\Amenity;
 use App\Models\Api\Nurseries\Nursery;
+use App\Models\User;
 use App\Repositories\Interfaces\Api\Nurseries\INurseryRepository;
 
 class ProfileController extends Controller
@@ -36,6 +39,7 @@ class ProfileController extends Controller
             $data['skills'] = array();
             $data['amenities'] = array();
             $data['activities'] = array();
+            $data['services'] = array();
 
 
             $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities']);
@@ -47,6 +51,7 @@ class ProfileController extends Controller
                 if ($babysitter) {
                     $data['babysitter'] = new BabysitterInfoResource($babysitter);
                 }
+                $data['services'] = NurseryServiceResource::collection($this->nurseryRepository->NurseryService($data['nursery']->id));
                 $data['activities'] = ActivityResource::collection($data['nursery']->customerActivities());
                 $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
                 if ($amenities) {
@@ -73,19 +78,17 @@ class ProfileController extends Controller
 
     public function nursery_profile($id){
         try {
-            $user_id = Nursery::findOrFail($id)->user_id;
-            if (!$user_id) {
-                return JsonResponse::errorResponse('');
-            }
+            User::findOrFail($id);
             $data['nursery'] = array();
             $data['babysitter'] = array();
             $data['qualifications'] = array();
             $data['skills'] = array();
             $data['amenities'] = array();
             $data['activities'] = array();
+            $data['services'] = array();
 
 
-            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities'],$user_id);
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities'],$id);
             if ($nursery) {
                 $data['nursery'] = new NurseryResource($nursery);
             }
@@ -94,11 +97,13 @@ class ProfileController extends Controller
                 if ($babysitter) {
                     $data['babysitter'] = new BabysitterInfoResource($babysitter);
                 }
+                $data['services'] = NurseryServiceResource::collection($this->nurseryRepository->NurseryService($data['nursery']->id));
                 $data['activities'] = ActivityResource::collection($data['nursery']->customerActivities());
                 $amenities = $this->nurseryRepository->NurseryAmenity($data['nursery']->id);
                 if ($amenities) {
                     $data['amenities'] = NurseryAmenityResource::collection($amenities);
                 }
+
                 if ($data['babysitter']) {
                     $skills = $this->nurseryRepository->skills($data['babysitter']->id);
                     if ($skills) {
@@ -111,7 +116,6 @@ class ProfileController extends Controller
                 }
 
             }
-
             return JsonResponse::successfulResponse('msg_success', $data);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -131,6 +135,7 @@ class ProfileController extends Controller
             if ($data['nursery']) {
                 $data['babysitter'] = new BabysitterInfoResource($this->nurseryRepository->BabySitter($data['nursery']->id));
                 $data['amenities'] = NurseryAmenityResource::collection($this->nurseryRepository->NurseryAmenity($data['nursery']->id));
+                $data['services'] = NurseryServiceResource::collection($this->nurseryRepository->NurseryService($data['nursery']->id));
                 if ($data['babysitter']) {
                     $data['skills'] = BabySitterSkillResource::collection($this->nurseryRepository->skills($data['babysitter']->id));
                     $data['qualifications'] = new BabysitterQulificationResource($this->nurseryRepository->qualifications($data['babysitter']->id));

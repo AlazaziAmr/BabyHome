@@ -39,8 +39,9 @@ class NurseryAmenity extends  BaseModel
     {
         $images = array();
         if (filled($this->attachmentable)) {
-            foreach ($this->attachmentable as $image) {
-                $images[] = asset('storage/amenities/' . $image->path);
+            foreach ($this->attachmentable as $index=>$image) {
+                $images[$index]['id'] = $image->id;
+                $images[$index]['image_path'] = asset('storage/amenities/' . $image->path);
             }
         }
 
@@ -56,6 +57,7 @@ class NurseryAmenity extends  BaseModel
     {
         return $this->belongsTo(Amenity::class, 'amenity_id', 'id');
     }
+
 
     public static function boot()
     {

@@ -11,8 +11,8 @@ class NurseryAmenityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->amenity->name,
-            'required' => $this->amenity->is_required ? true : false,
+            'name' => ($this->amenity) ? $this->amenity->name : '',
+            'required' => ( $this->amenity and $this->amenity->is_required ) ? true : false,
             'images' => $this->getImages()
         ];
     }

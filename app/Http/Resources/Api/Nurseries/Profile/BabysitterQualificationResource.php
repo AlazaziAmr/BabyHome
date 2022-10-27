@@ -16,4 +16,5 @@ class BabysitterQualificationResource extends JsonResource
             'qualification' => ($this->qualification) ? $this->qualification->name : '',
         ];
     }
+
 }

@@ -5,6 +5,7 @@ namespace App\Repositories\Classes\Api\Nurseries;
 use App\Helpers\JsonResponse;
 use App\Models\AdminNotification;
 use App\Models\Api\Generals\Activity;
+use App\Models\Api\Nurseries\NurseryService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Api\Nurseries\Nursery;
@@ -27,65 +28,79 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         return Nursery::class;
     }
 
-    public function FindOne($with = [],$user_id = 0){
-       if($user_id == 0){
-           return $this->model->with($with)
-               ->where('user_id',user()->id)
-               ->first();
-       } else{
-           return $this->model->with($with)
-               ->where('user_id',$user_id)
-               ->first();
-       }
+    public function FindOne($with = [], $user_id = 0)
+    {
+        if ($user_id == 0) {
+            return $this->model->with($with)
+                ->where('user_id', user()->id)
+                ->first();
+        } else {
+            return $this->model->with($with)
+                ->where('user_id', $user_id)
+                ->first();
+        }
     }
 
-    public function BabySitter($nursery_id){
-        return BabysitterInfo::with(['languages','nationalitydata','attachmentable'])
-            ->where('nursery_id',$nursery_id)->first();
+    public function BabySitter($nursery_id)
+    {
+        return BabysitterInfo::with(['languages', 'nationalitydata', 'attachmentable'])
+            ->where('nursery_id', $nursery_id)->first();
     }
 
     public function skills($babysitter_id)
     {
-        return BabysitterSkill::where('babysitter_id',$babysitter_id)
+        return BabysitterSkill::where('babysitter_id', $babysitter_id)
             ->get();
     }
 
-    public function qualifications($babysitter_id){
+    public function qualifications($babysitter_id)
+    {
         return BabysitterQualification::with(['qualification'])
-            ->where('babysitter_id',$babysitter_id)
+            ->where('babysitter_id', $babysitter_id)
             ->get();
     }
 
-    public function NurseryAmenity($nursery_id){
-        return NurseryAmenity::where('nursery_id',$nursery_id)
-            ->with(['amenity','attachmentable'])->get();
+    public function NurseryAmenity($nursery_id)
+    {
+        return NurseryAmenity::where('nursery_id', $nursery_id)
+            ->with(['amenity', 'attachmentable'])->get();
     }
 
-    public function profile($id){
+    public function NurseryService($nursery_id)
+    {
+        return NurseryService::where('nursery_id', $nursery_id)
+            ->with(['service', 'service.attachmentable','service.type','service.sub_type'])->get();
+    }
+
+    public function profile($id)
+    {
         $data['nursery'] = Nursery::with(
-            ['country','city','neighborhood']
+            ['country', 'city', 'neighborhood']
         )
-            ->where('user_id',user()->id)->first();
+            ->where('user_id', $id)->first();
 
         $data['babysitter_info'] = $data['nursery'] ?
-            BabysitterInfo::with(['languages','qualifications','skills','nationalitydata'])
-                ->where('nursery_id',$data['nursery']->id)
+            BabysitterInfo::with(['languages', 'qualifications', 'skills', 'nationalitydata'])
+                ->where('nursery_id', $data['nursery']->id)
                 ->first() : '';
 
         $data['activities'] = $data['nursery'] ?
-            Activity::where('user_id',$id)
+            Activity::where('user_id', $id)
                 ->get() : '';
 
-        foreach ($data['activities'] as $activity){
+        $data['services'] = NurseryService::with(['service.attachmentable'])->where('nursery_id', $id)
+            ->get();
+
+        foreach ($data['activities'] as $activity) {
             $activity->image = $activity->getMainAttachmentAttribute();
         }
 
-        $data['nursery_availabilities'] = $data['nursery'] ? NurseryAvailability::where('nursery_id',$data['nursery']->id)->get() : '';
+        $data['nursery_availabilities'] = $data['nursery'] ? NurseryAvailability::where('nursery_id', $data['nursery']->id)->get() : '';
 
         $data['babysitter_info']->image = ($data['babysitter_info']) ? $data['babysitter_info']->getMainAttachmentAttribute() : '';
 
-        $data['qualifications'] = ($data['babysitter']) ?  BabysitterQualification::with('qualification')->where('babysitter_id',$data['babysitter']->id)->get() : '';
-        $data['skills'] = ($data['babysitter']) ? BabysitterSkill::where('babysitter_id',$data['babysitter']->id)->get() : '';
+        $data['qualifications'] = ($data['babysitter']) ? BabysitterQualification::with('qualification')->where('babysitter_id', $data['babysitter']->id)->get() : '';
+        $data['skills'] = ($data['babysitter']) ? BabysitterSkill::where('babysitter_id', $data['babysitter']->id)->get() : '';
 
         return $data;
     }
@@ -94,10 +109,12 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     {
         return !empty($with) ? user()->nurseries()->with($with)->get($columns) : user()->nurseries()->get($columns);
     }
+
     public function nurseriesCloseToMaster($with = [], $columns = array('*'))
     {
         return !empty($with) ? $this->model->with($with)->orderBy('created_at', 'DESC')->select($columns)->paginate() : $this->model->orderBy('created_at', 'DESC')->select($columns)->paginate();
     }
+
     public function approveJoinigRequest($id)
     {
         $request = JoinRequest::where('id', $id)->first();
@@ -127,8 +144,8 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             'national_id' => $request['national_id'],
             'nationality' => $request['nationality_id'],
             'free_of_disease' => $request['free_of_disease'],
-            'nursery_id' =>  $nursery['id'],
-            'user_id' =>  user()->id ?? null,
+            'nursery_id' => $nursery['id'],
+            'user_id' => user()->id ?? null,
         ]);
 
         $this->syncLanguages($request, $babySitter);
@@ -161,6 +178,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         // languages
         $babySitter->languages()->sync($request['languages']);
     }
+
     public function availabilities($days, $nursery)
     {
         foreach ($days as $day) {
@@ -168,7 +186,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                 'day_id' => $day['id'],
                 'from_hour' => $day['from'],
                 'to_hour' => $day['to'],
-                'nursery_id' =>  $nursery['id'],
+                'nursery_id' => $nursery['id'],
             ]);
         }
     }
@@ -179,7 +197,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         try {
             DB::beginTransaction();
 
-            if(!user()->id){
+            if (!user()->id) {
                 DB::rollBack();
                 return ['status' => false, 'error' => 'no_user'];
             }
@@ -201,7 +219,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                 'neighborhood_id' => $request['neighborhood_id'],
                 'price' => $request['price'],
                 'nationality_id' => $request['nationality_id'],
-                'user_id' =>  user()->id ?? null,
+                'user_id' => user()->id ?? null,
             ]);
 
             $this->updateUser();
@@ -241,9 +259,9 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                         'description' => $service['description'],
                         'price' => $service['price'] ?? null,
                         'is_paid' => $service['is_paid'] ?? null,
-                        'type_id' =>  $service['type_id'],
-                        'user_id' =>  user()->id,
-                        'sub_category_id' =>  $service['sub_category_id'],
+                        'type_id' => $service['type_id'],
+                        'user_id' => user()->id,
+                        'sub_category_id' => $service['sub_category_id'],
                     ]);
                     $additional_services[] += $savedService['id'];
                     if (!empty($service['attachments'])) uploadAttachment($savedService, $service, 'attachments', 'services');
@@ -279,10 +297,10 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     {
         Inspection::create([
             'nursery_id' => $request['nursery'],
-            'inspector_id' =>  $request['admin'],
-            'from' =>  $request['from'],
-            'to' =>  $request['to'],
-            'notes' =>  $request['note'] ?? null,
+            'inspector_id' => $request['admin'],
+            'from' => $request['from'],
+            'to' => $request['to'],
+            'notes' => $request['note'] ?? null,
         ]);
     }
 }

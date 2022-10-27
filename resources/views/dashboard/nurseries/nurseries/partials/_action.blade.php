@@ -10,7 +10,8 @@
         @else
             <li><a class="dropdown-item" onclick="return set_inspector('{{ route('__bh_.nursery.inspector',['id' => $id]) }}')" href="#">@lang('site.set_inspector')</a></li>
         @endif
-            <li><a class="dropdown-item" onclick="return status_row('{{ route('__bh_.nursery.active',$id) }}',1)" href="#">@lang('site.active')</a></li>
+        <li><a class="dropdown-item" onclick="return status_row('{{ route('__bh_.nursery.active',$id) }}',1)" href="#">@lang('site.active')</a></li>
         <li><a class="dropdown-item" onclick="return status_row('{{ route('__bh_.nursery.block',$id) }}',2)" href="#">@lang('site.block')</a></li>
+        <li><a class="dropdown-item" onclick="return delete_process('{{ route('__bh_.nurseries.remove',$id) }}')" href="#">@lang('site.delete')</a></li>
     </ul>
 </div>

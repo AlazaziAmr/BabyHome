@@ -183,5 +183,6 @@ return [
     'app_dashboard' => 'لوحة التحكم التطبيق',
     'inspection' => 'التفتيش',
     'add_excel' => 'إضافة ملف أكسل',
-
+    'verified' => 'مفعل',
+    'registered_users' => 'المستخدمين المسجلين',
 ];
