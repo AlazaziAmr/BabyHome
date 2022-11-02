@@ -53,14 +53,11 @@ class UserAuthController extends Controller
         try {
             // sendOTP('15632', '966563064444');
             $data = $request->validated();
-            $phone = str_split($request->phone,1);
-            $phone = str_replace('+','',$phone);
-            if ($phone[0] == 0){
-                $data['phone'] = array_shift($phone);
-            }
+            $phone = str_replace('+9660','966',$data["phone"]);
+            $phone = str_replace('+966','966',$data["phone"]);
             $data['activation_code'] = OTPGenrator();
             $user = $this->userRepository->register($data);
-            $user->sendEmailVerificationNotification();
+//            $user->sendEmailVerificationNotification();
             sendOTP($user['activation_code'], $user['phone']);
             return $this->userWithToken($user);
         } catch (\Exception $e) {
