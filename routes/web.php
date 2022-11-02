@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use \App\Http\Controllers\Admin\Auth\AdminAuthController;
@@ -18,14 +19,14 @@ use \App\Http\Controllers\Admin\General\NeighborhoodController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\QualificationController;
 
-Route::get('test_sms', function () {
+Route::get('/test_sms', function () {
     $OTP = '1234';
     $message = "رمز التحقق: $OTP";
     $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
         "userName"    => "babyhome",
         "apiKey"      => "0eacc90c694d720222a39c3b74241915",
         "numbers"     => '00966581773710',
-        "userSender"  => "OTP",
+        "userSender"  => "babyhome",
         "msg"         => $message,
         "msgEncoding" => "UTF8",
         "lang" => "ar",

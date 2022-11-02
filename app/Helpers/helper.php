@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
 
+
 if (!function_exists('user')) {
 
     /**
@@ -89,7 +90,7 @@ if (!function_exists('sendOTP')) {
                     "userName"    => "babyhome",
                     "apiKey"      => "0eacc90c694d720222a39c3b74241915",
                     "numbers"     => $phone,
-                    "userSender"  => "OTP",
+                    "userSender"  => "babyhome",
                     "msg"         => $message,
                     "msgEncoding" => "UTF8",
                 ]);
