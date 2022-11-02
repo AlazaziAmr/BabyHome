@@ -149,7 +149,10 @@ class UserAuthController extends Controller
         try {
             // $user =  $this->userRepository->findByMultipleAttributes('phone', $request['phone']);
 
-            $user = User::where('phone', $request['phone'])->where(
+            $phone = str_replace('+9660','966',$request['phone']);
+            $phone = str_replace('+966','966',$request['phone']);
+
+            $user = User::where('phone', $phone)->where(
                 'activation_code',
                 $request['activation_code']
             )->first();
