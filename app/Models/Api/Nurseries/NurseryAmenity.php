@@ -59,15 +59,4 @@ class NurseryAmenity extends  BaseModel
     }
 
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($nurseryAmenity) {
-            foreach ($nurseryAmenity->attachmentable()->get() as $attachment) {
-                $attachment->delete();
-            }
-            $nurseryAmenity->amenity()->delete();
-        });
-    }
 }
