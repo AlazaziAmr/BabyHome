@@ -54,6 +54,7 @@ class UserAuthController extends Controller
             // sendOTP('15632', '966563064444');
             $data = $request->validated();
             $phone = str_split($request->phone,1);
+            $phone = str_replace('+','',$phone);
             if ($phone[0] == 0){
                 $data['phone'] = array_shift($phone);
             }
