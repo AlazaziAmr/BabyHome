@@ -57,7 +57,7 @@ class UserAuthController extends Controller
             $phone = str_replace('+966','966',$data["phone"]);
             $data['activation_code'] = OTPGenrator();
             $user = $this->userRepository->register($data);
-            $user->sendEmailVerificationNotification();
+//            $user->sendEmailVerificationNotification();
             sendOTP($user['activation_code'], $user['phone']);
             return $this->userWithToken($user);
         } catch (\Exception $e) {
