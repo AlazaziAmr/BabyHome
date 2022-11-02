@@ -185,4 +185,6 @@ return [
     'add_excel' => 'إضافة ملف أكسل',
     'verified' => 'مفعل',
     'registered_users' => 'المستخدمين المسجلين',
+    'delete' => 'حذف',
+
 ];

@@ -187,5 +187,6 @@ return [
     'add_excel' => 'add use excel',
     'verified' => 'verified',
     'registered_users' => 'registered users',
+    'delete' => 'delete',
 
 ];

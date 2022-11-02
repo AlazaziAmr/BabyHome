@@ -27,15 +27,17 @@ class RestPasswordController extends Controller
         try {
             if ($this->userRepository->findBy('phone', $request['phone'])) {
                 $OTP =  OTPGenrator();
-                if ($this->userRepository->IsAskedToReset(['phone' => $request['phone']])) {
-                    $this->userRepository->updateToReset('phone', $request['phone'], [
+                $phone = str_replace('+9660','966',$request['phone']);
+                $phone = str_replace('+966','966',$request['phone']);
+                if ($this->userRepository->IsAskedToReset(['phone' =>$phone])) {
+                    $this->userRepository->updateToReset('phone', $phone, [
                         'token'      => $OTP,
                         'is_reset_verified' => 0,
                         'created_at' => Carbon::now()
                     ]);
                 } else {
                     $this->userRepository->askToReset([
-                        'phone'      => $request['phone'],
+                        'phone'      => $phone,
                         'token'      => $OTP,
                         'created_at' => Carbon::now(),
                     ]);
@@ -54,8 +56,11 @@ class RestPasswordController extends Controller
     {
         try {
 
+            $phone = str_replace('+9660','966',$request['phone']);
+            $phone = str_replace('+966','966',$request['phone']);
+
             if ($this->userRepository->IsAskedToReset([
-                'phone' => $request['phone'],
+                'phone' => $phone,
                 'token' => $request['otp'],
             ])) {
                 $this->userRepository->updateToReset(
@@ -75,7 +80,10 @@ class RestPasswordController extends Controller
     public function passwordReset(ResetPasswordRequest $request)
     {
         try {
-            $this->userRepository->update(['password' => Hash::make($request['password'])], $request['phone'], 'phone');
+            $phone = str_replace('+9660','966',$request['phone']);
+            $phone = str_replace('+966','966',$request['phone']);
+
+            $this->userRepository->update(['password' => Hash::make($request['password'])], $phone, 'phone');
             $this->userRepository->cleanUp('phone' , $request['phone']);
             return JsonResponse::successfulResponse('msg_your_password_changed_successfully');
         } catch (\Exception $e) {

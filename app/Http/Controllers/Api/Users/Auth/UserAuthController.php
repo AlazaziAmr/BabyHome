@@ -79,8 +79,10 @@ class UserAuthController extends Controller
 
             if ($user) {
                 if (!$user['is_verified']) {
+                    $phone = str_replace('+9660','966',$request['phone']);
+                    $phone = str_replace('+966','966',$request['phone']);
                     $user->update(['activation_code' => OTPGenrator()]);
-                     sendOTP($user['activation_code'], $user['phone'],$message = '');
+                     sendOTP($user['activation_code'], $phone,$message = '');
                     if (Hash::check($request['password'], $user['password'])) {
                         return $this->userWithToken($user);
                     } else {
@@ -131,7 +133,9 @@ class UserAuthController extends Controller
     public function resendOTP(Request $request)
     {
         try {
-            $user =  $this->userRepository->findBy('phone', $request['phone']);
+            $phone = str_replace('+9660','966',$request['phone']);
+            $phone = str_replace('+966','966',$request['phone']);
+            $user =  $this->userRepository->findBy('phone', $phone);
             if ($user) {
                 $user->update(['activation_code' => OTPGenrator()]);
                  sendOTP($user['activation_code'], $user['phone'],$message = '');
@@ -149,7 +153,10 @@ class UserAuthController extends Controller
         try {
             // $user =  $this->userRepository->findByMultipleAttributes('phone', $request['phone']);
 
-            $user = User::where('phone', $request['phone'])->where(
+            $phone = str_replace('+9660','966',$request['phone']);
+            $phone = str_replace('+966','966',$request['phone']);
+
+            $user = User::where('phone', $phone)->where(
                 'activation_code',
                 $request['activation_code']
             )->first();
