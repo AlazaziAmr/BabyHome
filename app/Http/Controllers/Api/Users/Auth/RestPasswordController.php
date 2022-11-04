@@ -28,7 +28,7 @@ class RestPasswordController extends Controller
             if ($this->userRepository->findBy('phone', $request['phone'])) {
                 $OTP =  OTPGenrator();
                 $phone = str_replace('+9660','966',$request['phone']);
-                $phone = str_replace('+966','966',$request['phone']);
+                $phone = str_replace('+966','966',$phone);
                 if ($this->userRepository->IsAskedToReset(['phone' =>$phone])) {
                     $this->userRepository->updateToReset('phone', $phone, [
                         'token'      => $OTP,
@@ -57,7 +57,7 @@ class RestPasswordController extends Controller
         try {
 
             $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$request['phone']);
+            $phone = str_replace('+966','966',$phone);
 
             if ($this->userRepository->IsAskedToReset([
                 'phone' => $phone,
@@ -81,7 +81,7 @@ class RestPasswordController extends Controller
     {
         try {
             $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$request['phone']);
+            $phone = str_replace('+966','966',$phone);
 
             $this->userRepository->update(['password' => Hash::make($request['password'])], $phone, 'phone');
             $this->userRepository->cleanUp('phone' , $request['phone']);
