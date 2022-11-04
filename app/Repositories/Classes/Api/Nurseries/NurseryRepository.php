@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Classes\Api\Nurseries;
 
+use App\Functions\FcmNotification;
 use App\Helpers\JsonResponse;
 use App\Models\AdminNotification;
 use App\Models\Api\Generals\Activity;
+use App\Models\Api\Nurseries\Notification;
 use App\Models\Api\Nurseries\NurseryService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -279,6 +281,10 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                 'type' => 1,
             ]);
             DB::commit();
+
+            $fcm = new FcmNotification();
+            $message = 'اهلين ………….<br> تم تسجيلك بنجاح كحاضنة<br> بيتم تحديد موعد وإبلاغك بزيارة احد فريق Baby Home <br> مع تمنياتنا لك بالتوفيق <br> فريق Baby Home';
+            $fcm->save_notification('تسجيل حاضنة',$message,user()->id,user()->phone);
             return ['status' => true];
         } catch (\Exception $e) {
             DB::rollBack();

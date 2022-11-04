@@ -20,6 +20,7 @@ class CreateAdminNotificationsTable extends Migration
             $table->text('description')->nullable();
             $table->text('link')->nullable();
             $table->boolean('mark_as_read')->default(0);
+            $table->tinyInteger('type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

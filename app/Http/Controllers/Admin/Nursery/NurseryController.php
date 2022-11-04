@@ -11,6 +11,7 @@ use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\Api\Nurseries\BabysitterInfo;
 use App\Models\Api\Nurseries\BabysitterQualification;
 use App\Models\Api\Nurseries\BabysitterSkill;
+use App\Models\Api\Nurseries\Notification;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Nurseries\NurseryAmenity;
 use App\Models\Api\Nurseries\NurseryService;
@@ -142,9 +143,14 @@ class NurseryController extends Controller
             'details' => 'أهلاً بك.'
         ];
         $fcm = new \App\Functions\FcmNotification();
-        $phone = str_replace("+","",$user->phone);
+        $phone = str_replace("+9660","966",$user->phone);
+        $phone = str_replace("+966","966",$phone);
         $fcm->send_notification("أهلاً بك.",'تم قبولك في منصة بيبي هوم.',$phone);
-
+        Notification::create([
+            'user_id' => $nursery->user_id,
+            'title' => 'قبول الحاضنة',
+            'message' => 'عزيزتي…….<br> تم تفعيل حسابك بنجاح <br> الحين تقدرين تستخدمين حسابك و تستقبلين طلبات<br> للأسئلة و الاستفسارات حنا في الخدمة على رقم خدمة العملاء : 920012345 <br> مع تمنياتنا لك بالتوفيق <br> فريق Baby Home <br>'
+        ]);
 //        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
@@ -159,7 +165,8 @@ class NurseryController extends Controller
             'details' => 'سيتم التواصل معكم وتوضيح الأسباب.'
         ];
         $fcm = new \App\Functions\FcmNotification();
-        $phone = str_replace("+","",$user->phone);
+        $phone = str_replace("+9660","966",$user->phone);
+        $phone = str_replace("+966","966",$phone);
         $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$phone);
 
 //        Mail::to($user->email)->send(new NurseryMail($data));

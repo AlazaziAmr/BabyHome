@@ -254,22 +254,22 @@ class Nursery extends BaseModel
         return $this->belongsToMany(Utility::class, 'nursery_utilities', 'nursery_id', 'utility_id')->withTimestamps();
     }
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($nursery) {
-            $nursery->babySitter()->delete();
-            foreach ($nursery->utilities()->get() as $utility) {
-                $utility->delete();
-            }
-            foreach ($nursery->services()->get() as $service) {
-                $service->delete();
-            }
-            // dd($nursery->amenities()->get());
-            foreach ($nursery->amenities()->get() as $amenity) {
-                $amenity->delete();
-            }
-        });
-    }
+//    public static function boot()
+//    {
+//        parent::boot();
+//
+//        static::deleting(function ($nursery) {
+//            $nursery->babySitter()->delete();
+//            foreach ($nursery->utilities()->get() as $utility) {
+//                $utility->delete();
+//            }
+//            foreach ($nursery->services()->get() as $service) {
+//                $service->delete();
+//            }
+//            // dd($nursery->amenities()->get());
+//            foreach ($nursery->amenities()->get() as $amenity) {
+//                $amenity->delete();
+//            }
+//        });
+//    }
 }

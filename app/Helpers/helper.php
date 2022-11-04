@@ -82,9 +82,9 @@ if (!function_exists('sendOTP')) {
     function sendOTP($OTP, $phone, $message = 'رمز التحقق للدخول هو  %s , أهلا بك عميلنا العزيز')
     {
         //!function_exists('send_verification_code')
-
-        if (1) {
-            try {
+         try {
+             $phone = str_replace('+9660','966',$phone);
+             $phone = str_replace('+966','966',$phone);
                 $message = "رمز التحقق: $OTP";
                 $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
                     "userName"    => "babyhome",
@@ -98,7 +98,7 @@ if (!function_exists('sendOTP')) {
             } catch (\Exception $e) {
                 return JsonResponse::errorResponse($e->getMessage());
             }
-        }
+
         return  true;
 
     }

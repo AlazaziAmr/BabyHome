@@ -4,6 +4,7 @@
 namespace App\Functions;
 
 
+use App\Models\Api\Nurseries\Notification;
 use App\Models\Client;
 use App\Models\Engineer;
 use App\Models\Order;
@@ -14,10 +15,21 @@ class FcmNotification
 {
     private $server_key  = "AAAAMAsgzYw:APA91bEE90nrC4RoTqoGnEbpEEJTMxbZzEOmASVXnAwZ71EsOPbbLDFJD8JAaH_pNpfZmD4NJsRlMoEo0U0c03nqgOPBKBGSVNNoQkXq4jim2Y6OhflcXqGwOTqb68ymCzOJAstTDxOg";
 
+    public function save_notification($title,$message,$id,$phone){
+        Notification::create([
+            'user_id' => $id,
+            'title' => $title,
+            'message' => $message,
+        ]);
+        $this->send_notification($title,$message,$phone);
+    }
     public function send_notification($title, $message, $topic)
     {
         define('API_ACCESS_KEY', $this->server_key);
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+
+        $topic = str_replace('+9660','966',$topic);
+        $topic = str_replace('+966','966',$topic);
 
         $notification = [
             'title' => $title,

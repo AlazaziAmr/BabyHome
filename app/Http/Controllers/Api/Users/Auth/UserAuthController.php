@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api\Users\Auth;
 
+use App\Functions\FcmNotification;
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Users\RestoreUserRequest;
 use App\Http\Requests\Api\Users\UserLoginRequest;
 use App\Http\Requests\Api\Users\UserRegistrationRequest;
 use App\Http\Resources\Api\Users\UserResource;
+use App\Models\Api\Nurseries\Notification;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
 use App\Notifications\Notifications;
@@ -53,12 +55,12 @@ class UserAuthController extends Controller
         try {
             // sendOTP('15632', '966563064444');
             $data = $request->validated();
-            $phone = str_replace('+9660','966',$data["phone"]);
-            $phone = str_replace('+966','966',$phone);
             $data['activation_code'] = OTPGenrator();
             $user = $this->userRepository->register($data);
 //            $user->sendEmailVerificationNotification();
             sendOTP($user['activation_code'], $user['phone']);
+            $fcm = new FcmNotification();
+            $fcm->save_notification( 'تم التسجيل بنجاح', 'منصة بيبي هوم ترحب بكم',$user['id'],$user['phone']);
             return $this->userWithToken($user);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -79,10 +81,8 @@ class UserAuthController extends Controller
 
             if ($user) {
                 if (!$user['is_verified']) {
-                    $phone = str_replace('+9660','966',$request['phone']);
-                    $phone = str_replace('+966','966',$phone);
                     $user->update(['activation_code' => OTPGenrator()]);
-                     sendOTP($user['activation_code'], $phone,$message = '');
+                    sendOTP($user['activation_code'], $user['phone'],$message = '');
                     if (Hash::check($request['password'], $user['password'])) {
                         return $this->userWithToken($user);
                     } else {
@@ -133,12 +133,10 @@ class UserAuthController extends Controller
     public function resendOTP(Request $request)
     {
         try {
-            $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$phone);
-            $user =  $this->userRepository->findBy('phone', $phone);
+            $user =  $this->userRepository->findBy('phone', $request['phone']);
             if ($user) {
                 $user->update(['activation_code' => OTPGenrator()]);
-                 sendOTP($user['activation_code'], $user['phone'],$message = '');
+                sendOTP($user['activation_code'], $user['phone'],$message = '');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');
@@ -153,10 +151,7 @@ class UserAuthController extends Controller
         try {
             // $user =  $this->userRepository->findByMultipleAttributes('phone', $request['phone']);
 
-            $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$phone);
-
-            $user = User::where('phone', $phone)->where(
+            $user = User::where('phone', $request['phone'])->where(
                 'activation_code',
                 $request['activation_code']
             )->first();

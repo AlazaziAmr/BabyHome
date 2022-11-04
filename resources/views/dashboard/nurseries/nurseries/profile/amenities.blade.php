@@ -105,29 +105,30 @@ li
             <li class="col-md-4 list">
             @if($amenity->getImages())
 
-{{--                @foreach($amenity->getImages() as $image)--}}
 
-{{--                        <div class="card card-plain card-blog mt-4">--}}
-{{--                                              <h5 class="mt-4"> {{ ($amenity->amenity) ? $amenity->amenity->name : '' }}</h5>--}}
+                @foreach($amenity->getImages() as $image)
 
-{{--                            <div class="card-image border-radius-lg position-relative">--}}
-{{--                                <a href="javascript:;">--}}
-{{--                                    <div class="blur-shadow-image">--}}
+                        <div class="card card-plain card-blog mt-4">
+                                              <h5 class="mt-4"> {{ ($amenity->amenity) ? $amenity->amenity->name : '' }}</h5>
 
-{{--                                        <img id="myImg" width="250" height="200" class="img img-fluid border-radius-lg move-on-hover" src="{{ $image->image_path }}">--}}
+                            <div class="card-image border-radius-lg position-relative">
+                                <a href="javascript:;">
+                                    <div class="blur-shadow-image">
 
-{{--                                    </div>--}}
-{{--                                </a>--}}
-{{--                                       <div id="myModal" class="modal">--}}
-{{--  <span class="close">×</span>--}}
-{{--  <img class="modal-content" id="img01">--}}
-{{--  <div id="caption"></div>--}}
-{{--</div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                                        <img id="myImg" width="250" height="200" class="img img-fluid border-radius-lg move-on-hover" src="{{ $image['image_path'] }}">
+
+                                    </div>
+                                </a>
+                                       <div id="myModal" class="modal">
+  <span class="close">×</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>
+                            </div>
+                        </div>
 
 
-{{--                @endforeach--}}
+                @endforeach
 
             @endif
             </li>
