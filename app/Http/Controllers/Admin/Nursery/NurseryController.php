@@ -255,7 +255,7 @@ class NurseryController extends Controller
         ]);
 
         sendAdMessage($phone,$message);
-        Mail::to($user->email)->send(new NurseryMail($data));
+//        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 
@@ -273,7 +273,7 @@ class NurseryController extends Controller
         $phone = str_replace("+966","966",$phone);
         $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$phone);
 
-        Mail::to($user->email)->send(new NurseryMail($data));
+//        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 
