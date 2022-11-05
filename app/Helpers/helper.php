@@ -104,6 +104,40 @@ if (!function_exists('sendOTP')) {
     }
 }
 
+
+if (!function_exists('sendAdMessage')) {
+
+
+    /**
+     * send  Advertisement Sms
+     *
+     * @param string  $phone
+     * @param string  $message
+     */
+    function sendAdMessage($phone, $message)
+    {
+
+         try {
+             $phone = str_replace('+9660','966',$phone);
+             $phone = str_replace('+966','966',$phone);
+                $response = Http::post('https://www.msegat.com/gw/sendsms.php', [
+                    "userName"    => "babyhome",
+                    "apiKey"      => "0eacc90c694d720222a39c3b74241915",
+                    "numbers"     => $phone,
+                    "userSender"  => "BabyHome-ad",
+                    "msg"         => $message,
+                    "msgEncoding" => "UTF8",
+                ]);
+
+            } catch (\Exception $e) {
+                return JsonResponse::errorResponse($e->getMessage());
+            }
+
+        return true;
+
+    }
+}
+
 // if (!function_exists('executeBase64')) {
 
 //     /**

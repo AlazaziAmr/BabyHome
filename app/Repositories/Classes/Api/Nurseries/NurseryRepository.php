@@ -283,8 +283,14 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             DB::commit();
 
             $fcm = new FcmNotification();
-            $message = 'اهلين ………….<br> تم تسجيلك بنجاح كحاضنة<br> بيتم تحديد موعد وإبلاغك بزيارة احد فريق Baby Home <br> مع تمنياتنا لك بالتوفيق <br> فريق Baby Home';
+//            $message = 'اهلين ………….<br> تم تسجيلك بنجاح كحاضنة<br> بيتم تحديد موعد وإبلاغك بزيارة احد فريق Baby Home <br> مع تمنياتنا لك بالتوفيق <br> فريق Baby Home';
+            $message = 'اهلين …………
+تم تسجيلك بنجاح كحاضنة
+بيتم تحديد موعد وإبلاغك بزيارة احد فريق Baby Home
+مع تمنياتنا لك بالتوفيق
+ فريق Baby Home';
             $fcm->save_notification('تسجيل حاضنة',$message,user()->id,user()->phone);
+            sendAdMessage(user()->phone,$message);
             return ['status' => true];
         } catch (\Exception $e) {
             DB::rollBack();

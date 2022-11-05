@@ -12,6 +12,27 @@
             processData: false,
             contentType: false,
             success: function (data) {
+                $("#set_inspector_form").attr('action','{{ route('__bh_.nursery.inspector.store') }}');
+                $("#set_inspector_model_body").html(data);
+                $("#set_inspector_model").modal("show");
+            }
+        });
+    }
+
+    function update_schedule(url) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'text',
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                $("#set_inspector_form").attr('action','{{ route('__bh_.nursery.inspector.update') }}');
                 $("#set_inspector_model_body").html(data);
                 $("#set_inspector_model").modal("show");
             }

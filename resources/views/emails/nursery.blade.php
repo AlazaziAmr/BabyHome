@@ -58,7 +58,7 @@
                                 style="mso-line-height-rule: exactly; padding: 48px; text-align: center; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
                                 <a href="#"
                                     style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly;">
-                                    <img src="{{ asset('assets/images/baby-home.png') }}" width="155" alt="Baby Home"
+                                    <img src="{{ $message->embed(public_path().'/assets/images/baby-home.png') }}" width="155" data-auto-embed="attachment" alt="Baby Home"
                                         style="max-width: 100%; vertical-align: middle; line-height: 100%; border: 0;">
                                 </a>
                             </td>
@@ -103,13 +103,13 @@
                                                             style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; margin-bottom: 16px; cursor: default;">
                                                             <a href="{{ config('apps.apple') }}"
                                                                 style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img
-                                                                    src="{{ asset('assets/images/app-store.png') }}"
+                                                                    src="{{ $message->embed(public_path().'/assets/images/app-store.png') }}"
                                                                     alt="Apple"
                                                                     style="max-width: 100%; vertical-align: middle; "></a>
                                                             &bull;
                                                             <a href="{{ config('apps.google') }}"
                                                                 style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238; text-decoration: none;"><img
-                                                                    src="{{ asset('assets/images/google.png') }}"
+                                                                    src="{{ $message->embed(public_path().'/assets/images/google.png') }}"
                                                                     alt="google"
                                                                     style="max-width: 100%; vertical-align: middle; "></a>
                                                             &bull;

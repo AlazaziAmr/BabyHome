@@ -1,6 +1,8 @@
 <?php
 
+use App\Mail\NurseryMail;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use \App\Http\Controllers\Admin\Auth\AdminAuthController;
@@ -18,6 +20,15 @@ use \App\Http\Controllers\Admin\User\UserController;
 use \App\Http\Controllers\Admin\General\NeighborhoodController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\QualificationController;
+
+Route::get('/test_mail', function () {
+    $data = [
+        'name' => 'Amr',
+        'message' => 'تم قبولك في منصة بيبي هوم.',
+        'details' => 'أهلاً بك.'
+    ];
+    Mail::to('alazaziamr@gmail.com')->send(new NurseryMail($data));
+});
 
 Route::get('/test_sms', function () {
     $OTP = '1234';
@@ -50,12 +61,6 @@ Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('storage:link');
     //$exitCode = Artisan::call('config:cache');
 //    return 'DONE'; //Return anything
-
-
-
-
-    implode(',',$phone);
-    echo ($phone);
 });
 
 Route::get('adminLogin', [AdminAuthController::class, 'adminLoginFrom'])->name('adminLogin');
@@ -77,7 +82,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::get('nursery/active/{id}', [NurseryController::class, 'active'])->name('nursery.active');
             Route::get('nursery/block/{id}', [NurseryController::class, 'block'])->name('nursery.block');
             Route::get('nursery/inspector', [NurseryController::class, 'inspector_view'])->name('nursery.inspector');
+            Route::get('nursery/inspector_update', [NurseryController::class, 'inspector_update_view'])->name('nursery.inspector.reschedule');
             Route::post('nursery/inspector', [NurseryController::class, 'set_inspector'])->name('nursery.inspector.store');
+            Route::post('nursery/inspector_update', [NurseryController::class, 'update_inspector'])->name('nursery.inspector.update');
             Route::get('inspections', [InspectionController::class, 'index'])->name('inspections.index');
             Route::post('inspections', [InspectionController::class, 'store'])->name('inspections.store');
             Route::get('inspections/{id}', [InspectionController::class, 'show'])->name('inspections.show');
