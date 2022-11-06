@@ -125,7 +125,7 @@ class NurseryController extends Controller
             $date = Carbon::parse($request->to)->format('Y-m-d');
             $time = Carbon::translateTimeString(Carbon::parse($request->to)->format('g:i a'),'en','ar');
 
-            $message = "عزيزتي…….
+            $message = "عزيزتي $name
 حبينا نبلغك انو تم اعادة جدولة الموعد الى يوم $day بتاريخ $date الساعة $time
 
 ملاحظة:
@@ -194,7 +194,7 @@ class NurseryController extends Controller
             $date = Carbon::parse($request->to)->format('Y-m-d');
             $time = Carbon::translateTimeString(Carbon::parse($request->to)->format('g:i a'),'en','ar');
 
-            $message = "اهلين …….
+            $message = "اهلين $name
 تم تأكيد موعد زيارة المفتشة يوم $day بتاريخ $date الساعة $time
 
 ملاحظة:
@@ -240,7 +240,7 @@ class NurseryController extends Controller
         $phone = str_replace("+9660","966",$user->phone);
         $phone = str_replace("+966","966",$phone);
         $fcm->send_notification("أهلاً بك.",'تم قبولك في منصة بيبي هوم.',$phone);
-        $message = "عزيزتي…….
+        $message = "عزيزتي $user->name
 تم تفعيل حسابك بنجاح
 الحين تقدرين تستخدمين حسابك و تستقبلين طلبات
 
@@ -248,14 +248,14 @@ class NurseryController extends Controller
 
 مع تمنياتنا لك بالتوفيق
 فريق Baby Home";
-        Notification::create([
-            'user_id' => $nursery->user_id,
-            'title' => 'قبول الحاضنة',
-            'message' => $message
-        ]);
+//        Notification::create([
+//            'user_id' => $nursery->user_id,
+//            'title' => 'قبول الحاضنة',
+//            'message' => $message
+//        ]);
 
         sendAdMessage($phone,$message);
-//        Mail::to($user->email)->send(new NurseryMail($data));
+        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 
@@ -273,7 +273,7 @@ class NurseryController extends Controller
         $phone = str_replace("+966","966",$phone);
         $fcm->send_notification("تم رفضكِ في منصة بيبي هوم.",'سيتم التواصل معكم وتوضيح الأسباب.',$phone);
 
-//        Mail::to($user->email)->send(new NurseryMail($data));
+        Mail::to($user->email)->send(new NurseryMail($data));
         return response()->json(array('success' => true), 200);
     }
 

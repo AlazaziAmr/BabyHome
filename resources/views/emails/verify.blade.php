@@ -91,15 +91,15 @@
                                                 If you did not sign up to BabyHome, please ignore this email or contact
                                                 us at
                                                 <a href="mailto:support@example.com" class="hover-underline"
-                                                    style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">support@babyhome.com</a>
+                                                    style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">info@baby-homes.com</a>
                                             </p>
 
-                                            <table cellpadding="0" cellspacing="0" role="presentation">
+                                            <table cellpadding="0" cellspacing="0" role="presentation" style="margin: auto;">
                                                 <tr>
                                                     <td
                                                         style="mso-line-height-rule: exactly; mso-padding-alt: 16px 24px; border-radius: 4px; background-color: #f1c8bf; font-family: Montserrat, -apple-system, 'Segoe UI', sans-serif;">
                                                         <p
-                                                            style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #000000; text-decoration: none;">
+                                                            style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; display: block; padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 16px; font-size: 16px; font-weight: 600; line-height: 100%; color: #000000; text-decoration: none;">
                                                             Your Activation Code:  {{ $code }}</p>
                                                     </td>
                                                 </tr>
@@ -143,11 +143,11 @@
                                                         <p
                                                             style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #263238;">
                                                             Use of our service and website is subject to our
-                                                            <a href="#" class="hover-underline"
-                                                                style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">Terms
+                                                            <a href="https://baby-homes.com/terms/" class="hover-underline"
+                                                                target="_blank" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">Terms
                                                                 of Use</a> and
-                                                            <a href="#" class="hover-underline"
-                                                                style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">Privacy
+                                                            <a href="https://baby-homes.com/privacy-policy-2/" class="hover-underline"
+                                                                target="_blank" style="font-family: 'Montserrat', sans-serif; mso-line-height-rule: exactly; color: #7367f0; text-decoration: none;">Privacy
                                                                 Policy</a>.
                                                         </p>
                                                     </td>
