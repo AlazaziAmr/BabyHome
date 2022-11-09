@@ -78,6 +78,8 @@ return [
 
     /**/
     'name' => 'name',
+    'firstname' => 'First name',
+    'lastname' => 'last name',
     /**/
 
     'owner_name' => 'name',
@@ -165,10 +167,10 @@ return [
     'done_active' => 'Activated successfully',
     'done_block' => 'Blocked successfully',
     'en' => [
-        'name' => 'name'
+        'name' => 'name',
     ],
     'ar' => [
-        'name' => 'الاسم'
+        'name' => 'الاسم',
     ],
     'deleted_successfully' => 'deleted successfully',
     'nationalities' => 'nationalities',
@@ -188,5 +190,8 @@ return [
     'verified' => 'verified',
     'registered_users' => 'registered users',
     'delete' => 'delete',
+    'card_expiration_date' => 'Card Expiration Date',
+    'license_number' => 'License Number',
+    'license_file' => 'License File',
 
 ];

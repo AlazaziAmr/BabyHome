@@ -16,6 +16,13 @@ class NurseryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'license_no' => $this->license_no,
+            'gender' => $this->gender,
+            'card_expiration_date' => $this->card_expiration_date,
+            'nationality' => $this->nationality,
             'capacity' => $this->capacity,
             'acceptance_age_type' => $this->acceptance_age_type,
             'acceptance_age_from' => $this->acceptance_age_from,

@@ -78,6 +78,8 @@ return [
 
     /**/
     'name' => 'الاسم',
+    'firstname' => 'الاسم الأول',
+    'lastname' => 'الاسم الثاني',
     /**/
 
     'owner_name' => 'الاسم',
@@ -164,10 +166,10 @@ return [
     'done_active' =>'تم التفعيل بنجاح',
     'done_block' =>'تم التفعيل بنجاح',
     'en' => [
-        'name' => 'name'
+        'name' => 'name',
     ],
     'ar' => [
-        'name' => 'الاسم'
+        'name' => 'الاسم',
     ],
     'nationalities' => 'الجنسيات',
     'one_nationalities' => 'الجنسية',
@@ -186,5 +188,8 @@ return [
     'verified' => 'مفعل',
     'registered_users' => 'المستخدمين المسجلين',
     'delete' => 'حذف',
+    'card_expiration_date' => 'تاريخ إنتهاء الهوية',
+    'license_number' => 'رقم الرخصة',
+    'license_file' => 'ملف الرخصة',
 
 ];

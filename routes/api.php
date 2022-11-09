@@ -40,7 +40,9 @@ use \App\Http\Controllers\Api\Master\Children\ChildAllergyController;
 use \App\Http\Controllers\Api\Master\Children\ChildAlertController;
 
 //  ========================================================Public==================================================================
-
+Route::post('/testsave',function (\Illuminate\Http\Request $request){
+   dd($request['licenses']['attachments']);
+});
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], function () {
 
     // switchLang

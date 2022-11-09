@@ -17,7 +17,20 @@ class NurseryRequest extends FormRequest
 
 
             // personal Info
-            'date_of_birth' => 'required|date',
+//            'date_of_birth' => 'required|date',
+            'name.ar' => 'required|string',
+            'name.en' => 'required|string',
+            'first_name.ar' => 'required|string',
+            'first_name.en' => 'required|string',
+            'last_name.ar' => 'required|string',
+            'last_name.en' => 'required|string',
+            'license_no' => 'required|unique:nurseries,license_no',
+            'gender.ar' => 'required|string',
+            'gender.en' => 'required|string',
+            'card_expiration_date' => 'required|string',
+            'nationality' => 'required|string',
+            'licenses.attachments.*.file' => 'required|mimes:jpeg,png,jpg,pdf',
+            'date_of_birth' => 'required|string',
             'years_of_experince' => 'nullable|numeric',
             'national_id' => 'required|max:15|string|unique:babysitter_infos,national_id',
             'qualifications' => 'array',

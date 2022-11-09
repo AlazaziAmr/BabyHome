@@ -9,6 +9,7 @@ use App\Models\Api\Generals\Activity;
 use App\Models\Api\Nurseries\Notification;
 use App\Models\Api\Nurseries\NurseryService;
 use Carbon\Carbon;
+use http\Client\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Nurseries\PackageInfo;
@@ -207,6 +208,12 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $name = user()->name;
 
             $nursery = $this->model->create([
+                'name' => $request['name'],
+                'first_name' => $request['first_name'],
+                'last_name' => $request['last_name'],
+                'license_no' => $request['license_no'],
+                'gender' => $request['gender'],
+                'card_expiration_date' => $request['card_expiration_date'],
                 'capacity' => $request['capacity'],
                 'acceptance_age_from' => $request['acceptance_age_from'],
                 'acceptance_age_type' => $request['acceptance_age_type'],
@@ -223,6 +230,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                 'nationality_id' => $request['nationality_id'],
                 'user_id' => user()->id ?? null,
             ]);
+            if (!empty($request['licenses'])) uploadAttachment($nursery, $request['licenses'], 'attachments', 'licenses');
 
             $this->updateUser();
 

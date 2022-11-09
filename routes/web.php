@@ -21,6 +21,9 @@ use \App\Http\Controllers\Admin\General\NeighborhoodController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\AmenityController;
 use \App\Http\Controllers\Admin\Nursery\Addtioanl\QualificationController;
 
+Route::post('test_json',function (\http\Client\Request $request){
+
+});
 Route::get('/test_mail', function () {
     $data = [
         'name' => 'Amr',

@@ -35,7 +35,7 @@ class NurseryController extends Controller
 
     public function show($id){
         $data['title'] = __('site.nurseries');
-        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone,email'])->findOrFail($id);
+        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone,email','attachmentable'])->findOrFail($id);
         $data['babysitter'] = BabysitterInfo::with(['languages','nationalitydata','attachmentable'])
             ->where('nursery_id',$id)
             ->first();

@@ -4,6 +4,7 @@ namespace App\Models\Api\Nurseries;
 
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\Inspection;
+use App\Models\Api\Generals\Attachment;
 use App\Models\BaseModel;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
@@ -100,6 +101,34 @@ class Nursery extends BaseModel
 //    {
 //        return $this->status[$value];
 //    }
+
+    public function attachmentable()
+    {
+        return $this->morphMany(Attachment::class, 'attachmentable');
+    }
+
+    public function getMainAttachmentAttribute()
+    {
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $image) {
+                return asset('storage/licenses/' . $image->path);
+            }
+        }
+        return null;
+    }
+
+    public function getImages()
+    {
+        $images = array();
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $index=>$image) {
+                $images[$index]['id'] = $image->id;
+                $images[$index]['image_path'] = asset('storage/licenses/' . $image->path);
+            }
+        }
+
+        return $images;
+    }
 
     /**
      * Get the country that owns the Nursery
