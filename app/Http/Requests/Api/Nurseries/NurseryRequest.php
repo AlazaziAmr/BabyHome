@@ -28,7 +28,6 @@ class NurseryRequest extends FormRequest
             'gender.ar' => 'required|string',
             'gender.en' => 'required|string',
             'card_expiration_date' => 'required|string',
-            'nationality' => 'required|string',
             'licenses.attachments.*.file' => 'required|mimes:jpeg,png,jpg,pdf',
             'date_of_birth' => 'required|string',
             'years_of_experince' => 'nullable|numeric',
