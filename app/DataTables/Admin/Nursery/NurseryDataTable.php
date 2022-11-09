@@ -18,11 +18,9 @@ class NurseryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('owner_name', function ($data) {
-                if($data->owner){
-                    return $data->owner->name;
-                }else{
-                    return  '';
-                }
+
+                    return $data->name;
+
             })->addColumn('inspector', function ($data) {
                 return $data->getInspector();
             })->addColumn('status_lable', function ($data) {

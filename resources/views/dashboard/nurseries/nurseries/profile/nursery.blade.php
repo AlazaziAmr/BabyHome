@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm ">
+                <li class="list-group-item border-0 ps-0 text-sm ">
             <span class="font-weight-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" cols-md="4"
@@ -13,12 +13,11 @@
                 @lang('site.name'):
             </span> &nbsp;
                     {{--                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>--}}
-{{--                    {{ $data['nursery']->name }}--}}
-                    Name
+                    {{ $data['nursery']->name }}
                 </li>
                 <hr>
 
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm ">
+                <li class="list-group-item border-0 ps-0 text-sm ">
             <span class="font-weight-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" cols-md="4"
@@ -28,13 +27,11 @@
                 </svg>
                 @lang('site.firstname'):
             </span> &nbsp;
-                    {{--                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>--}}
-{{--                    {{ $data['nursery']->first_name }}--}}
-                    First Name
+                    {{ $data['nursery']->first_name }}
                 </li>
                 <hr>
 
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm ">
+                <li class="list-group-item border-0 ps-0 text-sm ">
             <span class="font-weight-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" cols-md="4"
@@ -44,13 +41,11 @@
                 </svg>
                 @lang('site.lastname'):
             </span> &nbsp;
-                    {{--                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>--}}
-{{--                    {{ $data['nursery']->last_name }}--}}
-                    Last Name
+                    {{ $data['nursery']->last_name }}
                 </li>
                 <hr>
 
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm ">
+                <li class="list-group-item border-0 ps-0 text-sm ">
             <span class="font-weight-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -62,13 +57,11 @@
                     </svg>
                 @lang('site.license_number'):
             </span> &nbsp;
-                    {{--                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>--}}
-{{--                    {{ $data['nursery']->license_no }}--}}
-                    license_number
+                    {{ $data['nursery']->license_no }}
                 </li>
                 <hr>
 
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm ">
+                <li class="list-group-item border-0 ps-0 text-sm ">
             <span class="font-weight-bold">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -80,13 +73,21 @@
                     </svg>
                 @lang('site.license_file'):
             </span> &nbsp;
-                    {{--                    {{ $data['nursery']->owner ? $data['nursery']->owner->name : ''  }} </li> <hr>--}}
-{{--                    @if($data['nursery']->getImages())--}}
-{{--                    @foreach($data['nursery']->getImages() as $file)--}}
-{{--                    <a href="{{$file['image_path']}}">@lang('site.attachments')</a>--}}
-{{--                        @endforeach--}}
-{{--                            @endif--}}
-                    attachments
+                    @if($data['nursery']->getImages())
+                        @foreach($data['nursery']->getImages() as $file)
+                            <a href="{{$file['image_path']}}" target="_blank" class="link-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     cols-md="4"
+                                     class="mr-75 feather feather-file-minus">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                                </svg>
+                                @lang('site.attachments')
+                            </a>
+                        @endforeach
+                    @endif
                 </li>
                 <hr>
 

@@ -17,7 +17,7 @@ class NurseryRequest extends FormRequest
 
 
             // personal Info
-//            'date_of_birth' => 'required|date',
+            'name' => 'array',
             'name.ar' => 'required|string',
             'name.en' => 'required|string',
             'first_name.ar' => 'required|string',

@@ -215,7 +215,7 @@ class InspectionController extends Controller
     {
         $ins = Inspection::findOrFail($id);
         $data['title'] = __('site.inspections');
-        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone'])->findOrFail($ins->nursery_id);
+        $data['nursery'] = Nursery::with(['country:id,name', 'city:id,name', 'neighborhood:id,name', 'owner:id,name,phone', 'attachmentable'])->findOrFail($ins->nursery_id);
         $data['babysitter'] = BabysitterInfo::with(['languages', 'nationalitydata', 'attachmentable'])
             ->where('nursery_id', $ins->nursery_id)
             ->first();

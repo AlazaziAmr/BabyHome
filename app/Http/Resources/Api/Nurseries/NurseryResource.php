@@ -22,7 +22,6 @@ class NurseryResource extends JsonResource
             'license_no' => $this->license_no,
             'gender' => $this->gender,
             'card_expiration_date' => $this->card_expiration_date,
-            'nationality' => $this->nationality,
             'capacity' => $this->capacity,
             'acceptance_age_type' => $this->acceptance_age_type,
             'acceptance_age_from' => $this->acceptance_age_from,

@@ -235,7 +235,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $this->updateUser();
 
             $this->babySitterInfo($request, $nursery);
-            // availabilities
+            // a`va`ilabilities
             if (!empty($request['days'])) {
                 $this->availabilities($request['days'], $nursery);
             }

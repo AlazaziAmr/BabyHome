@@ -17,7 +17,7 @@ class CreateBabysitterInfosTable extends Migration
             $table->id();
             $table->integer('years_of_experince');
             $table->string('date_of_birth');
-            $table->string('national_id')->unique();
+            $table->string('national_id');
             $table->string('nationality');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('nursery_id')->constrained('nurseries')->onUpdate('cascade')->onDelete('cascade');

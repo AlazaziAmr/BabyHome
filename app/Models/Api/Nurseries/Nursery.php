@@ -28,10 +28,15 @@ class Nursery extends BaseModel
     use HasTranslations;
     protected $hidden = ['pivot'];
 
-    public $translatable = [];
+    public $translatable = ['name','first_name','last_name','gender'];
 
     protected $fillable = [
-        // 'name',
+        'name',
+        'first_name',
+        'last_name',
+        'license_no',
+        'gender',
+        'card_expiration_date',
         'capacity',
         'acceptance_age_type',
         'acceptance_age',

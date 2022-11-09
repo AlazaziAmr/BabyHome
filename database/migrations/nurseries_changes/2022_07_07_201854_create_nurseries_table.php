@@ -14,7 +14,7 @@ class CreateNurseriesTable extends Migration
             $table->json('name');
             $table->json('first_name');
             $table->json('last_name');
-            $table->string('license_no')->unique();
+            $table->string('license_no');
             $table->json('gender');
             $table->string('card_expiration_date');
 //            $table->string('nationality');
