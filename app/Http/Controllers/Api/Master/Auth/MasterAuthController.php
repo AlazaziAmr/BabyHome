@@ -49,7 +49,7 @@ class MasterAuthController extends Controller
             $data = $request->validated();
             $data['activation_code'] = OTPGenrator();
             $master = $this->masterRepository->register($data);
-            // sendOTP($master['activation_code'], $master['phone'],$message = '');
+             sendOTP($master['activation_code'], $master['phone'],$message = '');
             return $this->masterWithToken($master);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
