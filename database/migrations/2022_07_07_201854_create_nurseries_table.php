@@ -10,6 +10,7 @@ class CreateNurseriesTable extends Migration
     {
         Schema::create('nurseries', function (Blueprint $table) {
             $table->id();
+            $table->string('uid');
             // $table->json('name');
             $table->integer('capacity')->max(3);
             $table->integer('acceptance_age_type')->comment('1 for month - 2 for year');

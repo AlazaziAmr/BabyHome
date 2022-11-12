@@ -21,6 +21,7 @@ class CreateMastersTable extends Migration
             $table->string('password');
             $table->string('phone')->unique();
             $table->string('national_id')->unique();
+            $table->foreignId('nationality_id')->nullable()->constrained('nationalities')->onUpdate('cascade')->onDelete('cascade');
             $table->string('address');
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
