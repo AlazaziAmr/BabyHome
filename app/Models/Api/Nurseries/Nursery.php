@@ -32,6 +32,7 @@ class Nursery extends BaseModel
 
     protected $fillable = [
         'name',
+        'uid',
         'first_name',
         'last_name',
         'license_no',
