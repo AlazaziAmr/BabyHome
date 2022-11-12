@@ -3,16 +3,12 @@
 namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Functions\FcmNotification;
-use App\Helpers\JsonResponse;
 use App\Models\AdminNotification;
 use App\Models\Api\Generals\Activity;
-use App\Models\Api\Nurseries\Notification;
 use App\Models\Api\Nurseries\NurseryService;
 use Carbon\Carbon;
-use http\Client\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Api\Nurseries\Nursery;
-use App\Models\Api\Nurseries\PackageInfo;
 use App\Models\Api\Nurseries\BabysitterInfo;
 use App\Repositories\Classes\BaseRepository;
 use App\Models\Api\Admin\Inspections\Inspection;
@@ -208,6 +204,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $name = user()->name;
 
             $nursery = $this->model->create([
+                'uid'=> uid($this->model()),
                 'name' => $request['name'],
                 'first_name' => $request['first_name'],
                 'last_name' => $request['last_name'],

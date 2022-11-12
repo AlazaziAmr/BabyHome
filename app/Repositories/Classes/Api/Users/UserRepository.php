@@ -19,7 +19,9 @@ class UserRepository extends BaseRepository implements IUserRepository
     {
         return $this->model->create(
             [
+
                 'name'         => $payload['name'],
+                'uid'=> uidn($this->model()),
                 'email'        => $payload['email'],
                 'phone' => $payload['phone'],
                 // 'national_id' => $payload['national_id'],

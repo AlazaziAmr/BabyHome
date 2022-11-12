@@ -319,6 +319,8 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
     Route::get('child-allergies/{id}', [ChildAllergyController::class, 'index']);
     Route::get('child-alerts/{id}', [ChildAlertController::class, 'index']);
+    Route::get('/filter-master', [MasterJoinRequestController::class, 'filterMaster']);
+
 });
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {

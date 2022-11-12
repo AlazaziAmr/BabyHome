@@ -6,6 +6,7 @@ use App\Models\Api\Master\Master;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
 
@@ -276,3 +277,31 @@ if (!function_exists('uploadAttachment')) {
     //         return public_path('storage/' . $folderName . '/' . $newFileName);
     //     }
     // }
+if (!function_exists('uid')) {
+    function uid($d) {
+            $number=('BH_p_'.substr(Str::uuid(),0,8));
+            $find = $d::where('uid',$number)->first();
+
+
+        if ($find !=null){
+            uid($d);
+        }
+        return $number;
+    }
+
+}
+if (!function_exists('uidn')) {
+
+        function uidn($d) {
+
+            $number=('BH_n_'.substr(Str::uuid(),0,8));
+            $find = $d::where('uid',$number)->first();
+
+
+            if ($find !=null){
+                uid($d);
+            }
+            return $number;
+        }
+
+}

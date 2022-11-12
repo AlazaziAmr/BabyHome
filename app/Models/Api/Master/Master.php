@@ -18,6 +18,7 @@ class Master extends Authenticatable
     protected $guard = 'master';
     protected $fillable = [
         'name',
+        'uid',
         'email',
         'phone',
         'password',

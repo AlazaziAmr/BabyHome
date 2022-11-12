@@ -10,6 +10,7 @@ class CreateNurseriesTable extends Migration
     {
         Schema::create('nurseries', function (Blueprint $table) {
             $table->id();
+            $table->string('uid');
           /*  New Add*/
             $table->json('name');
             $table->json('first_name');
