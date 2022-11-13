@@ -61,9 +61,7 @@ class UserRepository extends BaseRepository implements IUserRepository
         })->firstOrFail();
         $OTP = OTPGenrator();
         sendOTP($OTP,$user->phone,'');
-        $user->update([
-//                'restore_request' => 1
-            'deleted_at' => null,
-        ]);
+        $user->restore();
+        return $user;
     }
 }

@@ -220,8 +220,9 @@ class UserAuthController extends Controller
     public function restoreRequest(RestoreUserRequest $request)
     {
         try {
-            $this->userRepository->restoreRequest($request->validated());
-            return JsonResponse::successfulResponse('msg_requested_succssfully');
+            $user = $this->userRepository->restoreRequest($request->validated());
+            return $this->VerfiedUserWithToken($user);
+//            return JsonResponse::successfulResponse('msg_requested_succssfully',$this->VerfiedUserWithToken($user));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

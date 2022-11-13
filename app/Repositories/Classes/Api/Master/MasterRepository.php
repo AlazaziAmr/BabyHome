@@ -58,4 +58,16 @@ class MasterRepository extends BaseRepository implements IMasterRepository
     {
         DB::table($table)->where($attribute, $key)->delete();
     }
+    public function restoreRequest($request)
+    {
+        $master = Master::withTrashed()->when(isset($request['phone']), function ($q) use ($request) {
+            $q->where('phone', $request['phone']);
+        })->when(isset($request['email']), function ($q)  use ($request) {
+            $q->where('email', $request['email']);
+        })->firstOrFail();
+        $OTP = OTPGenrator();
+        sendOTP($OTP,$master->phone,'');
+        $master->restore();
+        return $master;
+    }
 }

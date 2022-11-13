@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Auth\MasterLoginRequest;
 use App\Http\Requests\Api\Master\Auth\MasterRegistrationRequest;
+use App\Http\Requests\Api\Master\Auth\RestoreMasterRequest;
 use App\Http\Resources\Api\Master\Auth\MasterResource;
 use App\Models\Api\Master\Master;
 use App\Repositories\Interfaces\Api\Master\IMasterRepository;
@@ -29,6 +30,7 @@ class MasterAuthController extends Controller
         $response = ['token' => $master->createToken('Baby Home Client', ['master'])->plainTextToken];
         return (new MasterResource($master))->additional(array_merge(['data' => $response], JsonResponse::success()));
     }
+
     public function masterWithToken($master)
     {
         config(['auth.guards.api.provider' => 'master']);
@@ -36,6 +38,7 @@ class MasterAuthController extends Controller
         $response = ['token' => $master->createToken('Baby Home Client', ['master'])->plainTextToken];
         return (new MasterResource($master))->additional(array_merge(['data' => $response], JsonResponse::sentSuccssfully()));
     }
+
     /**
      * Master registerion
      *
@@ -49,7 +52,7 @@ class MasterAuthController extends Controller
             $data = $request->validated();
             $data['activation_code'] = OTPGenrator();
             $master = $this->masterRepository->register($data);
-             sendOTP($master['activation_code'], $master['phone'],$message = '');
+            sendOTP($master['activation_code'], $master['phone'], $message = '');
             return $this->masterWithToken($master);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -67,20 +70,21 @@ class MasterAuthController extends Controller
     public function login(MasterLoginRequest $request)
     {
         try {
-            $master =  $this->masterRepository->findBy('phone', $request['phone']);
+            $master = $this->masterRepository->findBy('phone', $request['phone']);
 
             if ($master) {
-                if (!$master['is_verified']) {
+                if (!$master['is_verified'] && !$request->has('activation_code')) {
                     $OTP = OTPGenrator();
-                    $master->update(['activation_code' => $OTP ]);
-                     sendOTP($OTP, $request['phone'],$message = '');
+                    $master->update(['activation_code' => $OTP]);
+                    sendOTP($OTP, $request['phone'], '');
                     if (Hash::check($request['password'], $master['password'])) {
                         return $this->masterWithToken($master);
                     } else {
                         return JsonResponse::errorResponse('msg_password_mismatch');
                     }
                 }
-                if (Hash::check($request['password'], $master['password'])) {
+                if (Hash::check($request['password'], $master['password']) && $master['activation_code'] == $request['activation_code']) {
+                    $master->update(['is_verified' => 1]);
                     return $this->VerfiedMasterWithToken($master);
                 } else {
                     return JsonResponse::errorResponse('msg_password_mismatch');
@@ -111,7 +115,6 @@ class MasterAuthController extends Controller
     }
 
 
-
     /**
      *resend OTP
      *
@@ -122,11 +125,11 @@ class MasterAuthController extends Controller
     public function resendOTP(Request $request)
     {
         try {
-            $master =  $this->masterRepository->findBy('phone', $request['phone']);
+            $master = $this->masterRepository->findBy('phone', $request['phone']);
             if ($master) {
                 $OTP = OTPGenrator();
                 $master->update(['activation_code' => $OTP]);
-                 sendOTP($OTP, $request['phone'],'');
+                sendOTP($OTP, $request['phone'], '');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');
@@ -156,10 +159,69 @@ class MasterAuthController extends Controller
         }
     }
 
-    public function profile(){
+    public function profile()
+    {
         try {
-            $master = new MasterResource($this->masterRepository->findBy('id',master()->id));
+            $master = new MasterResource($this->masterRepository->findBy('id', master()->id));
             return JsonResponse::successfulResponse('msg_success', $master);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function updateEmail(Request $request)
+    {
+        try {
+            $master = $this->masterRepository->findBy('id',$request['master_id']);
+            if ($master) {
+                $master->email = $request->email;
+                $master->activation_code = OTPGenrator();
+                $master->save();
+                $master->sendEmailVerificationNotification();
+                return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.', $master);
+            }
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        try {
+            $master = Master::where('email', $request['email'])->where([
+                'email_verified_at' => null,
+                'activation_code' => $request['activation_code'],
+            ])->first();
+            if ($master) {
+                $master->email_verified_at = now();
+                $master->save();
+                return JsonResponse::successfulResponse('msg_verified_successfully');
+            } else {
+                return JsonResponse::errorResponse('email_not_registered_or_invalid_code');
+            }
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $master = Master::findOrFail($id);
+            $master->tokens()->delete();
+            $this->masterRepository->delete($id);
+            return JsonResponse::successfulResponse('msg_deleted_succssfully');
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function restoreRequest(RestoreMasterRequest $request)
+    {
+        try {
+            $master = $this->masterRepository->restoreRequest($request->validated());
+            return $this->VerfiedMasterWithToken($master);
+//            return JsonResponse::successfulResponse('msg_requested_succssfully', $this->masterWithToken($master));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

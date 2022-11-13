@@ -17,4 +17,6 @@ interface IMasterRepository extends IBaseRepository
     public function askToReset($payload, $table = 'password_resets');
 
     public function cleanUp($attribute, $key, $table = 'password_resets');
+
+    public function restoreRequest($request);
 }

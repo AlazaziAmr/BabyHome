@@ -86,6 +86,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response']], functi
     Route::post('/master/confirm-phone-number', [MasterResetPasswordController::class, 'checkPhone']);
     Route::post('/master/reset-verification', [MasterResetPasswordController::class, 'verifyToReset']);
     Route::post('/master/reset-password', [MasterResetPasswordController::class, 'passwordReset']);
+    Route::post('/master/master-restore', [MasterAuthController::class, 'restoreRequest']);
 
     Route::get('/qualifications', [QualificationController::class, 'index']);
     Route::get('/all-qualifications', [QualificationController::class, 'index']);
@@ -281,7 +282,6 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
 
 
 // ========================================================Masters========================================================================
-
 Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master', 'cors', 'json.response', 'locale'], 'prefix' => 'master'], function () {
 
     // Auth
@@ -289,6 +289,9 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     Route::post('/logout', [MasterAuthController::class, 'logout']);
     Route::post('/resend', [MasterAuthController::class, 'resendOTP']);
     Route::post('/verify', [MasterAuthController::class, 'verifyOTP']);
+    Route::post('/update-email', [MasterAuthController::class, 'updateEmail']);
+    Route::post('/verify-email', [MasterAuthController::class, 'verifyEmail']);
+    Route::delete('/account-delete/{id}', [MasterAuthController::class, 'destroy']);
 
     // Children
     Route::apiResource('children', ChildController::class);
