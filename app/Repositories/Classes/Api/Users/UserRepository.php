@@ -21,7 +21,6 @@ class UserRepository extends BaseRepository implements IUserRepository
             [
 
                 'name'         => $payload['name'],
-                'uid'=> uidn($this->model()),
                 'email'        => $payload['email'],
                 'phone' => $payload['phone'],
                 // 'national_id' => $payload['national_id'],
@@ -55,13 +54,16 @@ class UserRepository extends BaseRepository implements IUserRepository
 
     public function restoreRequest($request)
     {
-        return User::withTrashed()->when(isset($request['phone']), function ($q) use ($request) {
+        $user = User::withTrashed()->when(isset($request['phone']), function ($q) use ($request) {
             $q->where('phone', $request['phone']);
         })->when(isset($request['email']), function ($q)  use ($request) {
             $q->where('email', $request['email']);
-        })
-            ->update([
-                'restore_request' => 1
-            ]);
+        })->firstOrFail();
+        $OTP = OTPGenrator();
+        sendOTP($OTP,$user->phone,'');
+        $user->update([
+//                'restore_request' => 1
+            'deleted_at' => null,
+        ]);
     }
 }

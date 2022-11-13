@@ -189,8 +189,6 @@ class UserAuthController extends Controller
         }
     }
 
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -206,6 +204,7 @@ class UserAuthController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
+
     /**
      * Remove the specified resource from storage.
      *
