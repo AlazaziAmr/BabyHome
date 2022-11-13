@@ -286,6 +286,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 
     // Auth
     Route::get('/profile', [MasterAuthController::class, 'profile']);
+    Route::get('/master-profile', [MasterAuthController::class, 'profile']);
     Route::post('/logout', [MasterAuthController::class, 'logout']);
     Route::post('/resend', [MasterAuthController::class, 'resendOTP']);
     Route::post('/verify', [MasterAuthController::class, 'verifyOTP']);
@@ -329,6 +330,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {
     Route::get('/profile', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'profile']);
     Route::get('/nursery-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'nursery_profile']);
+    Route::get('/user-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'userProfile']);
     Route::get('/update-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updateEmail']);
     Route::get('/verify-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'verifyEmail']);
 });

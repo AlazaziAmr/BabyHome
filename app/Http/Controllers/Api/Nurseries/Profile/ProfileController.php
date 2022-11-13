@@ -13,6 +13,7 @@ use App\Http\Resources\Api\Nurseries\NurseryResource;
 use App\Http\Resources\Api\Nurseries\Profile\NurseryAmenityResource;
 use App\Http\Resources\Api\Nurseries\Profile\BabySitterSkillResource;
 use App\Http\Resources\Api\Nurseries\Profile\NurseryServiceResource;
+use App\Http\Resources\Api\Users\UserResource;
 use App\Models\Api\Generals\Amenity;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
@@ -123,14 +124,25 @@ class ProfileController extends Controller
         }
     }
 
+    public function userProfile($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            if ($user){
+                return new UserResource($user);
+            }
+            } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
     public function updateEmail(Request $request)
     {
         try {
             $user = User::findOrFail($request->user_id);
             if ($user) {
-                $checkEmail = User::where('email',$request->email)->whereNotNull('email_verified_at')->get();
-                if ($checkEmail->count() > 0)
-                {
+                $checkEmail = User::where('email', $request->email)->whereNotNull('email_verified_at')->get();
+                if ($checkEmail->count() > 0) {
                     return JsonResponse::errorResponse('هذا الإيميل مستخدم.');
                 }
                 $user->email = $request->email;
