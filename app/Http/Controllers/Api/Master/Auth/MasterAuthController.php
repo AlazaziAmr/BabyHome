@@ -174,6 +174,11 @@ class MasterAuthController extends Controller
         try {
             $master = $this->masterRepository->findBy('id',$request['master_id']);
             if ($master) {
+                $checkEmail = Master::where('email',$request->email)->whereNotNull('email_verified_at')->get();
+                if ($checkEmail->count() > 0)
+                {
+                    return JsonResponse::errorResponse('هذا الإيميل مستخدم.');
+                }
                 $master->email = $request->email;
                 $master->activation_code = OTPGenrator();
                 $master->save();

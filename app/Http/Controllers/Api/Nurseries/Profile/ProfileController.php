@@ -127,11 +127,18 @@ class ProfileController extends Controller
     {
         try {
             $user = User::findOrFail($request->user_id);
-            $user->email = $request->email;
-            $user->activation_code = OTPGenrator();
-            $user->save();
-            $user->sendEmailVerificationNotification();
-            return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.',$user);
+            if ($user) {
+                $checkEmail = User::where('email',$request->email)->whereNotNull('email_verified_at')->get();
+                if ($checkEmail->count() > 0)
+                {
+                    return JsonResponse::errorResponse('هذا الإيميل مستخدم.');
+                }
+                $user->email = $request->email;
+                $user->activation_code = OTPGenrator();
+                $user->save();
+                $user->sendEmailVerificationNotification();
+                return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.', $user);
+            }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
