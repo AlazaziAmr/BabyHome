@@ -36,7 +36,7 @@ class MasterResetPasswordController extends Controller
                         'created_at' => Carbon::now(),
                     ]);
                 }
-                // sendOTP($master['activation_code'], $master['phone'],$message = '');
+                 sendOTP($OTP, $request['phone'],'');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');

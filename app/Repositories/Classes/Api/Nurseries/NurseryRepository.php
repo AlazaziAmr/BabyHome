@@ -74,9 +74,8 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     public function profile($id)
     {
         $data['nursery'] = Nursery::with(
-            ['country', 'city', 'neighborhood']
-        )
-            ->where('user_id', $id)->first();
+            ['country', 'city', 'neighborhood','owner']
+        )->where('user_id', $id)->first();
 
         $data['babysitter_info'] = $data['nursery'] ?
             BabysitterInfo::with(['languages', 'qualifications', 'skills', 'nationalitydata'])

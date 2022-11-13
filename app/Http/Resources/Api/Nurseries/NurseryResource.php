@@ -28,6 +28,8 @@ class NurseryResource extends JsonResource
             'acceptance_age_to' => $this->acceptance_age_to,
             'country' => $this->country['name'],
             'city' => $this->city['name'],
+            'email' => $this->owner['email'],
+            'email-verified' => $this->owner['email_verified_at'] != null ? 1 : 0,
             'neighborhood' => $this->neighborhood['name'],
             'national_address' => $this->national_address,
             'address_description' => $this->address_description,

@@ -17,6 +17,7 @@ use App\Models\Api\Generals\Amenity;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
 use App\Repositories\Interfaces\Api\Nurseries\INurseryRepository;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -42,7 +43,7 @@ class ProfileController extends Controller
             $data['services'] = array();
 
 
-            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities']);
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities', 'activities']);
             if ($nursery) {
                 $data['nursery'] = new NurseryResource($nursery);
             }
@@ -76,7 +77,8 @@ class ProfileController extends Controller
         }
     }
 
-    public function nursery_profile($id){
+    public function nursery_profile($id)
+    {
         try {
             User::findOrFail($id);
             $data['nursery'] = array();
@@ -87,8 +89,7 @@ class ProfileController extends Controller
             $data['activities'] = array();
             $data['services'] = array();
 
-
-            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities','activities'],$id);
+            $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities', 'activities', 'owner'], $id);
             if ($nursery) {
                 $data['nursery'] = new NurseryResource($nursery);
             }
@@ -117,6 +118,39 @@ class ProfileController extends Controller
 
             }
             return JsonResponse::successfulResponse('msg_success', $data);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function updateEmail(Request $request)
+    {
+        try {
+            $user = User::findOrFail($request->user_id);
+            $user->email = $request->email;
+            $user->activation_code = OTPGenrator();
+            $user->save();
+            $user->sendEmailVerificationNotification();
+            return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.',$user);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        try {
+            $user = User::where('email', $request['email'])->where([
+                'email_verified_at' => null,
+                'activation_code' => $request['activation_code'],
+            ])->first();
+            if ($user) {
+                $user->email_verified_at = now();
+                $user->save();
+                return JsonResponse::successfulResponse('msg_verified_successfully');
+            } else {
+                return JsonResponse::errorResponse('email_not_registered_or_invalid_code');
+            }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

@@ -71,8 +71,9 @@ class MasterAuthController extends Controller
 
             if ($master) {
                 if (!$master['is_verified']) {
-                    $master->update(['activation_code' => OTPGenrator()]);
-                    // sendOTP($master['activation_code'], $master['phone'],$message = '');
+                    $OTP = OTPGenrator();
+                    $master->update(['activation_code' => $OTP ]);
+                     sendOTP($OTP, $request['phone'],$message = '');
                     if (Hash::check($request['password'], $master['password'])) {
                         return $this->masterWithToken($master);
                     } else {
@@ -123,8 +124,9 @@ class MasterAuthController extends Controller
         try {
             $master =  $this->masterRepository->findBy('phone', $request['phone']);
             if ($master) {
-                $master->update(['activation_code' => OTPGenrator()]);
-                // sendOTP($master['activation_code'], $master['phone'],$message = '');
+                $OTP = OTPGenrator();
+                $master->update(['activation_code' => $OTP]);
+                 sendOTP($OTP, $request['phone'],'');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');

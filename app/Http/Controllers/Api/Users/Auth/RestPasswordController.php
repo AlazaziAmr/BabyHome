@@ -42,7 +42,7 @@ class RestPasswordController extends Controller
                         'created_at' => Carbon::now(),
                     ]);
                 }
-                // sendOTP($user['activation_code'], $user['phone'],$message = '');
+                 sendOTP($OTP, $phone,'');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');
