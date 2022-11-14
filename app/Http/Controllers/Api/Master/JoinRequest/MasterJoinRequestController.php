@@ -36,6 +36,7 @@ class MasterJoinRequestController extends Controller
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
+        
 
     }
 
