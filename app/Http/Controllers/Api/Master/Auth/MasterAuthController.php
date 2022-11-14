@@ -72,7 +72,7 @@ class MasterAuthController extends Controller
         try {
             $master = $this->masterRepository->findBy('phone', $request['phone']);
             if ($master) {
-                if (!$master['is_verified'] && !$request->has('activation_code')) {
+                if (!$request->has('activation_code')) {
                     $OTP = OTPGenrator();
                     $master->update(['activation_code' => $OTP]);
                     sendOTP($OTP, $request['phone'], '');

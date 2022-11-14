@@ -129,7 +129,7 @@ class ProfileController extends Controller
         try {
             $user = User::findOrFail($id);
             if ($user){
-                return new UserResource($user);
+                return JsonResponse::successfulResponse('msg_success', new UserResource($user));
             }
             } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

@@ -86,7 +86,7 @@ class UserAuthController extends Controller
 
             if ($user) {
 //                if (!$user['is_verified']) {
-                if (!$user['is_verified'] && !$request->has('activation_code')) {
+                if ( !$request->has('activation_code')) {
                     $user->update(['activation_code' => OTPGenrator()]);
                     sendOTP($user['activation_code'], $user['phone'],'');
                     if (Hash::check($request['password'], $user['password'])) {

@@ -68,6 +68,7 @@ class MasterRepository extends BaseRepository implements IMasterRepository
         $OTP = OTPGenrator();
         sendOTP($OTP,$master->phone,'');
         $master->restore();
+        $master->update(['activation_code'=>$OTP]);
         return $master;
     }
 }

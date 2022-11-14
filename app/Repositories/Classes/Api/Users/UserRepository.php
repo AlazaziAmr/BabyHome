@@ -61,6 +61,7 @@ class UserRepository extends BaseRepository implements IUserRepository
         })->firstOrFail();
         $OTP = OTPGenrator();
         sendOTP($OTP,$user->phone,'');
+        $user->update(['activation_code'=>$OTP]);
         $user->restore();
         return $user;
     }
