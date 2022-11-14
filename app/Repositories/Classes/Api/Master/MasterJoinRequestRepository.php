@@ -112,8 +112,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
     }
 
     public function booking(Request $request){
-
-
+        
     }
 
     public function nurseriesDetails($id){
