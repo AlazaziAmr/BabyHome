@@ -116,6 +116,27 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
 
     }
 
+    public function nurseriesDetails($id){
+        $blog_query = new Nursery();
+
+        $nurseryDetails = $blog_query::where('id',$id)
+            ->with([
+                'country:id,name', 'city:id,name', 'neighborhood:id,name',
+                'packages' => function ($query1) {
+                    $query1->select('id', 'name', 'description', 'nursery_id', 'type_id')
+                        ->where('is_active', 1);
+                }, 'babySitter:id,nursery_id',
+            ])->with('availabilities:id,from_hour,to_hour,day_id,nursery_id', 'availabilities.day')->select('id','name')
+            ->with('services.attachmentable')->where('is_active',0)->select('id','name','nursery_id')
+            ->select(['id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+                'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id'])
+            ->paginate(10)->withQueryString();
+
+        return $nurseryDetails;
+
+    }
+
+
 
 
 

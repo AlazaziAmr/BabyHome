@@ -38,4 +38,13 @@ class MasterJoinRequestController extends Controller
         }
 
     }
+
+    public function nurseriesDetails($id){
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->nurseriesDetails( $id));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
 }
