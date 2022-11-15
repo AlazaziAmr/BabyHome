@@ -17,6 +17,10 @@ class CreateMastersTable extends Migration
             $table->id();
             $table->string('uid');
             $table->string('name');
+            $table->json('first_name');
+            $table->json('last_name');
+            $table->json('gender');
+            $table->string('card_expiration_date');
             $table->string('email', 191)->unique()->nullable();
             $table->string('password');
             $table->string('phone')->unique();

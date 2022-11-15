@@ -18,6 +18,10 @@ class MasterResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'gender' => $this->gender,
+                'card_expiration_date' => $this->card_expiration_date,
                 'email' => $this->email,
                 'email_verified' => $this->email_verified_at != null ? 1 : 0,
                 'phone' => $this->phone,
@@ -31,6 +35,10 @@ class MasterResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'gender' => $this->gender,
+                'card_expiration_date' => $this->card_expiration_date,
                 'email' => $this->email,
                 'email_verified' => $this->email_verified_at != null ? 1 : 0,
                 'phone' => $this->phone,

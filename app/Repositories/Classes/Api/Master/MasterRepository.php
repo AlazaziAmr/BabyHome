@@ -20,10 +20,15 @@ class MasterRepository extends BaseRepository implements IMasterRepository
     }
     public function register($payload)
     {
+//        dd($payload);
         return $this->model->create(
             [
                 'name'         => $payload['name'],
                 'uid' => uid($this->model()),
+                'first_name' => $payload['first_name'],
+                'last_name' => $payload['last_name'],
+                'gender' => $payload['gender'],
+                'card_expiration_date' => $payload['card_expiration_date'],
                 'email'        => $payload['email'],
                 'phone' => $payload['phone'],
                 'national_id' => $payload['national_id'],

@@ -36,7 +36,7 @@ class JsonResponse
             'result' => trans(self::MSG_FAILED),
             'data' => array(),
             'message' => trans('responses.' . $message),
-            'status' => "500"
+            'status' => 500
         ]);
     }
 
