@@ -14,6 +14,8 @@ interface IMasterJoinRequestRepository extends IBaseRepository
     public function filterMaster(Request $request);
     public function booking(Request $request);
     public function nurseriesDetails($id);
+    public function showNurseries();
+
 
 
 

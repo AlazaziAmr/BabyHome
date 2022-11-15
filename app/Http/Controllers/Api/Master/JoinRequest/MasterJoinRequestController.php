@@ -28,6 +28,12 @@ class MasterJoinRequestController extends Controller
 
         return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->createRequest($request->validated()));
     }
+
+    public function showNurseries()
+    {
+        return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showNurseries());
+    }
+
     public function filterMaster(Request $request){
 //        $x=Nursery::class;
 //        return $x;
@@ -36,7 +42,7 @@ class MasterJoinRequestController extends Controller
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
-        
+
 
     }
 
