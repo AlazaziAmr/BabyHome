@@ -182,8 +182,8 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
         foreach ($days as $day) {
             NurseryAvailability::create([
                 'day_id' => $day['id'],
-                'from_hour' => $day['from'],
-                'to_hour' => $day['to'],
+                'from_hour' => gmdate('H:i', $day['from']),
+                'to_hour' => gmdate('H:i', $day['to']),
                 'nursery_id' => $nursery['id'],
             ]);
         }

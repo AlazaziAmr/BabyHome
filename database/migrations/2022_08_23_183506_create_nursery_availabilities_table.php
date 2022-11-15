@@ -17,8 +17,8 @@ class CreateNurseryAvailabilitiesTable extends Migration
             $table->id();
             $table->foreignId('nursery_id')->constrained('nurseries')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('day_id')->constrained('days')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('from_hour');
-            $table->string('to_hour');
+            $table->time('from_hour');
+            $table->time('to_hour');
             $table->softDeletes();
             $table->timestamps();
         });
