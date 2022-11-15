@@ -66,6 +66,7 @@ Route::get('/clear-cache', function () {
 //    return 'DONE'; //Return anything
 });
 
+Route::get('/', [AdminAuthController::class, 'adminLoginFrom']);
 Route::get('adminLogin', [AdminAuthController::class, 'adminLoginFrom'])->name('adminLogin');
 Route::get('/login',[AdminAuthController::class, 'adminLoginFrom'])->name('login');
 Route::post('adminLogin', [AdminAuthController::class, 'adminLogin'])->name('adminLogin.store');
