@@ -208,6 +208,28 @@ class MasterAuthController extends Controller
         }
     }
 
+    public function updatePhone(Request $request)
+    {
+        try {
+            $master = $this->masterRepository->findBy('id',$request['master_id']);
+            if ($master) {
+                $checkPhone = Master::where('phone',$request->phone)->where('is_verified',1)->get();
+                if ($checkPhone->count() > 0)
+                {
+                    return JsonResponse::errorResponse('هذا الرقم مستخدم.');
+                }
+                $OTP = OTPGenrator();
+                $master->phone = $request->phone;
+                $master->activation_code = $OTP;
+                $master->save();
+                sendOTP($OTP,$master->phone,'');
+                return JsonResponse::successfulResponse('تم تغيير رقم الهاتف وإرسال رمز التأكيد إليه.',MasterResource::make($master));
+            }
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
     public function destroy($id)
     {
         try {

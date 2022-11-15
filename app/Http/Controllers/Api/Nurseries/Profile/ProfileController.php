@@ -82,13 +82,13 @@ class ProfileController extends Controller
     {
         try {
             User::findOrFail($id);
-            $data['nursery'] = array();
-            $data['babysitter'] = array();
-            $data['qualifications'] = array();
-            $data['skills'] = array();
-            $data['amenities'] = array();
-            $data['activities'] = array();
-            $data['services'] = array();
+            $data['nursery'] = null;
+            $data['babysitter'] = null;
+            $data['qualifications'] = null;
+            $data['skills'] = null;
+            $data['amenities'] = null;
+            $data['activities'] = null;
+            $data['services'] = null;
 
             $nursery = $this->nurseryRepository->FindOne(['country', 'city', 'neighborhood', 'utilities', 'activities', 'owner'], $id);
             if ($nursery) {
@@ -169,6 +169,27 @@ class ProfileController extends Controller
                 return JsonResponse::successfulResponse('msg_verified_successfully');
             } else {
                 return JsonResponse::errorResponse('email_not_registered_or_invalid_code');
+            }
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function updatePhone(Request $request)
+    {
+        try {
+            $user = User::findOrFail($request->user_id);
+            if ($user) {
+                $checkPhone = User::where('phone', $request->phone)->where('is_verified',1)->get();
+                if ($checkPhone->count() > 0) {
+                    return JsonResponse::errorResponse('هذا الرقم مستخدم.');
+                }
+                $OTP = OTPGenrator();
+                $user->phone = $request->phone;
+                $user->activation_code = $OTP;
+                $user->save();
+                sendOTP($OTP,$user->phone,'');
+                return JsonResponse::successfulResponse('تم تغيير رقم الهاتف وإرسال رمز التأكيد إليه.', $user);
             }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

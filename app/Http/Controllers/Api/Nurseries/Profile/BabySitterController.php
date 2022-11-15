@@ -16,10 +16,12 @@ use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 class BabySitterController extends Controller
 {
    private $babySitterRepository;
+   private $nurseryRepository;
 
-    public function __construct(IBabySitterRepository $babySitterRepository)
+    public function __construct(IBabySitterRepository $babySitterRepository, INurseryRepository $nurseryRepository)
     {
         $this->babySitterRepository = $babySitterRepository;
+        $this->nurseryRepository = $nurseryRepository;
     }
 
     public function index()
@@ -28,7 +30,7 @@ class BabySitterController extends Controller
             $nursery =Nursery::where('user_id',auth('api')->user()->id)->first();
             if($nursery){
                 $nursery_id = $nursery->id;
-                $nurseries = new BabysitterInfoResource(BabysitterInfo::find($nursery_id));
+                $nurseries = new BabysitterInfoResource($this->nurseryRepository->BabySitter($nursery_id));
                 return JsonResponse::successfulResponse('msg_success', $nurseries);
             }else{
                 return JsonResponse::errorResponse('');

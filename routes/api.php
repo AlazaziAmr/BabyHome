@@ -259,6 +259,10 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::delete('/account-delete', [UserAuthController::class, 'destroy']);
     Route::post('/resend', [UserAuthController::class, 'resendOTP']);
     Route::post('/verify', [UserAuthController::class, 'verifyOTP']);
+    Route::get('/user-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'userProfile']);
+    Route::get('/update-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updateEmail']);
+    Route::get('/verify-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'verifyEmail']);
+    Route::post('/update-phone', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updatePhone']);
 
     Route::get('/has-nursery', [UserAuthController::class, 'hasRegisteredNursery']);
 
@@ -290,9 +294,11 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     Route::post('/logout', [MasterAuthController::class, 'logout']);
     Route::post('/resend', [MasterAuthController::class, 'resendOTP']);
     Route::post('/verify', [MasterAuthController::class, 'verifyOTP']);
-    Route::post('/update-email', [MasterAuthController::class, 'updateEmail']);
-    Route::post('/verify-email', [MasterAuthController::class, 'verifyEmail']);
+    Route::get('/update-email', [MasterAuthController::class, 'updateEmail']);
+    Route::get('/verify-email', [MasterAuthController::class, 'verifyEmail']);
     Route::delete('/account-delete/{id}', [MasterAuthController::class, 'destroy']);
+    Route::post('/update-phone', [MasterAuthController::class, 'updatePhone']);
+    Route::get('/relations', [RelationController::class, 'index']);
 
     // Children
     Route::apiResource('children', ChildController::class);
@@ -330,9 +336,6 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {
     Route::get('/profile', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'profile']);
     Route::get('/nursery-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'nursery_profile']);
-    Route::get('/user-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'userProfile']);
-    Route::get('/update-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updateEmail']);
-    Route::get('/verify-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'verifyEmail']);
 });
 
 
