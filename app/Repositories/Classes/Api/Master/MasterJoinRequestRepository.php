@@ -65,6 +65,8 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
 
     public function filterMaster($request)
     {
+        $NurseryFilter["userID"] = auth()->user()->id;
+
         if($request->from_hour !=null ?$from_hour=$request->from_hour: $from_hour="00:00")
             if($request->to_hour !=null ?$to_hour=$request->to_hour: $to_hour="24:00")
                 if($request->day !=null ? explode($day=',',$request->day) : $day=Day::pluck('id')->toArray())
@@ -79,7 +81,6 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
             $age_find = 1;
         }
 
-
         $blog_query = new Nursery();
         $search = $request->search;
 
@@ -93,7 +94,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
         $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray() ;
         $neighborhood_id= $request->neighborhood_id != null ? $request->neighborhood_id_ : Neighborhood::pluck('id')->toArray();
 
-        $NurseryFilter = $blog_query::where('is_active', 1)->where('status', 5)
+        $NurseryFilter["Nursery"] = $blog_query::where('is_active', 1)->where('status', 5)
             ->where(function($query) use ($search) {
                 $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('first_name', 'LIKE', '%'.$search.'%')
@@ -121,13 +122,6 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
             ->select(['id','uid', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
-
-        return $NurseryFilter;
-
-
-
-
-
 
         return $NurseryFilter;
     }
