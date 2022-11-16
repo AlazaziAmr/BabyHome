@@ -30,13 +30,13 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
     {
         return JoinRequest::class;
     } public function Nursery()
-    {
-        return Nursery::class;
-    }
+{
+    return Nursery::class;
+}
 
     public function createRequest($request)
     {
-       }
+    }
 
     public function fetchCustomerRequest($id)
     {
@@ -91,9 +91,11 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
         }
         $country_id= $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray() ;
         $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray() ;
-        $neighborhood_id= $request->neighborhood_id != null ? $request->neighborhood_id_ : Neighborhood::pluck('id')->toArray();
-
-        $NurseryFilter = $blog_query::where('is_active', 1)->where('status', 5)
+        $neighborhood_id= $request->neighborhood_id != null ? $request->neighborhood_id : Neighborhood::pluck('id')->toArray();
+        $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray();
+        $NurseryFilter = $blog_query::
+        where('is_active', 1)->where('status', 5)->
+        whereIn('neighborhood_id', $neighborhood_id)
             ->where(function($query) use ($search) {
                 $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('first_name', 'LIKE', '%'.$search.'%')
@@ -122,7 +124,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
 
-        return JsonResponse::successfulResponse('msg_success',$NurseryFilter);
+        return $NurseryFilter;
 
     }
 
