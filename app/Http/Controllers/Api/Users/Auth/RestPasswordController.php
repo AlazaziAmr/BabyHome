@@ -27,22 +27,20 @@ class RestPasswordController extends Controller
         try {
             if ($this->userRepository->findBy('phone', $request['phone'])) {
                 $OTP =  OTPGenrator();
-                $phone = str_replace('+9660','966',$request['phone']);
-                $phone = str_replace('+966','966',$phone);
-                if ($this->userRepository->IsAskedToReset(['phone' =>$phone])) {
-                    $this->userRepository->updateToReset('phone', $phone, [
+                if ($this->userRepository->IsAskedToReset(['phone' =>$request['phone']])) {
+                    $this->userRepository->updateToReset('phone', $request['phone'], [
                         'token'      => $OTP,
                         'is_reset_verified' => 0,
                         'created_at' => Carbon::now()
                     ]);
                 } else {
                     $this->userRepository->askToReset([
-                        'phone'      => $phone,
+                        'phone'      => $request['phone'],
                         'token'      => $OTP,
                         'created_at' => Carbon::now(),
                     ]);
                 }
-                 sendOTP($OTP, $phone,'');
+                 sendOTP($OTP, $request['phone'],'');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');
@@ -56,11 +54,11 @@ class RestPasswordController extends Controller
     {
         try {
 
-            $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$phone);
+//            $phone = str_replace('+9660','966',$request['phone']);
+//            $phone = str_replace('+966','966',$phone);
 
             if ($this->userRepository->IsAskedToReset([
-                'phone' => $phone,
+                'phone' => $request['phone'],
                 'token' => $request['otp'],
             ])) {
                 $this->userRepository->updateToReset(
@@ -80,10 +78,7 @@ class RestPasswordController extends Controller
     public function passwordReset(ResetPasswordRequest $request)
     {
         try {
-            $phone = str_replace('+9660','966',$request['phone']);
-            $phone = str_replace('+966','966',$phone);
-
-            $this->userRepository->update(['password' => Hash::make($request['password'])], $phone, 'phone');
+            $this->userRepository->update(['password' => Hash::make($request['password'])], $request['phone'], 'phone');
             $this->userRepository->cleanUp('phone' , $request['phone']);
             return JsonResponse::successfulResponse('msg_your_password_changed_successfully');
         } catch (\Exception $e) {

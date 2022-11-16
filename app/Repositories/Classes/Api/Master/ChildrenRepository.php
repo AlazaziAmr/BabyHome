@@ -41,7 +41,7 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                 'has_disability' => $payload['has_disability'],
             ]);
 
-            if($payload['allergies']){
+            if(!empty($payload['allergies'])){
                 foreach ($payload['allergies'] as $allergy){
                     ChildAllergy::create([
                         'child_id' => $child['id'],
@@ -50,7 +50,7 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                 }
             }
 
-            if($payload['sicknesses']){
+            if(!empty($payload['sicknesses'])){
                 foreach ($payload['sicknesses'] as $sickness){
                     ChildSickness::create([
                         'child_id' => $child['id'],
