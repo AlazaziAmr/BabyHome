@@ -25,6 +25,7 @@ class MasterRegistrationRequest extends FormRequest
             'gender.ar'         => 'required|string|max:255|min:3',
             'gender.en'         => 'required|string|max:255|min:4',
             'card_expiration_date'         => 'required|date',
+            'date_of_birth' => 'required|date',
             'email'        => 'required|string|email|max:191|unique:masters,email',
             'password'    => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',

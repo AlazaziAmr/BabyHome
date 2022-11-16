@@ -29,6 +29,7 @@ class MasterRepository extends BaseRepository implements IMasterRepository
                 'last_name' => $payload['last_name'],
                 'gender' => $payload['gender'],
                 'card_expiration_date' => $payload['card_expiration_date'],
+                'date_of_birth' => $payload['date_of_birth'],
                 'email'        => $payload['email'],
                 'phone' => $payload['phone'],
                 'national_id' => $payload['national_id'],
