@@ -332,6 +332,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/show-nurseries', [MasterJoinRequestController::class, 'showNurseries']);
     Route::post('/filter-master', [MasterJoinRequestController::class, 'filterMaster']);
     Route::get('/nurseries-details/{id}', [MasterJoinRequestController::class, 'nurseriesDetails']);
+
 });
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {

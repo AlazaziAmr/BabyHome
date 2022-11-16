@@ -124,6 +124,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
 
         return $NurseryFilter;
+
     }
 
     public function booking(Request $request){
