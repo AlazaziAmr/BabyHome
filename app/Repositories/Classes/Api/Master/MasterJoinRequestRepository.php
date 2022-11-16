@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Classes\Api\Master;
 
+use App\Helpers\JsonResponse;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
@@ -65,8 +66,6 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
 
     public function filterMaster($request)
     {
-        $NurseryFilter["userID"] = auth()->user()->id;
-
         if($request->from_hour !=null ?$from_hour=$request->from_hour: $from_hour="00:00")
             if($request->to_hour !=null ?$to_hour=$request->to_hour: $to_hour="24:00")
                 if($request->day !=null ? explode($day=',',$request->day) : $day=Day::pluck('id')->toArray())
@@ -94,7 +93,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
         $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray() ;
         $neighborhood_id= $request->neighborhood_id != null ? $request->neighborhood_id_ : Neighborhood::pluck('id')->toArray();
 
-        $NurseryFilter["Nursery"] = $blog_query::where('is_active', 1)->where('status', 5)
+        $NurseryFilter = $blog_query::where('is_active', 1)->where('status', 5)
             ->where(function($query) use ($search) {
                 $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('first_name', 'LIKE', '%'.$search.'%')
@@ -119,11 +118,11 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
                 $item->where('from_hour','>=',$from_hour);
                 $item->where('to_hour','>=',$to_hour);
             }, 'availabilities.day:name'])->whereIn('id',$day)
-            ->select(['id','uid', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+            ->select(['id','uid','user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
 
-        return $NurseryFilter;
+        return JsonResponse::successfulResponse('msg_success',$NurseryFilter);
 
     }
 
