@@ -89,8 +89,8 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
         } else {
             $sortOrder = 'desc';
         }
+
         $country_id= $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray() ;
-        $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray() ;
         $neighborhood_id= $request->neighborhood_id != null ? $request->neighborhood_id : Neighborhood::pluck('id')->toArray();
         $city_id= $request->city_id != null ? $request->city_id : City::pluck('id')->toArray();
         $NurseryFilter = $blog_query::
@@ -108,11 +108,9 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
             ->whereIn('city_id',$city_id)
             ->whereIn('neighborhood_id',$neighborhood_id)
             ->with([
-                'country:id,name', 'city:id,name', 'neighborhood:id,name',
-                'packages' => function ($query1) {
-                    $query1->select('id', 'name', 'description', 'nursery_id', 'type_id')
-                        ->where('is_active', 1);
-                },
+                'country:id,name',
+                'city:id,country_id,name',
+                'neighborhood:id,city_id,name',
                 'babySitter:id,nursery_id',
             ])
             ->with(['availabilities' => function ($item) use ($from_hour,$to_hour){
@@ -121,7 +119,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
                 $item->where('to_hour','>=',$to_hour);
             }, 'availabilities.day:name'])->whereIn('id',$day)
             ->select(['id','uid','user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
-                'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id'])
+                'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id','neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
 
         return $NurseryFilter;

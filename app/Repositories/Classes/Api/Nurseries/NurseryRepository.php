@@ -203,7 +203,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $name = user()->name;
 
             $nursery = $this->model->create([
-                'uid'=> uid($this->model()),
+                'uid'=> uidn($this->model()),
                 'name' => $request['name'],
                 'first_name' => $request['first_name'],
                 'last_name' => $request['last_name'],
