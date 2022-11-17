@@ -117,7 +117,7 @@ class MasterJoinRequestRepository extends BaseRepository implements IMasterJoinR
                 $item->select('id','from_hour','to_hour','day_id','nursery_id');
                 $item->where('from_hour','>=',$from_hour);
                 $item->where('to_hour','>=',$to_hour);
-            }, 'availabilities.day:name'])->whereIn('id',$day)
+            }, 'availabilities.day:name','attachmentable'])->whereIn('id',$day)
             ->select(['id','uid','user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id','neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
