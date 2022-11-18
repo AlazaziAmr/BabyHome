@@ -289,22 +289,35 @@ class Nursery extends BaseModel
         return $this->belongsToMany(Utility::class, 'nursery_utilities', 'nursery_id', 'utility_id')->withTimestamps();
     }
 
-//    public static function boot()
-//    {
-//        parent::boot();
-//
-//        static::deleting(function ($nursery) {
-//            $nursery->babySitter()->delete();
-//            foreach ($nursery->utilities()->get() as $utility) {
-//                $utility->delete();
-//            }
-//            foreach ($nursery->services()->get() as $service) {
-//                $service->delete();
-//            }
-//            // dd($nursery->amenities()->get());
-//            foreach ($nursery->amenities()->get() as $amenity) {
-//                $amenity->delete();
-//            }
-//        });
-//    }
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($nursery) {
+            $nursery->babySitter()->delete();
+            foreach ($nursery->utilities()->get() as $utility) {
+                $utility->delete();
+            }
+            foreach ($nursery->services()->get() as $service) {
+                $service->delete();
+            }
+            // dd($nursery->amenities()->get());
+            foreach ($nursery->amenities()->get() as $amenity) {
+                $amenity->delete();
+            }
+        });
+
+        static::restoring(function ($nursery) {
+            $nursery->babySitter()->withTrashed()->where('deleted_at','>=',$nursery->deleted_at)->restore();
+            foreach ($nursery->utilities()->withTrashed()->where('deleted_at','>=',$nursery->deleted_at)->get() as $utility) {
+                $utility->restore();
+            }
+            foreach ($nursery->services()->withTrashed()->where('deleted_at','>=',$nursery->deleted_at)->get() as $service) {
+                $service->restore();
+            }
+            foreach ($nursery->amenities()->withTrashed()->where('deleted_at','>=',$nursery->deleted_at)->get() as $amenity) {
+                $amenity->restore();
+            }
+        });
+    }
 }

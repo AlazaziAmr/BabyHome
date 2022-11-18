@@ -106,6 +106,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     public function fetchAllForCurrentUser($with = [], $columns = array('*'))
     {
         return !empty($with) ? user()->nurseries()->with($with)->get($columns) : user()->nurseries()->get($columns);
+//        return !empty($with) ? $this->model->where('user_id',user()->id)->with($with)->get($columns) : $this->model->where('user_id',user()->id)->get($columns);
     }
 
     public function nurseriesCloseToMaster($with = [], $columns = array('*'))

@@ -64,6 +64,16 @@ class User extends Authenticatable implements MustVerifyEmail
                 $nursery->delete();
             }
         });
+
+        static::restoring(function ($user) {
+            $user->info()->withTrashed()->where('deleted_at','>=',$user->deleted_at)->restore();
+            foreach ($user->activities()->where('deleted_at','>=',$user->deleted_at)->get() as $activity){
+                $activity->restore();
+            }
+            foreach ($user->nurseries()->where('deleted_at','>=',$user->deleted_at)->get() as $nursery) {
+                $nursery->restore();
+            }
+        });
     }
 
     /**

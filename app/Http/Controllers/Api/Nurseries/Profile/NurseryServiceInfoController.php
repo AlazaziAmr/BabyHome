@@ -33,6 +33,7 @@ class NurseryServiceInfoController extends Controller
     {
         return JsonResponse::successfulResponse('msg_created_succssfully', $this->serviceRepository->create($request->validated()));
     }
+
     public function show(NurseryService $service)
     {
         try {

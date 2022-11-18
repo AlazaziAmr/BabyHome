@@ -49,7 +49,8 @@ class NurseryServiceRepository extends BaseRepository implements INurseryService
 
     public function update(array $payload, $id, $attribute = "id")
     {
-        $service = $this->model->where('service_id',$id)->first();
+//        $service = $this->model->where('service_id',$id)->first();
+        $service = Service::where($attribute,$id)->first();
         if($service->user_id == user()->id){
             $service->update([
                 'name'  => $payload['name'],
@@ -67,8 +68,11 @@ class NurseryServiceRepository extends BaseRepository implements INurseryService
 
     public function delete($id)
     {
-        $service = $this->model->where('service_id',$id)->first();
+        $nursery = Nursery::where('user_id',user()->id)->firstOrFail();
+        $nurseryService = $this->model->where(['nursery_id'=>$nursery->id,'service_id'=>$id])->firstOrFail();
+        $service = Service::findOrFail($id);
         if($service->user_id == user()->id){
+            $nurseryService->delete();
             $service->delete();
         }
     }

@@ -102,26 +102,36 @@ class BabysitterInfo  extends BaseModel
         return $this->hasMany(BabysitterSkill::class, 'babysitter_id', 'id');
     }
 
-    // public static function boot()
-    // {
-    //     parent::boot();
+     public static function boot()
+     {
+         parent::boot();
 
-    //     static::deleting(function ($obj) {
+         static::deleting(function ($obj) {
 
-    //         foreach ($obj->attachmentable()->get() as $attachment) {
-    //             $attachment->delete();
-    //         }
-    //         foreach ($obj->skills()->get() as $skill) {
-    //             $skill->delete();
-    //         }
-    //         foreach ($obj->qualifications()->get() as $qualification) {
-    //             $qualification->delete();
-    //         }
-    //         foreach ($obj->languages()->get() as $language) {
-    //             $language->delete();
-    //         }
-    //     });
-    // }
+             foreach ($obj->attachmentable()->get() as $attachment) {
+                 $attachment->delete();
+             }
+             foreach ($obj->skills()->get() as $skill) {
+                 $skill->delete();
+             }
+             foreach ($obj->qualifications()->get() as $qualification) {
+                 $qualification->delete();
+             }
+             $obj->languages()->detach();
+         });
+
+         static::restoring(function ($obj) {
+             foreach ($obj->attachmentable()->withTrashed()->where('deleted_at','>=',$obj->deleted_at)->get() as $attachment) {
+                 $attachment->restore();
+             }
+             foreach ($obj->skills()->withTrashed()->where('deleted_at','>=',$obj->deleted_at)->get() as $skill) {
+                 $skill->restore();
+             }
+             foreach ($obj->qualifications()->withTrashed()->where('deleted_at','>=',$obj->deleted_at)->get() as $qualification) {
+                 $qualification->restore();
+             }
+         });
+     }
 
     public function nationalitydata(){
         return $this->belongsTo(Nationality::class,'nationality','id');

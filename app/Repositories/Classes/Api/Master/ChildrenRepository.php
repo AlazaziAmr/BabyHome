@@ -109,14 +109,15 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
 
             //phones
             Phone::where('child_id',$child['id'])->delete();
-            if ($payload['phones']) {
+//            if ($payload['phones']) {
                 foreach ($payload['phones'] as $phone) {
                     Phone::create([
                         'child_id' => $child['id'],
-                        'phone' => $phone,
+                        'phone' => $phone['value'],
+                        'name' => $phone['name'],
                     ]);
                 }
-            }
+//            }
 
             //attachments
             if (!empty($payload['attachments'])) uploadAttachment($child, $payload, 'attachments', 'children');

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
-class Child  extends BaseModel
+class Child extends BaseModel
 {
     use HasFactory;
 
@@ -35,6 +35,7 @@ class Child  extends BaseModel
     {
         return $this->hasOneThrough(Master::class, ChildMaster::class, 'child_id', 'id', 'id', 'master_id');
     }
+
     /**
      * The languages that belong to the Child
      *
@@ -54,6 +55,7 @@ class Child  extends BaseModel
     {
         return $this->belongsTo(Gender::class, 'gender_id');
     }
+
     /**
      * Get all of the phones for the Child
      *
@@ -83,9 +85,8 @@ class Child  extends BaseModel
 
     public function getAgeAttribute()
     {
-
         if ($this->date_of_birth)
-            return Carbon::createFromDate($this->date_of_birth)->diff(Carbon::now())->format('%y سنة, %m شهر and %d يوم');
+            return Carbon::createFromDate($this->date_of_birth)->diff(Carbon::now())->format("%y سنة, %m شهر و %d يوم");
         else
             return 'Unknown';
     }
@@ -94,7 +95,7 @@ class Child  extends BaseModel
     /**
      * Get the child Created At.
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     public function getCreatedAtAttribute($value)
@@ -102,11 +103,37 @@ class Child  extends BaseModel
         return Carbon::createFromDate($value)->translatedFormat('j M, Y - g:i a');
     }
 
-    public function sicknesses(){
+    public function sicknesses()
+    {
         return $this->hasMany(ChildSickness::class);
     }
 
-    public function allergies(){
+    public function allergies()
+    {
         return $this->hasMany(ChildAllergy::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($children) {
+            foreach ($children->attachmentable()->get() as $attachment) {
+                $attachment->delete();
+            }
+            $children->languages()->detach();
+//            foreach ($children->languages()->detach() as $language) {
+//                $language->detach();
+//            }
+            foreach ($children->phones()->get() as $phones) {
+                $phones->delete();
+            }
+            foreach ($children->sicknesses()->get() as $sicknesses) {
+                $sicknesses->delete();
+            }
+            foreach ($children->allergies()->get() as $allergies) {
+                $allergies->delete();
+            }
+        });
     }
 }

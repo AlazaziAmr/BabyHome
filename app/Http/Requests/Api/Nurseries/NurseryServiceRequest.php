@@ -15,6 +15,7 @@ class NurseryServiceRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+//            'name.en' => 'required_without:name.ar',
             'description' => 'required|string',
             'price'  => 'required|between:0,999999999999999.99',
             'is_paid'  => 'required',

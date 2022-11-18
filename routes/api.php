@@ -275,6 +275,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::apiResource('/nursery-services', \App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class);
     Route::delete('attachments/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class, 'delete_attachment']);
     Route::apiResource('/nursery-qualifications', \App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
+    Route::apiResource('/nursery-availabilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController::class)->except(['index','create','store','edit','delete']);
 
 
     Route::apiResource('nurseries', NurseryController::class);
@@ -305,6 +306,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 
     Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
     Route::apiResource('child-sickness', ChildSicknessController::class)->except(['show']);
+    Route::get('child-allergies/{id}', [ChildAllergyController::class,'index']);
     Route::apiResource('child-allergies', ChildAllergyController::class)->except(['show']);
     Route::apiResource('child-alerts', ChildAlertController::class)->except(['show']);
 

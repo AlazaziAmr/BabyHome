@@ -34,7 +34,7 @@ class NurseryController extends Controller
     public function index()
     {
         try {
-            return JsonResponse::successfulResponse('', NurseryResource::collection($this->nurseryRepository->fetchAllForCurrentUser(['country', 'city', 'neighborhood'])));
+            return JsonResponse::successfulResponse('', NurseryResource::collection($this->nurseryRepository->fetchAllForCurrentUser(['country', 'city', 'neighborhood','owner'])));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
@@ -69,7 +69,7 @@ class NurseryController extends Controller
     public function show(Nursery $nurseries)
     {
         try {
-            $nurseries = new NurseryResource($nurseries);
+            $nurseries = new NurseryResource($nurseries->with(['country', 'city', 'neighborhood','owner'])->firstOrFail());
             return JsonResponse::successfulResponse('msg_success', $nurseries);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
