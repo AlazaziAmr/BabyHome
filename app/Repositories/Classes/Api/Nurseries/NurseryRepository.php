@@ -181,10 +181,12 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
     public function availabilities($days, $nursery)
     {
         foreach ($days as $day) {
+            $from = Carbon::parse($day['from']);
+            $to = Carbon::parse($day['to']);
             NurseryAvailability::create([
                 'day_id' => $day['id'],
-                'from_hour' => gmdate('H:i', $day['from']),
-                'to_hour' => gmdate('H:i', $day['to']),
+                'from_hour' => gmdate('H:i', strtotime($from)),
+                'to_hour' => gmdate('H:i', strtotime($to)),
                 'nursery_id' => $nursery['id'],
             ]);
         }
