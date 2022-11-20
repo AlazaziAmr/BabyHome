@@ -24,7 +24,7 @@ class CreateBooking extends Migration
             $table->date('booking_date');
             $table->timestamp('start_datetime');
             $table->timestamp('end_datetime');
-            $table->integer('total_hours');
+            $table->time('total_hours');
             $table->bigInteger('created_by');
             $table->softDeletes();
             $table->timestamps();

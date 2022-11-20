@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repositories\Classes\Api\Generals\NationalityRepository;
 use App\Repositories\Classes\Api\Inspector\NurseryEvaluationRepository;
+use App\Repositories\Classes\Api\Master\BookingRequestRepository;
 use App\Repositories\Classes\Api\Master\ChildAlertRepository;
 use App\Repositories\Classes\Api\Master\ChildAllergyRepository;
 use App\Repositories\Classes\Api\Master\ChildSicknessRepository;
@@ -13,17 +14,19 @@ use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterSkillsRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\NurseryAmenityRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\NurseryServiceRepository;
+use App\Repositories\Classes\Api\Payment\PaymentRepository;
 use App\Repositories\Interfaces\Api\Generals\INationalityRepository;
 use App\Repositories\Interfaces\Api\Inspector\INurseryEvaluationRepository;
 use App\Repositories\Interfaces\Api\Master\IChildAlertRepository;
 use App\Repositories\Interfaces\Api\Master\IChildAllergyRepository;
 use App\Repositories\Interfaces\Api\Master\IChildSicknessRepository;
-use App\Repositories\Interfaces\Api\Master\IMasterJoinRequestRepository;
+use App\Repositories\Interfaces\Api\Master\IBookingRequestRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabysitterQulificationRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterSkillsRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\INurseryAmenityRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\INurseryServiceRepository;
+use App\Repositories\Interfaces\Api\Payment\IPaymentRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Classes\Api\Admin\RoleRepository;
 use App\Repositories\Classes\Api\Users\UserRepository;
@@ -117,7 +120,9 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IChildSicknessRepository::class, ChildSicknessRepository::class);
         $this->app->bind(IChildAllergyRepository::class, ChildAllergyRepository::class);
         $this->app->bind(IChildAlertRepository::class, ChildAlertRepository::class);
-        $this->app->bind(IMasterJoinRequestRepository::class, MasterJoinRequestRepository::class);
+        $this->app->bind(IBookingRequestRepository::class, BookingRequestRepository::class);
+        $this->app->bind(IPaymentRepository::class, PaymentRepository::class);
+
 
     }
 

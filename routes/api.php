@@ -24,10 +24,12 @@ use App\Http\Controllers\Api\Generals\ServiceController;
 use App\Http\Controllers\Api\Generals\UtilityController;
 use App\Http\Controllers\Api\Master\Auth\MasterAuthController;
 use App\Http\Controllers\Api\Master\Auth\MasterResetPasswordController;
+use App\Http\Controllers\Api\Master\Booking\BookingController;
 use App\Http\Controllers\Api\Master\Children\ChildController;
 use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
 use App\Http\Controllers\Api\Nurseries\NurseryController;
+use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\Users\Auth\RestPasswordController;
 use App\Http\Controllers\Api\Users\Auth\UserAuthController;
 use App\Http\Controllers\Api\VerifyEmailController;
@@ -334,6 +336,10 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/show-nurseries', [MasterJoinRequestController::class, 'showNurseries']);
     Route::post('/filter-master', [MasterJoinRequestController::class, 'filterMaster']);
     Route::get('/nurseries-details/{id}', [MasterJoinRequestController::class, 'nurseriesDetails']);
+    Route::post('/payment', [PaymentController::class, 'payment']);
+    Route::apiResource('master-booking', BookingController::class);
+
+
 
 });
 
@@ -341,5 +347,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale'
     Route::get('/profile', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'profile']);
     Route::get('/nursery-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'nursery_profile']);
 });
+Route::POST('/success-url', [PaymentController::class, 'successPayment']);
+Route::get('/error-url', [PaymentController::class, 'error']);
 
 

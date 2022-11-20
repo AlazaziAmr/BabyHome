@@ -5,7 +5,7 @@ namespace App\Repositories\Interfaces\Api\Master;
 use App\Repositories\Interfaces\IBaseRepository;
 use Illuminate\Http\Request;
 
-interface IMasterJoinRequestRepository extends IBaseRepository
+interface IBookingRequestRepository extends IBaseRepository
 {
 
     public function createRequest($request);
