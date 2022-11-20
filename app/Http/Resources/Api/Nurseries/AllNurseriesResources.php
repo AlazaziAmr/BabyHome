@@ -29,10 +29,12 @@ class AllNurseriesResources extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'owner_name' => ($this->owner) ? $this->owner['name']  :'',
+            'nursery_name' => $this->name,
             'image' => '',
-            'years_of_experince' => ($this->babysitter) ? $this->babysitter->years_of_experince  :'',
-            'free_of_disease' => ($this->babysitter) ? $this->babysitter->free_of_disease  :'',
+            'years_of_experince' => ($this->babysitter) ? $this->babysitter->years_of_experince : 0,
+            'free_of_disease' => ($this->babysitter) ? $this->babysitter->free_of_disease  :0,
             'capacity' => $this->capacity,
             'acceptance_age_type' => $this->acceptance_age_type,
             'acceptance_age_from' => $this->acceptance_age_from,
