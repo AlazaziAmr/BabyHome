@@ -63,7 +63,7 @@ class UserAuthController extends Controller
             $data['activation_code'] = OTPGenrator();
             $user = $this->userRepository->register($data);
 //            $user->sendEmailVerificationNotification();
-            sendOTP($user['activation_code'], $user['phone']);
+            sendOTP($user['activation_code'], $user['phone'],'');
             $fcm = new FcmNotification();
             $fcm->save_notification( 'تم التسجيل بنجاح', 'منصة بيبي هوم ترحب بكم',$user['id'],$user['phone']);
             return $this->userWithToken($user);
