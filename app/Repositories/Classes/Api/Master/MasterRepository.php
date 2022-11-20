@@ -23,7 +23,7 @@ class MasterRepository extends BaseRepository implements IMasterRepository
 //        dd($payload);
         return $this->model->create(
             [
-                'name'         => $payload['name'],
+//                'name'         => $payload['name'],
                 'uid' => uid($this->model()),
                 'first_name' => $payload['first_name'],
                 'last_name' => $payload['last_name'],

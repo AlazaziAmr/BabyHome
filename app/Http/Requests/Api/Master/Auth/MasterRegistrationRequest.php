@@ -14,14 +14,14 @@ class MasterRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'         => 'required|string|max:255|min:4',
+//            'name'         => 'required|string|max:255|min:4',
             'first_name'         => 'required|array',
             'first_name.ar'         => 'required|string|max:255|min:4',
             'first_name.en'         => 'required|string|max:255|min:4',
             'last_name'         => 'required|array',
             'last_name.ar'         => 'required|string|max:255|min:4',
             'last_name.en'         => 'required|string|max:255|min:4',
-            'gender'         => 'required|array',
+//            'gender'         => 'required|array',
             'gender.ar'         => 'required|string|max:255|min:3',
             'gender.en'         => 'required|string|max:255|min:4',
             'card_expiration_date'         => 'required|date',

@@ -16,7 +16,7 @@ class CreateMastersTable extends Migration
         Schema::create('masters', function (Blueprint $table) {
             $table->id();
             $table->string('uid');
-            $table->string('name');
+//            $table->string('name');
             $table->json('first_name');
             $table->json('last_name');
             $table->json('gender');
