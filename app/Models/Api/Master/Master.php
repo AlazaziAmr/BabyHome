@@ -19,12 +19,13 @@ class Master extends Authenticatable
     protected $guard = 'master';
     public $translatable = ['first_name','last_name','gender'];
     protected $fillable = [
-        'name',
+//        'name',
         'uid',
         'first_name',
         'last_name',
         'gender',
         'card_expiration_date',
+        'date_of_birth',
         'email',
         'phone',
         'password',
