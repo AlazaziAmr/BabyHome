@@ -35,6 +35,6 @@ class ReservedTime extends Model
 
     public function Nurseries(): HasMany
     {
-        return $this->HasMany(Nursery::class, 'nursery_id', 'id');
+        return $this->HasMany(Nursery::class, 'id', 'nursery_id');
     }
 }
