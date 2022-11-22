@@ -2,8 +2,11 @@
 
 namespace App\Models\Api\Master;
 
+use App\Models\Api\Generals\Relation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Api\Generals\Relation;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Phone extends Model
 {
@@ -12,6 +15,10 @@ class Phone extends Model
     protected $fillable = [
         'child_id',
         'phone',
-        'name',
+        'relation_type',
     ];
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Relation::class, 'relation_type','id');
+    }
 }

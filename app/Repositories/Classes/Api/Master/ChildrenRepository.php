@@ -76,6 +76,8 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                         'phone' => $phone['value'],
                         'name' => $phone['name'],
 //                        'name' => $phone,
+                        'relation_type' => $phone,
+
                     ]);
                 }
             }

@@ -17,6 +17,7 @@ class CreateChildrenPhonesTable extends Migration
             $table->id();
             $table->string('phone');
             $table->foreignId('child_id')->constrained('children')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('relation_type')->constrained('relations')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
