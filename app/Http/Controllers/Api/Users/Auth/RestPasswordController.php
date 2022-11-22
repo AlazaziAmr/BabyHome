@@ -22,11 +22,12 @@ class RestPasswordController extends Controller
     {
         $this->userRepository = $userRepository;
     }
+
     public function checkPhone(CheckPhoneRequest $request)
     {
         try {
             if ($this->userRepository->findBy('phone', $request['phone'])) {
-                $OTP =  OTPGenrator();
+                $OTP = OTPGenrator();
                 if ($this->userRepository->IsAskedToReset(['phone' =>$request['phone']])) {
                     $this->userRepository->updateToReset('phone', $request['phone'], [
                         'token'      => $OTP,

@@ -85,8 +85,8 @@ class UserAuthController extends Controller
             $user =  $this->userRepository->findBy('phone', $request['phone']);
 
             if ($user) {
-//                if (!$user['is_verified']) {
-                if (!$request->has('activation_code')) {
+                if (!$user['is_verified']) {
+//                if (!$request->has('activation_code')) {
                     $user->update(['activation_code' => OTPGenrator()]);
                     sendOTP($user['activation_code'], $user['phone'],'');
                     if (Hash::check($request['password'], $user['password'])) {
@@ -95,8 +95,9 @@ class UserAuthController extends Controller
                         return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
                     }
                 }
-                if (Hash::check($request['password'], $user['password']) && $user['activation_code'] == $request['activation_code']) {
-                    $user->update(['is_verified' => 1]);
+//                if (Hash::check($request['password'], $user['password']) && $user['activation_code'] == $request['activation_code']) {
+                if (Hash::check($request['password'], $user['password'])) {
+//                    $user->update(['is_verified' => 1]);
                     return $this->VerfiedUserWithToken($user);
                 } else {
                     return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
@@ -143,7 +144,7 @@ class UserAuthController extends Controller
             $user =  $this->userRepository->findBy('phone', $request['phone']);
             if ($user) {
                 $user->update(['activation_code' => OTPGenrator()]);
-                sendOTP($user['activation_code'], $user['phone'],$message = '');
+                sendOTP($user['activation_code'], $user['phone'],'');
                 return JsonResponse::successfulResponse('msg_sent_successfully');
             } else {
                 return JsonResponse::errorResponse('msg_phone_number_is_not_registered');

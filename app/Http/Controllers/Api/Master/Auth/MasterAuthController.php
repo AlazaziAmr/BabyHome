@@ -72,7 +72,8 @@ class MasterAuthController extends Controller
         try {
             $master = $this->masterRepository->findBy('phone', $request['phone']);
             if ($master) {
-                if (!$request->has('activation_code')) {
+//                if (!$request->has('activation_code')) {
+                if (!$master['is_verified']) {
                     $OTP = OTPGenrator();
                     $master->update(['activation_code' => $OTP]);
                     sendOTP($OTP, $request['phone'], '');
@@ -82,7 +83,8 @@ class MasterAuthController extends Controller
                         return JsonResponse::errorResponse('msg_password_mismatch');
                     }
                 }
-                if (Hash::check($request['password'], $master['password']) && $master['activation_code'] == $request['activation_code']) {
+//                if (Hash::check($request['password'], $master['password']) && $master['activation_code'] == $request['activation_code']) {
+                if (Hash::check($request['password'], $master['password'])) {
                     $master->update(['is_verified' => 1]);
                     return $this->VerfiedMasterWithToken($master);
                 } else {
