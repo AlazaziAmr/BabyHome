@@ -7,6 +7,7 @@ use App\Models\Api\Generals\Activity;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
 use App\Models\Api\Generals\Day;
+use App\Models\Api\Generals\Language;
 use App\Models\Api\Generals\Neighborhood;
 use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
@@ -102,6 +103,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     protected function reservedTimes($request)
     {
+
         if (!empty($request['date'])) {
 
             foreach ($request['date'] as $data) {
@@ -138,13 +140,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             }
         }
         return $bookingCount->count();
-
-
-
-
-
     }
-
     public function createRequest($request)
     {
         /*يتم إرجاع السعر جاهز */
@@ -156,7 +152,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     $status_id=0;
                 }*/
         $checkBooking=$this->checkBookingNursery($request);
-        if ($checkBooking <=3) {
+        if ($checkBooking <=2) {
             $total = $this->prices($request);
             $total_hours = Carbon::parse($total['totalTime']);
             $id = $request['services'];
@@ -223,6 +219,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         if ($request->from_hour != null ? $from_hour = $request->from_hour : $from_hour = "00:00")
             if ($request->to_hour != null ? $to_hour = $request->to_hour : $to_hour = "24:00")
                 if ($request->day != null ? explode($day = ',', $request->day) : $day = Day::pluck('id')->toArray())
+                    if ($request->children_lang != null ? explode($children_lang = ',', $request->dchildren_lang) : $children_lang = Language::pluck('id')->toArray())
 
 
                     $from_hour = gmdate('H:i', strtotime($from_hour));
@@ -260,6 +257,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'country_id' => $country_id,
             'neighborhood_id' => $neighborhood_id,
             'city_id' => $city_id,
+            'children_lang' => $children_lang,
 
         ];
     }
@@ -279,6 +277,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $country_id = $check['country_id'];
         $neighborhood_id = $check['neighborhood_id'];
         $city_id = $check['city_id'];
+        $children_lang = $check['children_lang'];
 
 
         $NurseryFilter = $model::
@@ -308,7 +307,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id');
                 $item->where('from_hour', '<=', $from_hour);
                 $item->where('to_hour', '>=', $to_hour);
-            }, 'availabilities.day:name', 'attachmentable'])->whereIn('id', $day)
+            }, 'availabilities.day:name', 'attachmentable'])->whereIn('id', $day)->whereIn('city_id', $city_id)
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
