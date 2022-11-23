@@ -6,7 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Generals\RelationRequest;
 use App\Http\Resources\Api\Generals\RelationResource;
-use App\Models\Api\Generals\Relation;
+use App\Models\Api\Generals\Relative;
 use App\Repositories\Interfaces\Api\Generals\IRelationRepository;
 
 class RelationController extends Controller
@@ -46,10 +46,10 @@ class RelationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Relation $relation
+     * @param  Relative $relation
      * @return \Illuminate\Http\Response
      */
-    public function show(Relation $relation)
+    public function show(Relative $relation)
     {
         try {
             $relation = new RelationResource($relation);
@@ -63,10 +63,10 @@ class RelationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Relation $relation
+     * @param  Relative $relation
      * @return \Illuminate\Http\Response
      */
-    public function update(RelationRequest $request, Relation $relation)
+    public function update(RelationRequest $request, Relative $relation)
     {
         try {
             $this->relationRepository->update($request->validated(), $relation['id']);
@@ -79,10 +79,10 @@ class RelationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Relation $relation
+     * @param  Relative $relation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Relation $relation)
+    public function destroy(Relative $relation)
     {
         try {
             $this->relationRepository->delete($relation['id']);
