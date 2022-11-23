@@ -21,6 +21,7 @@ use App\Models\Api\Nurseries\BabysitterSkill;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Nurseries\NurseryAmenity;
+use App\Models\Api\Nurseries\NurseryAvailability;
 use App\Models\Api\Nurseries\NurseryService;
 use App\Models\Api\Nurseries\NurseryUtility;
 use App\Repositories\Classes\BaseRepository;
@@ -124,7 +125,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     }
 
-    public function checkBookingNursery($request){
+    public function checkBookingNursery($request)
+    {
 
 
         if (!empty($request['date'])) {
@@ -135,12 +137,13 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $bookingCount = ReservedTime::with('Nurseries')->with('Nurseries')
                     ->where('start_hour', '<=', $startTime)
                     ->where('end_hour', '>=', $endTime)
-                    ->whereNotIn('num_of_confirmed_res',[2])
+                    ->whereNotIn('num_of_confirmed_res', [2])
                     ->whereIn('date', $data)->get();
             }
         }
         return $bookingCount->count();
     }
+
     public function createRequest($request)
     {
         /*يتم إرجاع السعر جاهز */
@@ -151,8 +154,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 }else{
                     $status_id=0;
                 }*/
-        $checkBooking=$this->checkBookingNursery($request);
-        if ($checkBooking <=2) {
+        $checkBooking = $this->checkBookingNursery($request);
+        if ($checkBooking <= 2) {
             $total = $this->prices($request);
             $total_hours = Carbon::parse($total['totalTime']);
             $id = $request['services'];
@@ -182,7 +185,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                if (!empty($request['services'])) {
                     $this->services($request['services'], $request);
                 }*/
-        }else{
+        } else {
             return "عذراً الحاضنة ممتلئة";
         }
 
@@ -216,22 +219,19 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     private function check($request)
     {
-        if ($request->from_hour != null ? $from_hour = $request->from_hour : $from_hour = "00:00")
-            if ($request->to_hour != null ? $to_hour = $request->to_hour : $to_hour = "24:00")
-                if ($request->day != null ? explode($day = ',', $request->day) : $day = Day::pluck('id')->toArray())
-                    if ($request->children_lang != null ? explode($children_lang = ',', $request->dchildren_lang) : $children_lang = Language::pluck('id')->toArray())
 
+        if ($request->children_lang != null ? explode($children_lang = ',', $request->dchildren_lang)
+            : $children_lang = 1)
 
-                    $from_hour = gmdate('H:i', strtotime($from_hour));
-        $to_hour = gmdate('H:i', strtotime($to_hour));
-        if ($request->children_id != null) {
-            $find = Child::where('id', $request->children_id)->first();
-            $age_find = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
-        } else {
-            $age_find = 1;
-        }
+            if ($request->children_id != null) {
+                $find = Child::whereIn('id', $request->children_id)->first();
+                $age_find = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
+            } else {
+                $age_find = 1;
+            }
+        if ($request->children_lang != null ? explode($children_lang = ',', $request->dchildren_lang) : $children_lang = Language::pluck('id')->toArray())
 
-        $model = new Nursery();
+            $model = new Nursery();
         $search = $request->search;
 
         #############Order By Price#################################
@@ -241,20 +241,20 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             $sortOrder = 'desc';
         }
 
-/*        $country_id = $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray();*/
+        $country_id = $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray();
+
         $neighborhood_id = $request->neighborhood_id != null ? $request->neighborhood_id : Neighborhood::pluck('id')->toArray();
         $city_id = $request->city_id != null ? $request->city_id : City::pluck('id')->toArray();
-
 
         return [
             'sortOrder' => $sortOrder,
             'age_find' => $age_find,
-            'from_hour' => $from_hour,
-            'to_hour' => $to_hour,
+            /*            'from_hour' => $from_hour,*/
+            /*            'to_hour' => $to_hour,*/
             'blog_query' => $model,
             'search' => $search,
-            'day' => $day,
-/*            'country_id' => $country_id,*/
+            /*            'day' => $day,*/
+            'country_id' => $country_id,
             'neighborhood_id' => $neighborhood_id,
             'city_id' => $city_id,
             'children_lang' => $children_lang,
@@ -262,35 +262,85 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ];
     }
 
+    public function nurseryAvailability($request)
+    {
+
+        $from_hour=$request->from_hour != null ? $request->from_hour :"00:00";
+        $to_hour=$request->to_hour != null ? $request->to_hour : "23:59";
+        $day = $request->day != null ? $request->day : Day::pluck('id')->toArray();
+
+        $from_hour = gmdate('H:i', strtotime($from_hour));
+
+        $to_hour = gmdate('H:i', strtotime($to_hour));
+
+
+        if ($request->to_hour !=null){
+
+
+            $NurseryAvailability = NurseryAvailability::where('from_hour', '<=', Carbon::parse($from_hour))
+                ->where('to_hour', '>=', Carbon::parse($to_hour))
+                ->whereIn('day_id', $day)->
+                select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                ->get();
+        }else{
+            $NurseryAvailability = NurseryAvailability::whereIn('day_id', $day)->
+            select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                ->get();
+        }
+
+
+
+        $nursery_id = $NurseryAvailability->pluck('nursery_id');
+        $day_id = $NurseryAvailability->pluck('day_id');
+        $from_hour = $NurseryAvailability->pluck('from_hour');
+        $to_hour = $NurseryAvailability->pluck('to_hour');
+
+
+        return [
+            'nursery_id' => $nursery_id,
+            'day_id' => $day_id,
+            'from_hour' => $from_hour,
+            'to_hour' => $to_hour,
+        ];
+
+    }
+
     public function filterMaster($request)
     {
 
         $check = $this->check($request);
+        $NurseryAvailability = $this->nurseryAvailability($request);
 
         $sortOrder = $check['sortOrder'];
         $age_find = $check['age_find'];
-        $from_hour = $check['from_hour'];
-        $to_hour = $check['to_hour'];
+        $from_hour = $NurseryAvailability['from_hour'];
+        $to_hour = $NurseryAvailability['to_hour'];
         $model = $check['blog_query'];
         $search = $check['search'];
-        $day = $check['day'];
-/*        $country_id = $check['country_id'];*/
+        /*        $country_id = $check['country_id'];*/
         $neighborhood_id = $check['neighborhood_id'];
         $city_id = $check['city_id'];
         $children_lang = $check['children_lang'];
+        $nursery_id = $NurseryAvailability['nursery_id'];
+        $day_id = $NurseryAvailability['day_id'];
 
 
-        $NurseryFilter = $model::
-        where('is_active', 1)->where('status', 5)->whereIn('neighborhood_id', $check['neighborhood_id'])
+
+        $x = $model::where('is_active', 1)->where('status', 5)->whereIn('id', $nursery_id)
+            ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
+            ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
             ->where(function ($query) use ($search) {
                 $query->where('name', 'LIKE', '%' . $search . '%')
                     ->orWhere('first_name', 'LIKE', '%' . $search . '%')
                     ->orWhere('last_name', 'LIKE', '%' . $search . '%')
                     ->orWhere('uid', 'LIKE', '%' . $search . '%')
                     ->orWhere('address_description', 'LIKE', '%' . $search . '%');
-            })
-            ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
-            ->whereIn('neighborhood_id', $neighborhood_id)
+            })->with(['availabilities' =>
+                function ($item) use ($from_hour, $to_hour) {
+                    $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                        ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
+                        ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
+                },])
             ->with([
                 'country:id,name',
                 'city:id,country_id,name',
@@ -299,19 +349,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 'babySitter.skills',
                 'babySitter.attachmentable',
                 'services',
-                'services.getMainAttachmentAttribute',
                 'services.sub_type:id,name',
+                'availabilities'
             ])
-            ->with(['availabilities' => function ($item) use ($from_hour, $to_hour) {
-                $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id');
-                $item->where('from_hour', '<=', $from_hour);
-                $item->where('to_hour', '>=', $to_hour);
-            }, 'availabilities.day:name', 'attachmentable'])->whereIn('id', $day)->whereIn('city_id', $city_id)
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
-            ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+            ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();;
+        return $x;
 
-        return $NurseryFilter;
 
     }
 

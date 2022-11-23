@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonResponse;
+use App\Http\Resources\Api\Master\Children\ChildCardResource;
 use App\Models\Note;
 use Illuminate\Http\Request;
 
@@ -35,7 +37,12 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            return JsonResponse::successfulResponse('', ChildCardResource::collection($this->childrenRepository->fetchAllForCurrentUser()));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
     }
 
     /**

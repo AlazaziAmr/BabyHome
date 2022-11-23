@@ -2,10 +2,8 @@
 
 namespace App\Models\Api\Master;
 
-use App\Models\Api\Generals\Relative;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Api\Generals\Relative;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Phone extends Model
@@ -16,9 +14,10 @@ class Phone extends Model
         'child_id',
         'phone',
         'relation_type',
+        'name'
     ];
-    public function gender(): BelongsTo
+  /*  public function gender(): BelongsTo
     {
         return $this->belongsTo(Relative::class, 'relation_type','id');
-    }
+    }*/
 }

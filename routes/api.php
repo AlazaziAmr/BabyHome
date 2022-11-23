@@ -338,6 +338,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/nurseries-details/{id}', [MasterJoinRequestController::class, 'nurseriesDetails']);
     Route::post('/payment', [PaymentController::class, 'payment']);
     Route::apiResource('master-booking', BookingController::class);
+    Route::apiResource('note', BookingController::class);
 
 
 

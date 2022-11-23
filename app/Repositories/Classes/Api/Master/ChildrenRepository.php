@@ -19,7 +19,7 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
 
     public function profile($id){
         return $this->model->with(
-            ['gender','languages:name','phones:child_id,phone,name','attachmentable','master'])
+            ['gender','languages:name','phones:child_id,phone,name,relation_type','attachmentable','master'])
             ->find($id);
     }
 
@@ -75,8 +75,7 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                         'child_id' => $child['id'],
                         'phone' => $phone['value'],
                         'name' => $phone['name'],
-//                        'name' => $phone,
-                        'relation_type' => $phone,
+                        'relation_type' => $phone['relation_id'],
 
                     ]);
                 }
@@ -117,6 +116,8 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                         'child_id' => $child['id'],
                         'phone' => $phone['value'],
                         'name' => $phone['name'],
+                        'relation_type' => $phone['relation_id'],
+
                     ]);
                 }
 //            }
