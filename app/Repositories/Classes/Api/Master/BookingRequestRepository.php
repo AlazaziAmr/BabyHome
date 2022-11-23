@@ -241,7 +241,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             $sortOrder = 'desc';
         }
 
-        $country_id = $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray();
+/*        $country_id = $request->country_id != null ? $request->country_id : Country::pluck('id')->toArray();*/
         $neighborhood_id = $request->neighborhood_id != null ? $request->neighborhood_id : Neighborhood::pluck('id')->toArray();
         $city_id = $request->city_id != null ? $request->city_id : City::pluck('id')->toArray();
 
@@ -254,7 +254,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'blog_query' => $model,
             'search' => $search,
             'day' => $day,
-            'country_id' => $country_id,
+/*            'country_id' => $country_id,*/
             'neighborhood_id' => $neighborhood_id,
             'city_id' => $city_id,
             'children_lang' => $children_lang,
@@ -274,7 +274,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $model = $check['blog_query'];
         $search = $check['search'];
         $day = $check['day'];
-        $country_id = $check['country_id'];
+/*        $country_id = $check['country_id'];*/
         $neighborhood_id = $check['neighborhood_id'];
         $city_id = $check['city_id'];
         $children_lang = $check['children_lang'];
@@ -290,7 +290,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     ->orWhere('address_description', 'LIKE', '%' . $search . '%');
             })
             ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
-            ->whereIn('country_id', $country_id)
             ->whereIn('neighborhood_id', $neighborhood_id)
             ->with([
                 'country:id,name',
