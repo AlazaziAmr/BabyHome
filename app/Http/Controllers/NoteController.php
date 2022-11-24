@@ -37,11 +37,14 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            return JsonResponse::successfulResponse('', ChildCardResource::collection($this->childrenRepository->fetchAllForCurrentUser()));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
+        $babySitter = Note::create([
+            'notes' => $request->notes,
+            'master_id' => $request->parent_id,
+            'nursery_id' => $request->nursery_id,
+            'status' => $request->status,
+            'user_type' => $request->user_type,
+
+        ]);
 
     }
 
