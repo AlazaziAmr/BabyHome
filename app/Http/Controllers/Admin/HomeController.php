@@ -50,7 +50,7 @@ class HomeController extends Controller
 
     public function update_profile(Request $request)
     {
-        $user = Admin::findOrFail(auth('dashboard')->user()->id);
+        $user = Admin::findOrFail(auth('admin')->user()->id);
         $rules = [
             'name' => 'required|string|max:255|min:4',
         ];
@@ -93,7 +93,7 @@ class HomeController extends Controller
 
     public function update_password(Request $request)
     {
-        $user = Admin::findOrFail(auth('dashboard')->user()->id);
+        $user = Admin::findOrFail(auth('admin')->user()->id);
         $rules = [
             'password' => 'required|string|min:6|confirmed',
             'old_password' => 'required|string|min:6',

@@ -3,7 +3,7 @@
     $username = isset($form_data)  ? $form_data->username : '';
     $email = isset($form_data)  ? $form_data->email : '';
     $phone = isset($form_data)  ? $form_data->phone : '';
-    $role = isset($form_data)  ? array($form_data->getRoleNames()) : '';
+    $role = isset($form_data)  ? $form_data->getRoleNames()->toArray() : '';
     $is_active = isset($form_data)  ? $form_data->is_active : '';
 @endphp
 <input type="hidden" value="{{ $form_data->id }}" name="id">
@@ -14,7 +14,8 @@
             <label>@lang('site.name')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <input value="{{ $name }}" type="text" id="name_edit_input" name="name" class="form-control" placeholder="@lang('site.name')">
+            <input value="{{ $name }}" type="text" id="name_edit_input" name="name" class="form-control"
+                   placeholder="@lang('site.name')">
             <span class="help-block" id="name_edit_error"></span>
         </div>
     </div>
@@ -24,7 +25,8 @@
             <label>@lang('site.username')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <input value="{{ $username }}" type="text" id="username_edit_input" name="username" class="form-control" placeholder="@lang('site.username')">
+            <input value="{{ $username }}" type="text" id="username_edit_input" name="username" class="form-control"
+                   placeholder="@lang('site.username')">
             <span class="help-block" id="username_edit_error"></span>
         </div>
     </div>
@@ -35,7 +37,8 @@
             <label>@lang('site.email')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <input value="{{ $email }}" type="email" id="email_edit_input" name="email" class="form-control" placeholder="@lang('site.email')">
+            <input value="{{ $email }}" type="email" id="email_edit_input" name="email" class="form-control"
+                   placeholder="@lang('site.email')">
             <span class="help-block" id="email_edit_error"></span>
         </div>
     </div>
@@ -45,7 +48,8 @@
             <label>@lang('site.phone')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <input value="{{ $phone }}" type="tel" id="phone_edit_input" name="phone" class="form-control" placeholder="@lang('site.phone')">
+            <input value="{{ $phone }}" type="tel" id="phone_edit_input" name="phone" class="form-control"
+                   placeholder="@lang('site.phone')">
             <span class="help-block" id="phone_edit_error"></span>
         </div>
     </div>
@@ -55,7 +59,8 @@
         </div>
         <div class="bootstrap-select fm-cmp-mg">
             <label>@lang('site.is_active')</label><br>
-            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"  placeholder="@lang('site.is_active')">
+            <input {{ $is_active == 1 ? 'checked' : ''}} type="checkbox" id="is_active_edit_input" name="is_active"
+                   placeholder="@lang('site.is_active')">
             <span class="help-block" id="is_active_edit_error"></span>
         </div>
     </div>
@@ -65,17 +70,19 @@
             <label>@lang('site.role')</label>
         </div>
         <div class="bootstrap-select fm-cmp-mg">
-            <select id="role_edit_input" name="role" class="form-control">
-                <option value="">@lang('site.select') @lang('site.one_roles')</option>
-                <option {{ in_array('superAdmin',$role) ? 'selected'  :'' }} value="1">@lang('site.super_admin')</option>
-                <option {{ in_array('inspector',$role) ? 'selected'  :'' }} value="2">@lang('site.inspector')</option>
-                <option {{ in_array('admin',$role) ? 'selected'  :'' }} value="3">@lang('site.admin')</option>
-
-{{--            @foreach($data['roles'] as $role)--}}
-{{--                    <option  value="{{ $role->id  }}">{{ $role->name  }}</option>--}}
-{{--                @endforeach--}}
-{{--            </select>--}}
-            <span class="help-block" id="role_edit_error"></span>
+            <select id="role_edit_input" name="role" class="form-select">
+                {{--                <option value="">@lang('site.select') @lang('site.one_roles')</option>--}}
+                @role('superAdmin')
+                <option
+                    value="1" {{ in_array('superAdmin',$role) ? 'selected'  :'' }}>@lang('site.super_admin')</option>
+                @endrole
+                <option value="2" {{ in_array('inspector',$role) ? 'selected'  :'' }}>@lang('site.inspector')</option>
+                <option value="3" {{ in_array('admin',$role) ? 'selected'  :'' }}>@lang('site.admin')</option>
+                {{--            @foreach($data['roles'] as $role)--}}
+                {{--                    <option  value="{{ $role->id  }}">{{ $role->name  }}</option>--}}
+                {{--                @endforeach--}}
+                {{--            </select>--}}
+                <span class="help-block" id="role_edit_error"></span>
         </div>
     </div>
 
@@ -88,7 +95,8 @@
                 <label>@lang('site.password')</label>
             </div>
             <div class="bootstrap-select fm-cmp-mg">
-                <input type="password" id="password_edit_input" name="password" class="form-control" placeholder="@lang('site.password')">
+                <input type="password" id="password_edit_input" name="password" class="form-control"
+                       placeholder="@lang('site.password')">
                 <span class="help-block" id="password_edit_error"></span>
             </div>
         </div>
@@ -98,7 +106,8 @@
                 <label>@lang('site.password_confirmation')</label>
             </div>
             <div class="bootstrap-select fm-cmp-mg">
-                <input type="password" id="password_confirmation_edit_input" name="password_confirmation" class="form-control" placeholder="@lang('site.password_confirmation')">
+                <input type="password" id="password_confirmation_edit_input" name="password_confirmation"
+                       class="form-control" placeholder="@lang('site.password_confirmation')">
                 <span class="help-block" id="password_confirmation_edit_error"></span>
             </div>
         </div>

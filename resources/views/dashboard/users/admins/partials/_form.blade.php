@@ -67,7 +67,9 @@ $is_active = isset($form_data)  ? $form_data->is_active : '';
         <div class="bootstrap-select fm-cmp-mg">
             <select id="role_input" name="role" class="form-control">
                 <option value="">@lang('site.select') @lang('site.one_roles')</option>
+                @role('superAdmin')
                 <option value="1">@lang('site.super_admin')</option>
+                @endrole
                 <option value="2">@lang('site.inspector')</option>
                 <option value="3">@lang('site.admin')</option>
 {{--              @foreach($data['roles'] as $role)--}}

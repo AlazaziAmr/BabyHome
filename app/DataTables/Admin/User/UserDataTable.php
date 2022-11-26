@@ -5,6 +5,7 @@ namespace App\DataTables\Admin\User;
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -19,7 +20,9 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('verified', function ($data) {
+            ->addColumn('joining', function ($data) {
+                return Carbon::parse($data->created_at)->format('Y-m-d  H:m:s');
+            })->addColumn('verified', function ($data) {
                 return $data->is_verified == 1 ? __('site.yes') : __('site.no');
             })->addColumn('active', function ($data) {
                 return $data->is_active == 1 ? __('site.yes') : __('site.no');
@@ -55,6 +58,7 @@ class UserDataTable extends DataTable
     {
         return [
             Column::make('id')->title('#')->data('id')->name('id'),
+            Column::make('joining')->title(__('site.joining_date'))->data('joining')->name('created_at'),
             Column::make('name')->title(__('site.name'))->data('name')->name('name'),
             Column::make('phone')->title(__('site.phone'))->data('phone')->name('phone'),
             Column::make('email')->title(__('site.email'))->data('email')->name('email'),

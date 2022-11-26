@@ -47,7 +47,7 @@ class InspectionController extends Controller
     {
         $data['title'] = __('site.inspections');
         $data['inspections'] = Inspection::with(['nursery.owner'])
-            ->where('inspector_id', auth()->guard('dashboard')->user()->id)
+            ->where('inspector_id', auth()->guard('admin')->user()->id)
             ->get();
         return view('dashboard.nurseries.inspections.index', compact('data'));
 

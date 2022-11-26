@@ -12,7 +12,7 @@
 
         @php $menu = false; @endphp
         @foreach(auth()->user()->getRoleNames() as $n)
-            @if($n =='superAdmin')
+            @if($n =='superAdmin' || $n=='admin')
                 @php $menu = true; @endphp
             @endif
         @endforeach

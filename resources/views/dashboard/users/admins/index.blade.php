@@ -6,10 +6,10 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <p class="mb-0">{{ $data['title'] }}</p>
+                        @hasanyrole('superAdmin|admin')
                         <button onclick="$('#create-model').modal('show')"
                            class="btn btn-primary btn-sm ms-auto">{{ __('site.create').' '.__('site.one_admins') }}</button>
-                    @if(auth()->user()->can('create admin'))
-                            @endif
+                        @endhasanyrole
                     </div>
                 </div>
                 <div class="card-body pb-2">

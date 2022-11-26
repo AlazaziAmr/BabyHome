@@ -8,11 +8,14 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <p class="mb-0">{{ $data['title'] }}</p>
+                        @role('superAdmin')
                         <button onclick="$('#create-model').modal('show')"
                                 class="btn btn-primary btn-sm ms-auto">{{ $create }}</button>
+                        @endrole
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
+                    @role('superAdmin')
                     <div class="p-3">
                         <p class="mb-0">@lang('site.add_excel')</p>
                         <form method="post" class="mb-5 excel_form"
@@ -29,6 +32,7 @@
                             </div>
                         </form>
                     </div>
+                    @endrole
                     <div class="table-responsive p-0">
                         {!! $dataTable->table() !!}
                     </div>

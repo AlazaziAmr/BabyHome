@@ -191,5 +191,6 @@ return [
     'card_expiration_date' => 'تاريخ إنتهاء الهوية',
     'license_number' => 'رقم الرخصة',
     'license_file' => 'ملف الرخصة',
-
+    'joining_date' => 'تاريخ الإنضمام',
+    'uid' => 'الرقم التسلسلي',
 ];

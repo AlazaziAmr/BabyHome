@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        if (Auth::guard('dashboard')->attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password])) {
 
             return redirect(route( '__bh_.index'));
         }
@@ -38,7 +38,7 @@ class AdminAuthController extends Controller
     public function adminLogout()
     {
         try {
-            Auth::guard('dashboard')->logout();
+            Auth::guard('admin')->logout();
             return redirect(route( 'adminLogin'));
 //            admin()->update([
 //                'fcm_token' => null

@@ -6,6 +6,7 @@ use App\DataTables\Admin\User\AdminDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Api\Admin\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
@@ -14,6 +15,7 @@ class AdminController extends Controller
 {
     public function index(AdminDataTable $dataTable)
     {
+//        dd(Auth::user()->getPermissionNames());
         $data['title'] = __('site.admins');
         $data['roles'] = Role::all();
         return $dataTable->render('dashboard.users.admins.index', compact('data'));
@@ -81,6 +83,7 @@ class AdminController extends Controller
             $admin = Admin::create($request_data);
             $role = Role::find($request->role);
             $admin->assignRole($role);
+            $admin->givePermissionTo($role->permissions);
             return response()->json(array('success' => true), 200);
         }
     }
@@ -89,6 +92,7 @@ class AdminController extends Controller
     {
         $form_data = Admin::findOrFail($id);
         $data['roles'] = Role::all();
+
         $returnHTML = view('dashboard.users.admins.partials._edit', compact('form_data', 'data'))->render();
         return $returnHTML;
     }
@@ -112,9 +116,16 @@ class AdminController extends Controller
                 'is_active' => $request->is_active ? 1 : 0,
                 'fcm_token' => '',
             ];
+
+            $oldRoles = Role::whereIn('name',$admin->getRoleNames()->toArray())->get('name');
+            foreach ($oldRoles as $or){
+                $admin->removeRole($or->name);
+                $admin->revokePermissionTo($or->permissions);
+            }
             $role = Role::find($request->role);
             $admin->update($request_data);
             $admin->assignRole($role);
+            $admin->givePermissionTo($role->permissions);
             return response()->json(array('success' => true), 200);
         }
     }

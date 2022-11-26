@@ -21,12 +21,15 @@
             <li><a class="dropdown-item"
                    href="{{ route('__bh_.inspections.show',$i_id) }}">@lang('site.show') @lang('site.inspections')</a>
             </li>
-        @endif
+
         <li><a class="dropdown-item" onclick="return status_row('{{ route('__bh_.nursery.active',$id) }}',1)"
                href="#">@lang('site.active')</a></li>
+        @endif
         <li><a class="dropdown-item" onclick="return status_row('{{ route('__bh_.nursery.block',$id) }}',2)"
                href="#">@lang('site.block')</a></li>
+        @role('superAdmin')
         <li><a class="dropdown-item" onclick="return delete_process('{{ route('__bh_.nurseries.remove',$id) }}')"
                href="#">@lang('site.delete')</a></li>
+        @endrole
     </ul>
 </div>

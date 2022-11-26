@@ -74,7 +74,7 @@ Route::post('adminLogout', [AdminAuthController::class, 'adminLogout'])->name('a
 
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']],
     function () {
-        Route::prefix('__bh_')->name('__bh_.')->middleware(['auth:dashboard', 'web'])->group(function () {
+        Route::prefix('__bh_')->name('__bh_.')->middleware(['auth:admin', 'web'])->group(function () {
             Route::get('/', [HomeController::class, 'index'])->name('index');
             Route::get('profile', [HomeController::class, 'profile'])->name('profile');
             Route::post('profile', [HomeController::class, 'update_profile'])->name('update_profile');

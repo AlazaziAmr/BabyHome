@@ -3,6 +3,7 @@
 namespace App\DataTables\Admin\Nursery;
 
 use App\Models\Api\Nurseries\Nursery;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -17,10 +18,10 @@ class NurseryDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('owner_name', function ($data) {
-
+            ->addColumn('joining', function ($data) {
+                return Carbon::parse($data->created_at)->format('Y-m-d  H:m:s');
+            })->addColumn('owner_name', function ($data) {
                     return $data->name;
-
             })->addColumn('inspector', function ($data) {
                 return $data->getInspector();
             })->addColumn('status_lable', function ($data) {
@@ -72,8 +73,9 @@ class NurseryDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('id')->title('الرقم التسلسلي')->data('id')->name('id'),
-            Column::make('owner_name')->title(__('site.owner_name'))->data('owner_name')->name('owner_name'),
+            Column::make('id')->title(__('site.uid'))->data('uid')->name('uid'),
+            Column::make('joining')->title(__('site.joining_date'))->data('joining')->name('created_at'),
+            Column::make('name')->title(__('site.owner_name'))->data('owner_name')->name('name'),
             Column::make('inspector')->title(__('site.inspector'))->data('inspector')->name('inspector'),
             Column::make('capacity')->title(__('site.capacity'))->data('capacity')->name('capacity'),
             Column::make('status_lable')->title(__('site.status_lable'))->data('status_lable')->name('status_lable'),

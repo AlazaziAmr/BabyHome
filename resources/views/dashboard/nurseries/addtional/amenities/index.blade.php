@@ -8,8 +8,10 @@
                 <div class="card-header pb-0">
                     <div class="d-flex align-items-center">
                         <p class="mb-0">{{ $data['title'] }}</p>
+                        @role('superAdmin')
                         <button onclick="$('#create-model').modal('show')"
                                 class="btn btn-primary btn-sm ms-auto">{{ $create }}</button>
+                        @endrole
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

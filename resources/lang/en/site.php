@@ -193,5 +193,6 @@ return [
     'card_expiration_date' => 'Card Expiration Date',
     'license_number' => 'License Number',
     'license_file' => 'License File',
-
+    'joining_date' => 'Joining Date',
+    'uid' => 'uid',
 ];
