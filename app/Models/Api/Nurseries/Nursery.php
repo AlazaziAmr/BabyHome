@@ -5,6 +5,7 @@ namespace App\Models\Api\Nurseries;
 use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\Api\Generals\Attachment;
+use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\BaseModel;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
@@ -111,6 +112,11 @@ class Nursery extends BaseModel
     public function attachmentable()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
+    }
+
+    public function booking()
+    {
+        return $this->hasMany(Booking::class, 'nursery_id');
     }
 
     public function getMainAttachmentAttribute()

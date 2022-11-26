@@ -2,6 +2,7 @@
 
 namespace App\Models\Api\Master\BookingServices;
 
+use App\Models\Api\Master\Child;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,7 +38,7 @@ class Booking extends Model
     }
     public function children(): BelongsTo
     {
-        return $this->BelongsTo(BelongsTo::class, 'child_id', 'id');
+        return $this->BelongsTo(Child::class, 'child_id', 'id');
     }
     public function BookingStatus(): BelongsTo
     {

@@ -65,7 +65,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'user_id' => $last->nursery_id,
             'user_type' => 2,
             'booking_id' => $last->id,
-            'status_id' => "0",
+            'status_id' => "1",
 
         ]);
     }
@@ -85,7 +85,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     'service_price' => $service['service_price'],
                     'service_quantity' => $service['service_quantity'],
                     'notes' => $service['notes'],
-                    'status' => 0,
+                    'status' => 1,
 
                 ]);
             }
@@ -154,8 +154,10 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 }else{
                     $status_id=0;
                 }*/
+        $nursery_capacity=Nursery::select('capacity')->where('id',$request->nursery_id)->first();
+        $capacity=$nursery_capacity->capacity;
         $checkBooking = $this->checkBookingNursery($request);
-        if ($checkBooking <= 2) {
+        if ($checkBooking <= $capacity) {
             $total = $this->prices($request);
             $total_hours = Carbon::parse($total['totalTime']);
             $id = $request['services'];

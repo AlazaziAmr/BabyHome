@@ -13,6 +13,7 @@ class Note extends Model
         'notes',
         'master_id',
         'nursery_id',
+        'child_id',
         'status',
         'user_type',
     ];

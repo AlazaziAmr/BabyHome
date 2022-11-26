@@ -27,12 +27,14 @@ use App\Http\Controllers\Api\Master\Auth\MasterResetPasswordController;
 use App\Http\Controllers\Api\Master\Booking\BookingController;
 use App\Http\Controllers\Api\Master\Children\ChildController;
 use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
+use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
 use App\Http\Controllers\Api\Nurseries\NurseryController;
 use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\Users\Auth\RestPasswordController;
 use App\Http\Controllers\Api\Users\Auth\UserAuthController;
 use App\Http\Controllers\Api\VerifyEmailController;
+use App\Http\Controllers\NoteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Nurseries\Profile\BabySitterController;
 use \App\Http\Controllers\Api\Nurseries\Profile\BabySitterSkillController;
@@ -338,8 +340,10 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('/nurseries-details/{id}', [MasterJoinRequestController::class, 'nurseriesDetails']);
     Route::post('/payment', [PaymentController::class, 'payment']);
     Route::apiResource('master-booking', BookingController::class);
-    Route::apiResource('notes', BookingController::class);
-
+    Route::apiResource('nursery-booking', BookingNurseryController::class);
+    Route::post('rejected', [BookingNurseryController::class,'rejected']);
+    Route::post('confirmed ', [BookingNurseryController::class,'confirmed']);
+    Route::apiResource('notes', NoteController::class);
 
 
 });

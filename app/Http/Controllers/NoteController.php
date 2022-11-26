@@ -41,9 +41,9 @@ class NoteController extends Controller
             'notes' => $request->notes,
             'master_id' => $request->parent_id,
             'nursery_id' => $request->nursery_id,
+            'child_id' => $request->child_id,
             'status' => $request->status,
             'user_type' => $request->user_type,
-
         ]);
 
     }
