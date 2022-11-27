@@ -174,7 +174,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         'nursery_id' => $request->nursery_id,
                         'master_id' => $request->master_id,
                         'child_id' => $child_id,
-                        'status_id' => "0",
+                        'status_id' => "1",
                         'booking_date' => $request->booking_date,
                         'start_datetime' => $request->start_datetime,
                         'end_datetime' => $request->end_datetime,
