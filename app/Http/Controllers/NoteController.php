@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Resources\Api\Master\Children\ChildCardResource;
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class NoteController extends Controller
 {
@@ -16,7 +17,7 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -37,15 +38,18 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $babySitter = Note::create([
-            'notes' => $request->notes,
-            'master_id' => $request->parent_id,
-            'nursery_id' => $request->nursery_id,
-            'child_id' => $request->child_id,
-            'status' => $request->status,
-            'user_type' => $request->user_type,
-        ]);
-
+        if (!empty($request['child_id'])) {
+            foreach ($request['child_id'] as $child_id) {
+                $babySitter = Note::create([
+                    'notes' => $request->notes,
+                    'master_id' => $request->parent_id,
+                    'nursery_id' => $request->nursery_id,
+                    'child_id' => $child_id['child_id'],
+                    'status' => $request->status,
+                    'user_type' => $request->user_type,
+                ]);
+            }
+        }
     }
 
     /**
@@ -54,9 +58,12 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show(Note $note)
+    public function show( $note)
     {
-        //
+        $note=Note::where("child_id",$note)->get();
+        return JsonResponse::successfulResponse('msg_created_succssfully', $note);
+
+
     }
 
     /**
