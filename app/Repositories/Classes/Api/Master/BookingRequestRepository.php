@@ -109,7 +109,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
             foreach ($request['date'] as $data) {
 
-
                 $babySitter = ReservedTime::create([
 
                     'nursery_id' => $request->nursery_id,
@@ -134,7 +133,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             foreach ($request['date'] as $data) {
                 $startTime = Carbon::parse($request->start_time);
                 $endTime = Carbon::parse($request->end_time);
-                $bookingCount = ReservedTime::with('Nurseries')->with('Nurseries')
+                $bookingCount = ReservedTime::where('nursery_id',$request->nursery_id)->with('Nurseries')->with('Nurseries')
                     ->where('start_hour', '<=', $startTime)
                     ->where('end_hour', '>=', $endTime)
                     ->whereNotIn('num_of_confirmed_res', [2])
@@ -154,41 +153,50 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 }else{
                     $status_id=0;
                 }*/
-        $nursery_capacity=Nursery::select('capacity')->where('id',$request->nursery_id)->first();
-        $capacity=$nursery_capacity->capacity;
-        $checkBooking = $this->checkBookingNursery($request);
-        if ($checkBooking <= $capacity) {
-            $total = $this->prices($request);
-            $total_hours = Carbon::parse($total['totalTime']);
-            $id = $request['services'];
-            /*        foreach ($request['child_id'] as $child) {*/
-            $last = Booking::create([
-                'nursery_id' => $request->nursery_id,
-                'master_id' => $request->master_id,
-                'child_id' => $request->child_id,
-                'status_id' => "0",
-                'booking_date' => $request->booking_date,
-                'start_datetime' => $request->start_datetime,
-                'end_datetime' => $request->end_datetime,
-                'total_hours' => $total_hours,
-                'created_by' => $request->created_by,
-            ]);
-            $this->bookingLog($last);
-            $this->reservedTimes($request);
-            /*            $this->bookingStatus($request,$last);*/
-            $this->bookingServices($request, $last);
-            /*   }
 
-               if (!empty($request['payment'])) {
-                    $this->payment($request['services'], $request);
+
+        if (!empty($request['child_id'])) {
+
+            foreach ($request['child_id'] as $child_id) {
+
+                $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)->first();
+                $capacity = $nursery_capacity->capacity;
+                $checkBooking = $this->checkBookingNursery($request);
+
+                if ($checkBooking <= $capacity) {
+                    $total = $this->prices($request);
+                    $total_hours = Carbon::parse($total['totalTime']);
+                    $id = $request['services'];
+                    /*        foreach ($request['child_id'] as $child) {*/
+                    $last = Booking::create([
+                        'nursery_id' => $request->nursery_id,
+                        'master_id' => $request->master_id,
+                        'child_id' => $child_id,
+                        'status_id' => "0",
+                        'booking_date' => $request->booking_date,
+                        'start_datetime' => $request->start_datetime,
+                        'end_datetime' => $request->end_datetime,
+                        'total_hours' => $request->total_hours,
+                        'created_by' => $request->created_by,
+                    ]);
+                    $this->bookingLog($last);
+                    $this->reservedTimes($request);
+                    /*            $this->bookingStatus($request,$last);*/
+                    $this->bookingServices($request, $last);
+                    /*   }
+
+                       if (!empty($request['payment'])) {
+                            $this->payment($request['services'], $request);
+                        }
+
+                       // qualicfications
+                       if (!empty($request['services'])) {
+                            $this->services($request['services'], $request);
+                        }*/
+                } else {
+                    return "عذراً الحاضنة ممتلئة";
                 }
-
-               // qualicfications
-               if (!empty($request['services'])) {
-                    $this->services($request['services'], $request);
-                }*/
-        } else {
-            return "عذراً الحاضنة ممتلئة";
+            }
         }
 
     }
