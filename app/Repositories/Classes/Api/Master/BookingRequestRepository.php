@@ -74,13 +74,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     {
         if (!empty($request['services'])) {
             foreach ($request['services'] as $k => $service) {
+                foreach($service['child_id']as $k => $child_id){
 
                 $babySitter = BookingService::create([
                     'nursery_id' => $last->nursery_id,
                     'booking_id' => $last->id,
                     'service_id' => $service['id'],
                     'master_id' => $last->master_id,
-                    'child_id' => $last->child_id,
+                    'child_id' => $child_id,
                     'service_type_id' => $service['service_type_id'],
                     'service_price' => $service['service_price'],
                     'service_quantity' => $service['service_quantity'],
@@ -88,6 +89,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     'status' => 1,
 
                 ]);
+            }
             }
         }
     }
