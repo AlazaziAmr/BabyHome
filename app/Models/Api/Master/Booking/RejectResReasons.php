@@ -12,7 +12,6 @@ use Spatie\Translatable\HasTranslations;
 class RejectResReasons extends Model
 {
     use HasFactory,SoftDeletes;
-    use HasTranslations;
 
     protected $fillable = [
         'booking_id',

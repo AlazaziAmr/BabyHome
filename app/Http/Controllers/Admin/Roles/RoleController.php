@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin\Roles;
+namespace App\Http\Controllers\Admin\Roles;
 
 use App\Helpers\JsonResponse;
 use Spatie\Permission\Models\Role;

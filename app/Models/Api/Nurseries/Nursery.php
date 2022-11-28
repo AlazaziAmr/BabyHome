@@ -34,6 +34,7 @@ class Nursery extends BaseModel
     protected $fillable = [
         'name',
         'uid',
+        'user_id',
         'first_name',
         'last_name',
         'license_no',
@@ -116,7 +117,7 @@ class Nursery extends BaseModel
 
     public function booking()
     {
-        return $this->hasMany(Booking::class, 'nursery_id');
+        return $this->hasMany(Booking::class,'nursery_id','user_id');
     }
 
     public function getMainAttachmentAttribute()

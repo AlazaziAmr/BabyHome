@@ -30,19 +30,26 @@ class BookingNurseryController extends Controller
         }
     }
 
-    public function rejected($request){
-
+    public function rejected(Request $request){
         try {
             return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->rejected($request));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
-
     }
-    public function confirmed($request){
+    public function confirmed(Request $request){
 
         try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->confirmed($request));
+            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->BookingNursery->confirmed($request));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    public function confirmedShow(Request $request){
+
+        try {
+            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->BookingNursery->confirmedShow($request));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
@@ -70,6 +77,7 @@ class BookingNurseryController extends Controller
     {
 
 
+
     }
 
     /**
@@ -80,6 +88,12 @@ class BookingNurseryController extends Controller
      */
     public function show($id)
     {
+
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->showBookingDetails($id));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
 
     }
 

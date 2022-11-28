@@ -343,6 +343,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::apiResource('nursery-booking', BookingNurseryController::class);
     Route::post('rejected', [BookingNurseryController::class,'rejected']);
     Route::post('confirmed ', [BookingNurseryController::class,'confirmed']);
+    Route::get('confirmedShow ', [BookingNurseryController::class,'confirmedShow']);
     Route::apiResource('notes', NoteController::class);
 
 

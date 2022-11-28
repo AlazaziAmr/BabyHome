@@ -25,7 +25,7 @@ class Child extends BaseModel
         'description',
         'has_disability'
     ];
-    protected $hidden = ['pivot'];
+    protected $hidden = ['created_at','updated_at'];
 
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin\RestoreRequest;
+namespace App\Http\Controllers\Admin\RestoreRequest;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\JsonResponse;

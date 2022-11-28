@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Nurseries\profile;
+namespace App\Http\Controllers\Api\Nurseries\Profile;
 
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;

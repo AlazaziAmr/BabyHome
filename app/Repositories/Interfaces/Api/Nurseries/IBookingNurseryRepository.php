@@ -10,4 +10,6 @@ interface IBookingNurseryRepository extends IBaseRepository
     public function showBooking();
     public function rejected(Request $request);
     public function confirmed(Request $request);
+    public function showBookingDetails($id);
+    public function confirmedShow();
 }

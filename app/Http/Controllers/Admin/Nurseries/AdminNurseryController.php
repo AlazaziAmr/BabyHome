@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin\Nurseries;
+namespace App\Http\Controllers\Admin\Nurseries;
 
 use Illuminate\Http\Request;
 use App\Helpers\JsonResponse;

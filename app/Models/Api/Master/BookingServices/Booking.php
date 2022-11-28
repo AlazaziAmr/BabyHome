@@ -32,7 +32,7 @@ class Booking extends Model
     {
         return $this->BelongsTo(Nursery::class, 'nursery_id', 'id');
     }
-    public function Masters(): BelongsTo
+    public function masters(): BelongsTo
     {
         return $this->BelongsTo(Master::class, 'master_id', 'id');
     }

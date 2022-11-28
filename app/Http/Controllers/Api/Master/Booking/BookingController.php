@@ -44,6 +44,16 @@ class BookingController extends Controller
      */
     public function store(BookingRequest $request)
     {
+
+
+       /* $phone="+967775070264";
+
+
+
+        $fcm = new FcmNotification();
+        $fcm->save_notification( 'تم التسجيل بنجاح', 'عزيزنا ',$request['master_id'],$phone);
+        dd( $fcm);*/
+
         try {
             return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->createRequest($request));
         } catch (\Exception $e) {

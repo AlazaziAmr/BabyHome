@@ -158,6 +158,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
 
         if (!empty($request['child_id'])) {
+            $countChild=count($request['child_id']);
 
             foreach ($request['child_id'] as $child_id) {
 
@@ -166,6 +167,9 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $checkBooking = $this->checkBookingNursery($request);
 
                 if ($checkBooking <= $capacity) {
+                    $capacityFree=$capacity-$checkBooking;
+                    $checkCapacity=$capacityFree -$countChild;
+                    if ($checkCapacity >0){
                     $total = $this->prices($request);
                     $total_hours = Carbon::parse($total['totalTime']);
                     $id = $request['services'];
@@ -195,6 +199,11 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                        if (!empty($request['services'])) {
                             $this->services($request['services'], $request);
                         }*/
+                }else{
+                        return "عذراَ لايتوفر العدد المطلوب من المقاعد .";
+
+                    }
+
                 } else {
                     return "عذراً الحاضنة ممتلئة";
                 }

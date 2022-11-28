@@ -38,18 +38,18 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        if (!empty($request['child_id'])) {
-            foreach ($request['child_id'] as $child_id) {
+
                 $babySitter = Note::create([
                     'notes' => $request->notes,
-                    'master_id' => $request->parent_id,
+                    'master_id' => $request->master_id,
                     'nursery_id' => $request->nursery_id,
-                    'child_id' => $child_id['child_id'],
+                    'child_id' => $request->child_id,
                     'status' => $request->status,
                     'user_type' => $request->user_type,
                 ]);
-            }
-        }
+        return JsonResponse::successfulResponse('msg_created_succssfully', $babySitter);
+
+
     }
 
     /**
@@ -58,12 +58,10 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show( $note)
+    public function show( $child_id)
     {
-        $note=Note::where("child_id",$note)->get();
+        $note=Note::where("child_id",$child_id)->with('children')->get();
         return JsonResponse::successfulResponse('msg_created_succssfully', $note);
-
-
     }
 
     /**

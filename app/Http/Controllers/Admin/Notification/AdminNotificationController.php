@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin\Notification;
+namespace App\Http\Controllers\Admin\Notification;
 
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
