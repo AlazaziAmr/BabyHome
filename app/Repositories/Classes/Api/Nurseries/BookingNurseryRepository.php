@@ -54,6 +54,21 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     }
 
+    public function rejectBooking()
+    {
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+        $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 3)->with([
+            'masters:id,uid,first_name',
+            'children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'nurseries',
+        ])->get();
+
+        return $nurseryBooking;
+
+    }
+
 
     public function showBookingDetails($id)
     {

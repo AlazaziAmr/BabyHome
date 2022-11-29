@@ -55,6 +55,15 @@ class BookingNurseryController extends Controller
         }
 
     }
+    public function rejectBooking(){
+
+        try {
+            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->BookingNursery->rejectBooking());
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
 
 
     /**

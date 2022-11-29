@@ -344,6 +344,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::post('rejected', [BookingNurseryController::class,'rejected']);
     Route::post('confirmed ', [BookingNurseryController::class,'confirmed']);
     Route::get('confirmedShow ', [BookingNurseryController::class,'confirmedShow']);
+    Route::get('rejectBooking ', [BookingNurseryController::class,'rejectBooking']);
     Route::apiResource('notes', NoteController::class);
 
 
