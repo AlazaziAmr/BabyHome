@@ -12,7 +12,7 @@ class BookingsStatus extends Model
     use HasFactory,SoftDeletes;
     use HasTranslations;
     public $translatable = ['name'];
-    protected $table = 'Booking_Status';
+    protected $table = 'booking_status';
 
 
 
