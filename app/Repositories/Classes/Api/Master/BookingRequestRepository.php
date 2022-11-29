@@ -13,6 +13,7 @@ use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\BookingServices\BookingsStatus;
+use App\Models\Api\Master\BookingServices\ConfirmedBooking;
 use App\Models\Api\Master\BookingServices\ReservedTime;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Nurseries\BabysitterInfo;
@@ -325,6 +326,19 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ];
 
     }
+    public function showBookingDetails($id)
+    {
+        $nurseryBooking=Booking::where('id',$id)->with([
+            'masters.children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'children.sicknesses',
+            'children.languages',
+            'children.allergies',
+        ])->get();
+
+        return $nurseryBooking;
+
+    }
 
     public function filterMaster($request)
     {
@@ -415,6 +429,52 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         return $data;
 
     }
+
+    public function showBooking()
+    {
+        $user_id = auth('api')->user()->id;
+        $nurseryBooking=Booking::whereIn("master_id",$user_id)->where('status_id', 1)->with([
+            'masters:id,uid,first_name',
+            'children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'nurseries',
+        ])->get();
+
+        return $nurseryBooking;
+
+    }
+
+    public function rejectBooking()
+    {
+        $user_id = auth('api')->user()->id;
+        $nurseryBooking=Booking::whereIn("master_id",$user_id)->where('status_id', 3)->with([
+            'masters:id,uid,first_name',
+            'children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'nurseries',
+        ])->get();
+
+        return $nurseryBooking;
+
+    }
+    public function confirmedShow()
+    {
+        $user_id = auth('api')->user()->id;
+        $ConfirmedBooking=Booking::whereIn('master_id',$user_id)->with([
+            "Booking.children",
+            "PaymentMethod",
+            'Booking.children.sicknesses',
+            'Booking.children.languages',
+            'Booking.children.allergies',
+            'confirmedBooking',
+
+
+        ])->get();
+
+        return $ConfirmedBooking;
+
+    }
+
 
 
 }

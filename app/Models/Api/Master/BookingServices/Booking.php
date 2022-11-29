@@ -44,4 +44,8 @@ class Booking extends Model
     {
         return $this->BelongsTo(BookingsStatus::class, 'status_id', 'id');
     }
+    public function confirmedBooking(): BelongsTo
+    {
+        return $this->BelongsTo(ConfirmedBooking::class, 'booking_id', 'id');
+    }
 }

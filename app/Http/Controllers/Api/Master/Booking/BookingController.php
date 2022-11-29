@@ -77,6 +77,45 @@ class BookingController extends Controller
         }
     }
 
+    public function confirmedShow(Request $request){
+
+        try {
+            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->joinRequestRepository->confirmedShow($request));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    public function rejectBooking(){
+
+        try {
+            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->joinRequestRepository->rejectBooking());
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+
+    public function BookingWait()
+    {
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showBooking());
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function showBookingDetails($id)
+    {
+
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showBookingDetails($id));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -111,10 +150,7 @@ class BookingController extends Controller
         //
     }
 
-  /*  public function showNurseries()
-    {
-        return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showNurseries());
-    }*/
+
 
     public function filterMaster(Request $request){
 //        $x=Nursery::class;

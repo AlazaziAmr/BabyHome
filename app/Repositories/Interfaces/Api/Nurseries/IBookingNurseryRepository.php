@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 interface IBookingNurseryRepository extends IBaseRepository
 {
-    public function showBooking();
     public function rejected(Request $request);
     public function confirmed(Request $request);
     public function showBookingDetails($id);
     public function confirmedShow();
     public function rejectBooking();
+    public function showBooking();
+
 }

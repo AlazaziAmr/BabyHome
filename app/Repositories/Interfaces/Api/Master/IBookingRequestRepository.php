@@ -15,6 +15,11 @@ interface IBookingRequestRepository extends IBaseRepository
     public function booking(Request $request);
     public function nurseriesDetails($id);
     public function showNurseries();
+    public function confirmedShow();
+    public function rejectBooking();
+    public function showBooking();
+    public function showBookingDetails($id);
+
 
 
 
