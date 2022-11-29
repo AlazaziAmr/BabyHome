@@ -51,7 +51,9 @@ class NurseryController extends Controller
     {
         try {
             if(user()->id){
-                return JsonResponse::successfulResponse('msg_created_succssfully',$this->nurseryRepository->createRequest($request->validated()));// ? JsonResponse::successfulResponse('msg_created_succssfully') :  JsonResponse::errorResponse($this->nurseryRepository->createRequest($request->validated())['error']);
+                return $this->nurseryRepository->createRequest($request->
+                validated())['status'] ? JsonResponse::successfulResponse('msg_created_successfully'):
+                    JsonResponse::errorResponse($this->nurseryRepository->createRequest($request->validated())['error']);
             }else{
                 return JsonResponse::errorResponse('Unauthenticated');
             }
