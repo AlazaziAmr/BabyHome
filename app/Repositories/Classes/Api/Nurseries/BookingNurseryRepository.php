@@ -47,6 +47,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'BookingStatus:id,name',
+            'nurseries',
         ])->get();
 
         return $nurseryBooking;
