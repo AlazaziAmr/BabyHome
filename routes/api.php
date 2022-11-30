@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\Users\Auth\RestPasswordController;
 use App\Http\Controllers\Api\Users\Auth\UserAuthController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\PresenceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Nurseries\Profile\BabySitterController;
 use \App\Http\Controllers\Api\Nurseries\Profile\BabySitterSkillController;
@@ -354,6 +355,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('BookingWaitMaster ', [BookingController::class,'BookingWait']);
     Route::get('showBookingDetails ', [BookingController::class,'showBookingDetails']);
     Route::apiResource('notes', NoteController::class);
+    Route::apiResource('presence', PresenceController::class);
 
 
 

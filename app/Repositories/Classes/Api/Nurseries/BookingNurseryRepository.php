@@ -46,11 +46,16 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
+            'children.attachmentable',
             'BookingStatus:id,name',
             'nurseries',
         ])->get();
 
-        return $nurseryBooking;
+        if ($nurseryBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $nurseryBooking;
+        }
 
     }
 
@@ -61,28 +66,42 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 3)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
+            'children.attachmentable',
             'BookingStatus:id,name',
             'nurseries',
+            'RejectResReasons',
         ])->get();
 
-        return $nurseryBooking;
+
+        if ($nurseryBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $nurseryBooking;
+        }
+
 
     }
-    
+
 
 
     public function showBookingDetails($id)
     {
+
         $nurseryBooking=Booking::where('id',$id)->with([
             'masters.children:id,name,date_of_birth',
             'BookingStatus:id,name',
             'children.sicknesses',
-            'children.languages',
+            'children.languages:name',
             'children.allergies',
+            'children.attachmentable',
         ])->get();
 
-        return $nurseryBooking;
 
+        if ($nurseryBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $nurseryBooking;
+        }
     }
 
 
@@ -112,14 +131,14 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $user_type=2;
         $this->bookingLog($request,$status,$user_type);
 
-         Booking::where('id', $request->booking_id)->update([
+        Booking::where('id', $request->booking_id)->update([
             'status_id' => $status,
         ]);
 
-         BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)
+        BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)
             ->update([
-            'status' => $status,
-        ]);
+                'status' => $status,
+            ]);
 
     }
     public function confirmed(Request $request)
@@ -142,7 +161,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             ->where('child_id',$request->child_id) ->where('nursery_id',$request->nursery_id)->sum('service_price');
         $total_payment=(($price_per_hour->price)*$request->total_hours)+$total_services_price;
         $status="2";
-       $confirm_date =now()->format('Y-m-d');
+        $confirm_date =now()->format('Y-m-d');
         $RejectResReasons = ConfirmedBooking::create([
             'nursery_id' => $request->nursery_id,
             'booking_id' => $request->booking_id,
@@ -154,7 +173,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'created_by' => $request->created_by,
             'status' => "2",
         ]);
-          BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)->update([
+        BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)->update([
             'status' => $status,
         ]);
 
@@ -177,8 +196,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'Booking.children.sicknesses',
             'Booking.children.languages',
             'Booking.children.allergies',
-
-
+            'Booking.children.attachmentable',
         ])->get();
 
         return $ConfirmedBooking;

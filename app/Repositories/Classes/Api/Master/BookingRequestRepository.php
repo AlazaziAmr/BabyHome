@@ -77,20 +77,20 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             foreach ($request['services'] as $k => $service) {
                 foreach($service['child_id']as $k => $child_id){
 
-                $babySitter = BookingService::create([
-                    'nursery_id' => $last->nursery_id,
-                    'booking_id' => $last->id,
-                    'service_id' => $service['id'],
-                    'master_id' => $last->master_id,
-                    'child_id' => $child_id,
-                    'service_type_id' => $service['service_type_id'],
-                    'service_price' => $service['service_price'],
-                    'service_quantity' => $service['service_quantity'],
-                    'notes' => $service['notes'],
-                    'status' => 1,
+                    $babySitter = BookingService::create([
+                        'nursery_id' => $last->nursery_id,
+                        'booking_id' => $last->id,
+                        'service_id' => $service['id'],
+                        'master_id' => $last->master_id,
+                        'child_id' => $child_id,
+                        'service_type_id' => $service['service_type_id'],
+                        'service_price' => $service['service_price'],
+                        'service_quantity' => $service['service_quantity'],
+                        'notes' => $service['notes'],
+                        'status' => 1,
 
-                ]);
-            }
+                    ]);
+                }
             }
         }
     }
@@ -171,36 +171,36 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     $capacityFree=$capacity-$checkBooking;
                     $checkCapacity=$capacityFree -$countChild;
                     if ($checkCapacity >0){
-                    $total = $this->prices($request);
-                    $total_hours = Carbon::parse($total['totalTime']);
-                    $id = $request['services'];
-                    /*        foreach ($request['child_id'] as $child) {*/
-                    $last = Booking::create([
-                        'nursery_id' => $request->nursery_id,
-                        'master_id' => $request->master_id,
-                        'child_id' => $child_id,
-                        'status_id' => "1",
-                        'booking_date' => $request->booking_date,
-                        'start_datetime' => $request->start_datetime,
-                        'end_datetime' => $request->end_datetime,
-                        'total_hours' => $request->total_hours,
-                        'created_by' => $request->created_by,
-                    ]);
-                    $this->bookingLog($last);
-                    $this->reservedTimes($request);
-                    /*            $this->bookingStatus($request,$last);*/
-                    $this->bookingServices($request, $last);
-                    /*   }
+                        $total = $this->prices($request);
+                        $total_hours = Carbon::parse($total['totalTime']);
+                        $id = $request['services'];
+                        /*        foreach ($request['child_id'] as $child) {*/
+                        $last = Booking::create([
+                            'nursery_id' => $request->nursery_id,
+                            'master_id' => $request->master_id,
+                            'child_id' => $child_id,
+                            'status_id' => "1",
+                            'booking_date' => $request->booking_date,
+                            'start_datetime' => $request->start_datetime,
+                            'end_datetime' => $request->end_datetime,
+                            'total_hours' => $request->total_hours,
+                            'created_by' => $request->created_by,
+                        ]);
+                        $this->bookingLog($last);
+                        $this->reservedTimes($request);
+                        /*            $this->bookingStatus($request,$last);*/
+                        $this->bookingServices($request, $last);
+                        /*   }
 
-                       if (!empty($request['payment'])) {
-                            $this->payment($request['services'], $request);
-                        }
+                           if (!empty($request['payment'])) {
+                                $this->payment($request['services'], $request);
+                            }
 
-                       // qualicfications
-                       if (!empty($request['services'])) {
-                            $this->services($request['services'], $request);
-                        }*/
-                }else{
+                           // qualicfications
+                           if (!empty($request['services'])) {
+                                $this->services($request['services'], $request);
+                            }*/
+                    }else{
                         return "عذراَ لايتوفر العدد المطلوب من المقاعد .";
 
                     }
@@ -334,6 +334,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'children.sicknesses',
             'children.languages',
             'children.allergies',
+            'children.attachmentable',
+
         ])->get();
 
         return $nurseryBooking;
@@ -389,7 +391,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             ])
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
-            ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();;
+            ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
         return $x;
 
 
@@ -432,47 +434,67 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function showBooking()
     {
-        $user_id = auth('api')->user()->id;
-        $nurseryBooking=Booking::whereIn("master_id",$user_id)->where('status_id', 1)->with([
+
+        $user_id = auth('master')->user()->id;
+        $nurseryBooking=Booking::where("master_id",$user_id)->where('status_id', 1)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'BookingStatus:id,name',
             'nurseries',
+            'children.attachmentable',
+
         ])->get();
 
-        return $nurseryBooking;
+        if ($nurseryBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $nurseryBooking;
+        }
+
+
 
     }
 
     public function rejectBooking()
     {
-        $user_id = auth('api')->user()->id;
-        $nurseryBooking=Booking::whereIn("master_id",$user_id)->where('status_id', 3)->with([
+        $user_id = auth('master')->user()->id;
+        $nurseryBooking=Booking::where("master_id",$user_id)->where('status_id', 3)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'BookingStatus:id,name',
             'nurseries',
+            'children.attachmentable',
+
         ])->get();
 
-        return $nurseryBooking;
-
+        if ($nurseryBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $nurseryBooking;
+        }
     }
     public function confirmedShow()
     {
-        $user_id = auth('api')->user()->id;
-        $ConfirmedBooking=Booking::whereIn('master_id',$user_id)->with([
+        $user_id = auth('master')->user()->id;
+        $ConfirmedBooking=Booking::where('master_id',$user_id)->with([
             "Booking.children",
             "PaymentMethod",
             'Booking.children.sicknesses',
             'Booking.children.languages',
             'Booking.children.allergies',
             'confirmedBooking',
+            'Booking.children.attachmentable',
+
 
 
         ])->get();
 
-        return $ConfirmedBooking;
 
+        if ($ConfirmedBooking->isEmpty()) {
+            return "عذراً لايوجد أي حجوزات لعرضها.";
+        }else{
+            return $ConfirmedBooking;
+        }
     }
 
 

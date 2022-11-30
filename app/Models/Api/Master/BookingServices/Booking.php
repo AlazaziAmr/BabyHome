@@ -2,12 +2,14 @@
 
 namespace App\Models\Api\Master\BookingServices;
 
+use App\Models\Api\Master\Booking\RejectResReasons;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
@@ -47,5 +49,9 @@ class Booking extends Model
     public function confirmedBooking(): BelongsTo
     {
         return $this->BelongsTo(ConfirmedBooking::class, 'booking_id', 'id');
+    }
+    public function RejectResReasons(): HasMany
+    {
+        return $this->HasMany(RejectResReasons::class, 'booking_id', 'id');
     }
 }

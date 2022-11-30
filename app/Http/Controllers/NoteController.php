@@ -38,15 +38,18 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
+        foreach($request['child_id']as $k => $child_id) {
 
-                $babySitter = Note::create([
-                    'notes' => $request->notes,
-                    'master_id' => $request->master_id,
-                    'nursery_id' => $request->nursery_id,
-                    'child_id' => $request->child_id,
-                    'status' => $request->status,
-                    'user_type' => $request->user_type,
-                ]);
+
+            $babySitter = Note::create([
+                'notes' => $request->notes,
+                'master_id' => $request->master_id,
+                'nursery_id' => $request->nursery_id,
+                'child_id' => $child_id,
+                'status' => $request->status,
+                'user_type' => $request->user_type,
+            ]);
+        }
         return JsonResponse::successfulResponse('msg_created_succssfully', $babySitter);
 
 
