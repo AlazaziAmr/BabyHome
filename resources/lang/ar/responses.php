@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'msg_added_successfully_with_code' => 'تمت الإضافته بنجاح وإرسال الكود',
+    'msg_updated_successfully_with_code' => 'تم التحديث بنجاح وإرسال الكود',
     'msg_added_successfully' => 'السجل قد تمت أضافته بنجاح',
     'msg_updated_successfully' => 'السجل قد تم تحديثه بنجاح',
     'msg_deleted_successfully' => 'السجل قد تم أزالته بنجاح',
@@ -51,6 +53,7 @@ return [
     'msg_user_does_not_exist' => 'حساب غير متوفر',
     'phone_not_registered_or_invalid_code' => 'هاتف غير مسجل أو ترميز خاطئ',
     'msg_msg_user_check' => 'فحص الحساب',
+    'email_taken' => 'الإيميل مستخدم من قبل.',
 
 
     "amenities" => 'المرافق',

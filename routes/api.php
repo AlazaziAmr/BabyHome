@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Master\Auth\MasterAuthController;
 use App\Http\Controllers\Api\Master\Auth\MasterResetPasswordController;
 use App\Http\Controllers\Api\Master\Booking\BookingController;
 use App\Http\Controllers\Api\Master\Children\ChildController;
+use App\Http\Controllers\Api\Master\Children\ChildPhoneController;
 use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
 use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
@@ -264,6 +265,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::post('/resend', [UserAuthController::class, 'resendOTP']);
     Route::post('/verify', [UserAuthController::class, 'verifyOTP']);
     Route::get('/user-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'userProfile']);
+    Route::post('/add-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'addEmail']);
     Route::get('/update-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updateEmail']);
     Route::get('/verify-email', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'verifyEmail']);
     Route::post('/update-phone', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'updatePhone']);
@@ -307,6 +309,8 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 
     // Children
     Route::apiResource('children', ChildController::class);
+    Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
+    Route::apiResource('child-phone', ChildPhoneController::class)->except(['show','edit','create']);
 
     Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
     Route::apiResource('child-sickness', ChildSicknessController::class)->except(['show']);

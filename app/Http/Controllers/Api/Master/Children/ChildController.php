@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Master\Children;
 
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Master\Children\ChildPhoneRequest;
 use App\Http\Requests\Api\Master\Children\ChildRequest;
 use App\Http\Resources\Api\Master\Children\ChildAllergyResource;
 use App\Http\Resources\Api\Master\Children\ChildCardResource;
@@ -53,6 +54,7 @@ class ChildController extends Controller
     {
         return JsonResponse::successfulResponse('msg_created_succssfully', $this->childrenRepository->createRequest($request->validated()));
     }
+
 
     /**
      * Display the specified resource.

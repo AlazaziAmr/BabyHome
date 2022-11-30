@@ -21,7 +21,7 @@ class UserRepository extends BaseRepository implements IUserRepository
             [
 
                 'name'         => $payload['name'],
-                'email'        => $payload['email'],
+//                'email'        => $payload['email'],
                 'phone' => $payload['phone'],
                 // 'national_id' => $payload['national_id'],
                 'password'     => Hash::make($payload['password']),

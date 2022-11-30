@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'msg_added_successfully_with_code' => 'added successfully and sent the code',
+    'msg_updated_successfully_with_code' => 'updated successfully and sent the code',
     'msg_added_successfully' => 'record has been added successfully',
     'msg_updated_successfully' => 'record has been updated successfully',
     'msg_deleted_successfully' => 'record has been deleted successfully',
@@ -54,6 +56,7 @@ return [
     'msg_user_does_not_exist' => 'User Does Not Exist',
     'phone_not_registered_or_invalid_code' => 'Phone Not Registered Or The Code is invalid',
     'msg_msg_user_check' => 'User Check',
+    'email_taken' => 'Email already been taken.',
 
 
     "amenities" => 'Amenities',

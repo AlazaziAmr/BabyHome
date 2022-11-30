@@ -76,7 +76,6 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
                         'phone' => $phone['value'],
                         'name' => $phone['name'],
                         'relation_type' => $phone['relation_id'],
-
                     ]);
                 }
             }
@@ -109,17 +108,17 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
             if ($payload['languages']) $child->languages()->sync($payload['languages']);
 
             //phones
-            Phone::where('child_id',$child['id'])->delete();
+//            Phone::where('child_id',$child['id'])->delete();
 //            if ($payload['phones']) {
-                foreach ($payload['phones'] as $phone) {
-                    Phone::create([
-                        'child_id' => $child['id'],
-                        'phone' => $phone['value'],
-                        'name' => $phone['name'],
-                        'relation_type' => $phone['relation_id'],
-
-                    ]);
-                }
+//                foreach ($payload['phones'] as $phone) {
+//                    Phone::create([
+//                        'child_id' => $child['id'],
+//                        'phone' => $phone['value'],
+//                        'name' => $phone['name'],
+//                        'relation_type' => $phone['relation_id'],
+//
+//                    ]);
+//                }
 //            }
 
             //attachments
@@ -131,4 +130,17 @@ class ChildrenRepository extends BaseRepository implements IChildrenRepository
             return ['status' => false, 'error' => $e->getMessage()];
         }
     }
+
+//    public function createPhone($payload)
+//    {
+//        $child = $this->model->findOrFail($payload['child_id']);
+//        foreach ($payload['phones'] as $phone) {
+//            Phone::create([
+//                'child_id' => $payload['id'],
+//                'phone' => $phone['value'],
+//                'name' => $phone['name'],
+//                'relation_type' => $phone['relation_id'],
+//            ]);
+//        }
+//    }
 }

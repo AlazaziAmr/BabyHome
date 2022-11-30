@@ -26,6 +26,7 @@ class ChildRequest extends FormRequest
                 'phones' => 'required|array',
                 'phones.*.value'      => 'required|phone_number',
                 'phones.*.name'      => 'string|nullable',
+                'phones.*.relation_id'      => 'required|string',
                 'allergies'      => 'array|nullable',
                 'allergies.*'      => 'string|nullable',
                 'sicknesses'      => 'array|nullable',
@@ -45,8 +46,8 @@ class ChildRequest extends FormRequest
                 'has_disability' => 'required|boolean',
                 'languages' => 'required|array',
                 'languages.*'      => 'required|exists:languages,id',
-                'phones' => 'required|array',
-                'phones.*'      => 'required|phone_number',
+//                'phones' => 'required|array',
+//                'phones.*'      => 'required|phone_number',
                 'attachments' => 'array',
                 'attachments.*.file' => 'required|mimes:jpeg,png,jpg,gif',
             ];

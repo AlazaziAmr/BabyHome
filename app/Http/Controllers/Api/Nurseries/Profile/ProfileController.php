@@ -19,6 +19,7 @@ use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
 use App\Repositories\Interfaces\Api\Nurseries\INurseryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -128,28 +129,58 @@ class ProfileController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            if ($user){
+            if ($user) {
                 return JsonResponse::successfulResponse('msg_success', new UserResource($user));
             }
-            } catch (\Exception $e) {
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function addEmail(Request $request)
+    {
+        Validator::make($request->all(), [
+            'user_id' => 'required|numeric',
+            'email' => 'required|string|email|max:191',
+        ]);
+
+        try {
+            $user = User::findOrFail($request->user_id);
+            if ($user) {
+                $checkEmail = User::where('email', $request->email)->whereNotNull('email_verified_at')->get();
+                if ($checkEmail->count() > 0) {
+                    return JsonResponse::errorResponse('email_taken');
+                }
+                $user->email = $request->email;
+                $user->activation_code = OTPGenrator();
+                $user->save();
+                $user->sendEmailVerificationNotification();
+                return JsonResponse::successfulResponse('msg_added_successfully_with_code', $user);
+            }
+        } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
 
     public function updateEmail(Request $request)
     {
+        Validator::make($request->all(), [
+            'user_id' => 'required|numeric',
+            'email' => 'required|string|email|max:191',
+        ]);
+
         try {
             $user = User::findOrFail($request->user_id);
             if ($user) {
                 $checkEmail = User::where('email', $request->email)->whereNotNull('email_verified_at')->get();
                 if ($checkEmail->count() > 0) {
-                    return JsonResponse::errorResponse('هذا الإيميل مستخدم.');
+                    return JsonResponse::errorResponse('email_taken');
                 }
                 $user->email = $request->email;
                 $user->activation_code = OTPGenrator();
                 $user->save();
                 $user->sendEmailVerificationNotification();
-                return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.', $user);
+                return JsonResponse::successfulResponse('msg_updated_successfully_with_code', $user);
             }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -180,7 +211,7 @@ class ProfileController extends Controller
         try {
             $user = User::findOrFail($request->user_id);
             if ($user) {
-                $checkPhone = User::where('phone', $request->phone)->where('is_verified',1)->get();
+                $checkPhone = User::where('phone', $request->phone)->where('is_verified', 1)->get();
                 if ($checkPhone->count() > 0) {
                     return JsonResponse::errorResponse('هذا الرقم مستخدم.');
                 }
@@ -188,8 +219,8 @@ class ProfileController extends Controller
                 $user->phone = $request->phone;
                 $user->activation_code = $OTP;
                 $user->save();
-                sendOTP($OTP,$user->phone,'');
-                return JsonResponse::successfulResponse('تم تغيير رقم الهاتف وإرسال رمز التأكيد إليه.', $user);
+                sendOTP($OTP, $user->phone, '');
+                return JsonResponse::successfulResponse('msg_updated_successfully_with_code', $user);
             }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
