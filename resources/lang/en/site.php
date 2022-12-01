@@ -195,4 +195,5 @@ return [
     'license_file' => 'License File',
     'joining_date' => 'Joining Date',
     'uid' => 'uid',
+    'uncompleted' => 'Uncompleted users',
 ];

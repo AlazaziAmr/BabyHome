@@ -22,6 +22,8 @@ class UserDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('joining', function ($data) {
                 return Carbon::parse($data->created_at)->format('Y-m-d  H:m:s');
+            })->addColumn('completed', function ($data) {
+                return $data->has_nursery == 1 ? __('site.yes') : __('site.no');
             })->addColumn('verified', function ($data) {
                 return $data->is_verified == 1 ? __('site.yes') : __('site.no');
             })->addColumn('active', function ($data) {
@@ -62,6 +64,7 @@ class UserDataTable extends DataTable
             Column::make('name')->title(__('site.name'))->data('name')->name('name'),
             Column::make('phone')->title(__('site.phone'))->data('phone')->name('phone'),
             Column::make('email')->title(__('site.email'))->data('email')->name('email'),
+            Column::make('completed')->title(__('site.uncompleted'))->data('completed')->name('completed'),
             Column::make('verified')->title(__('site.verified'))->data('verified')->name('verified'),
             Column::make('active')->title(__('site.active'))->data('active')->name('active'),
 //            Column::computed('action')

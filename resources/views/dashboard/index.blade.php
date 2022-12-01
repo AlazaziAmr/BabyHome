@@ -114,6 +114,10 @@
                         <div class="table-responsive">
                             <table class="table align-items-center mb-0">
                                 <thead>
+                                <tr class="bg-dark">
+                                    <th class="text-center text-uppercase text-secondary font-weight-bolder text-light" colspan="2">@lang('site.uncompleted') : {{$data['users']}}</th>
+{{--                                    <th class="text-center text-uppercase text-secondary font-weight-bolder text-light"></th>--}}
+                                </tr>
                                 <tr>
                                     {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th> --}}
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">@lang('site.city_name')</th>

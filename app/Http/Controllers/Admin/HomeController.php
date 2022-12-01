@@ -9,6 +9,7 @@ use App\Models\Api\Generals\City;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +24,7 @@ class HomeController extends Controller
         $data['title'] = __('site.home');
         $data['children'] = Child::count();
         $data['nurseries'] = Nursery::count();
+        $data['users'] = User::where('has_nursery',0)->count();
         $data['inspectors'] = Admin::whereHas('roles',function ($query){
             return $query->where('name','inspector');
         })->count();
