@@ -6,11 +6,13 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
+use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 
 class BookingNurseryController extends Controller
 {
     private $BookingNursery;
+    use ApiTraits;
 
     public function __construct(IBookingNurseryRepository $bookingNurseryRepository)
     {
@@ -23,17 +25,17 @@ class BookingNurseryController extends Controller
      */
     public function index()
     {
-        try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->showBooking());
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
-    }
 
-    public function rejected(Request $request){
         try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->rejected($request));
-        } catch (\Exception $e) {
+            $requestProcess=$this->BookingNursery->showBooking();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
@@ -49,7 +51,24 @@ class BookingNurseryController extends Controller
     public function confirmedShow(Request $request){
 
         try {
-            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->BookingNursery->confirmedShow($request));
+            $requestProcess=$this->BookingNursery->confirmedShow($request);
+
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات تم الموافقة عليها لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+
+    }
+    public function rejected(Request $request){
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->rejected($request));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
@@ -58,8 +77,15 @@ class BookingNurseryController extends Controller
     public function rejectBooking(){
 
         try {
-            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->BookingNursery->rejectBooking());
-        } catch (\Exception $e) {
+            $requestProcess=$this->BookingNursery->rejectBooking();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات تم رفضها لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
 

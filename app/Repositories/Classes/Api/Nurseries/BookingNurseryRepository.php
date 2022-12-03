@@ -11,6 +11,7 @@ use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -52,7 +53,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         ])->get();
 
         if ($nurseryBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $nurseryBooking;
         }
@@ -72,9 +73,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'RejectResReasons',
         ])->get();
 
-
         if ($nurseryBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $nurseryBooking;
         }
@@ -190,7 +190,16 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
-        $ConfirmedBooking=ConfirmedBooking::whereIn('nursery_id',$nursery_id)->with([
+
+        $dateToday=now()->format('Y:m:d');
+        $TimeNow=now()->format('H:m:s');
+
+
+        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
+            ->where('booking_date',$dateToday)
+            ->where('end_datetime', '>=', $TimeNow)
+            ->pluck('id');
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->with([
             "Booking.children",
             "PaymentMethod",
             "Booking.masters",
@@ -199,8 +208,11 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'Booking.children.allergies',
             'Booking.children.attachmentable',
         ])->get();
-
-        return $ConfirmedBooking;
+        if ($ConfirmedBooking->isEmpty()) {
+            return null;
+        }else{
+            return $ConfirmedBooking;
+        }
 
     }
 

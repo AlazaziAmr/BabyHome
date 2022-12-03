@@ -29,7 +29,6 @@ class BookingRequest extends FormRequest
         return [
             'nursery_id'      => 'required|exists:nurseries,id',
             'master_id'      => 'required|exists:masters,id',
-            'child_id' => 'required',
             'child_id.*'      => 'required|exists:children,id',
             'booking_date'      => 'required|date|after_or_equal:'.now()->format('Y-m-d').'',
             'start_datetime'      => 'required|date|after_or_equal:'.now()->format('Y-m-d').'',

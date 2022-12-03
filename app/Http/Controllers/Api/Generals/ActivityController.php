@@ -26,9 +26,17 @@ class ActivityController extends Controller
      */
     public function index()
     {
+
         try {
-            return JsonResponse::successfulResponse('', ActivityResource::collection($this->activityRepository->fetchAllFromAdmin()));
-        } catch (\Exception $e) {
+            $requestProcess=$this->activityRepository->index();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
     }

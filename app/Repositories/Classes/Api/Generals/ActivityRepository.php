@@ -3,6 +3,8 @@
 namespace App\Repositories\Classes\Api\Generals;
 
 use App\Models\Api\Generals\Activity;
+use App\Models\Api\Master\BookingServices\Booking;
+use App\Models\Api\Nurseries\Nursery;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Generals\IActivityRepository;
 
@@ -15,8 +17,6 @@ class ActivityRepository extends BaseRepository implements IActivityRepository
     }
     public function fetchAllFromAdmin($with = [], $columns = array('*'))
     {
-        $query = $this->model;
-        return !empty($with) ? $query->where('user_id', null)->with($with)->get($columns) : $query->where('user_id', null)->get($columns);
     }
     public function createRequest($request)
     {
@@ -31,5 +31,20 @@ class ActivityRepository extends BaseRepository implements IActivityRepository
             'user_id' =>  user()->id ?? null,
         ]);
         if (!empty($request['attachments'])) uploadAttachment($activity, $request, 'attachments', 'activities');
+    }
+
+    public function index()
+    {
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+        $activeBooking=Activity::whereIn("user_id",$nursery_id)->where('is_active', 1)->with([
+            'attachmentable',
+            'getMainAttachmentAttribute',
+        ])->get();
+        if ($activeBooking->isEmpty()) {
+            return null;
+        }else{
+            return $activeBooking;
+        }
     }
 }

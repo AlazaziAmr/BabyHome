@@ -16,6 +16,7 @@ use App\Models\Api\Master\BookingServices\BookingsStatus;
 use App\Models\Api\Master\BookingServices\ConfirmedBooking;
 use App\Models\Api\Master\BookingServices\ReservedTime;
 use App\Models\Api\Master\Child;
+use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\BabysitterInfo;
 use App\Models\Api\Nurseries\BabysitterQualification;
 use App\Models\Api\Nurseries\BabysitterSkill;
@@ -344,6 +345,12 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function filterMaster($request)
     {
+       $validation= $request->validate([
+            'children_id' => 'exists:children,id',
+            'city_id' => 'exists:cities,id',
+            'day' => 'exists:days,id',
+
+        ]);
 
         $check = $this->check($request);
         $NurseryAvailability = $this->nurseryAvailability($request);
@@ -360,7 +367,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $children_lang = $check['children_lang'];
         $nursery_id = $NurseryAvailability['nursery_id'];
         $day_id = $NurseryAvailability['day_id'];
-
 
 
         $x = $model::where('is_active', 1)->where('status', 5)->whereIn('id', $nursery_id)
@@ -392,7 +398,12 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+        if ($x->isEmpty()){
+            return null;
+        }
         return $x;
+
+
 
 
     }
@@ -445,8 +456,9 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         ])->get();
 
+
         if ($nurseryBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $nurseryBooking;
         }
@@ -457,18 +469,18 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function rejectBooking()
     {
+
         $user_id = auth('master')->user()->id;
         $nurseryBooking=Booking::where("master_id",$user_id)->where('status_id', 3)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'BookingStatus:id,name',
             'nurseries',
-            'children.attachmentable',
-
+            'children.attachmentable:id,attachmentable_type,attachmentable_id,title,description,path',
+            'RejectResReasons',
         ])->get();
-
         if ($nurseryBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $nurseryBooking;
         }
@@ -476,22 +488,19 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     public function confirmedShow()
     {
         $user_id = auth('master')->user()->id;
-        $ConfirmedBooking=Booking::where('master_id',$user_id)->with([
-            "Booking.children",
-            "PaymentMethod",
-            'Booking.children.sicknesses',
-            'Booking.children.languages',
-            'Booking.children.allergies',
-            'confirmedBooking',
-            'Booking.children.attachmentable',
-
-
+        $ConfirmedBooking=Booking::where('master_id',$user_id)->where('status_id',2)->with([
+            'confirm',
+            'masters:id,uid,first_name',
+            'children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'nurseries:id,uid,name,gender,national_address,address_description',
+            'children.attachmentable',
 
         ])->get();
 
 
         if ($ConfirmedBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $ConfirmedBooking;
         }

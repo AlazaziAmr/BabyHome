@@ -8,4 +8,6 @@ interface IActivityRepository extends IBaseRepository
 {
     public function fetchAllFromAdmin($with = [], $columns = array('*'));
     public function createRequest($request);
+
+    public function index();
 }

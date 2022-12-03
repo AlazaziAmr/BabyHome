@@ -6,11 +6,14 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Repositories\Interfaces\Api\Master\IBookingRequestRepository;
+use App\Traits\ApiTraits;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
     private $joinRequestRepository;
+    use ApiTraits;
 
     public function __construct(IBookingRequestRepository $joinRequestRepository)
     {
@@ -78,19 +81,34 @@ class BookingController extends Controller
     }
 
     public function confirmedShow(Request $request){
-
         try {
-            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->joinRequestRepository->confirmedShow($request));
-        } catch (\Exception $e) {
+            $requestProcess=$this->joinRequestRepository->confirmedShow($request);
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات تم الموافقة عليها لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
+
+
 
     }
     public function rejectBooking(){
 
         try {
-            return JsonResponse::successfulResponse('msg_activated_succssfully', $this->joinRequestRepository->rejectBooking());
-        } catch (\Exception $e) {
+            $requestProcess=$this->joinRequestRepository->rejectBooking();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات تم رفضها لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
 
@@ -99,8 +117,15 @@ class BookingController extends Controller
     public function BookingWait()
     {
         try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showBooking());
-        } catch (\Exception $e) {
+            $requestProcess=$this->joinRequestRepository->showBooking();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد حجوزات لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
@@ -108,12 +133,40 @@ class BookingController extends Controller
     public function showBookingDetails($id)
     {
 
-        try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->showBookingDetails($id));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
+        $requestProcess=$this->joinRequestRepository->showBookingDetails($id);
+        if ($requestProcess==null){
+            return response()->json([
+                'status'=>false,
+                'err'=>'500',
+                'msg'=>'غذراَ لايوجد بيانات لعرضها',
+                'data'=>$requestProcess
+            ]);
+        }else{
+            return response()->json([
+                'status'=>true,
+                'msg'=>'تم إرجاع البيانات بنجاح',
+                'data'=>$requestProcess
+            ]);
         }
 
+    }
+    public function filterMaster(Request $request){
+
+        $requestProcess=$this->joinRequestRepository->filterMaster( $request);
+        if ($requestProcess->data==null){
+            return response()->json([
+                'status'=>false,
+                'err'=>'500',
+                'msg'=>'غذراَ لايوجد بيانات لعرضها',
+                'data'=>$requestProcess
+            ]);
+        }else{
+            return response()->json([
+                'status'=>true,
+                'msg'=>'تم إرجاع البيانات بنجاح',
+                'data'=>$requestProcess
+            ]);
+        }
     }
 
     /**
@@ -152,24 +205,6 @@ class BookingController extends Controller
 
 
 
-    public function filterMaster(Request $request){
-//        $x=Nursery::class;
-//        return $x;
-        try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->filterMaster( $request));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
 
 
-    }
-
-   /* public function nurseriesDetails($id){
-        try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->nurseriesDetails( $id));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
-
-    }*/
 }
