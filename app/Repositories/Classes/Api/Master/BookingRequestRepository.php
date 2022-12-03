@@ -167,9 +167,9 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)->first();
                 $capacity = $nursery_capacity->capacity;
                 $checkBooking = $this->checkBookingNursery($request);
-
                 if ($checkBooking <= $capacity) {
                     $capacityFree=$capacity-$checkBooking;
+
                     $checkCapacity=$capacityFree -$countChild;
                     if ($checkCapacity >0){
                         $total = $this->prices($request);
