@@ -21,7 +21,7 @@ class ActivityResource extends JsonResource
             'unit' => $this->unit,
             'price' => $this->price,
             'is_paid' => $this->is_paid ? true : false,
-            'path' => $this->mainAttachment,
+//            'path' => $this->mainAttachment,
 
         ];
     }

@@ -41,4 +41,16 @@ class Activity extends BaseModel
         return null;
     }
 
+    public function getImages()
+    {
+        $images = array();
+        if (filled($this->attachmentable)) {
+            foreach ($this->attachmentable as $index=>$image) {
+                $images[$index]['id'] = $image->id;
+                $images[$index]['image_path'] = asset('storage/activities/' . $image->path);
+            }
+        }
+        return $images;
+    }
+
 }
