@@ -488,15 +488,21 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     public function confirmedShow()
     {
         $user_id = auth('master')->user()->id;
-        $ConfirmedBooking=Booking::where('master_id',$user_id)->where('status_id',2)->with([
-            'confirm',
-            'masters:id,uid,first_name',
-            'children:id,name,date_of_birth',
-            'BookingStatus:id,name',
-            'nurseries:id,uid,name,gender,national_address,address_description',
-            'children.attachmentable',
+        $booking=Booking::where('status_id',2)->where('master_id',$user_id)
+            ->pluck('id');
 
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->with([
+            "Booking",
+            "Booking.children",
+            "PaymentMethod",
+            "Booking.nurseries",
+            "Booking.masters",
+            'Booking.children.sicknesses',
+            'Booking.children.languages',
+            'Booking.children.allergies',
+            'Booking.children.attachmentable',
         ])->get();
+
 
 
         if ($ConfirmedBooking->isEmpty()) {

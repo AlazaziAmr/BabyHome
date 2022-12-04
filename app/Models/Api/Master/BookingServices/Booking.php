@@ -18,6 +18,7 @@ class Booking extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
+        'id',
         'nursery_id',
         'master_id',
         'child_id',
@@ -46,12 +47,16 @@ class Booking extends Model
     {
         return $this->BelongsTo(BookingsStatus::class, 'status_id', 'id');
     }
-    public function confirm(): BelongsTo
+    public function confirmed(): BelongsTo
     {
         return $this->BelongsTo(ConfirmedBooking::class, 'booking_id', 'id');
     }
     public function RejectResReasons(): HasMany
     {
         return $this->HasMany(RejectResReasons::class, 'booking_id', 'id');
+    }
+    public function reservedTimes(): HasMany
+    {
+        return $this->HasMany(ReservedTime::class, 'booking_id', 'id');
     }
 }

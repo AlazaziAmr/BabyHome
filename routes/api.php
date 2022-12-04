@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Master\Booking\BookingController;
 use App\Http\Controllers\Api\Master\Children\ChildController;
 use App\Http\Controllers\Api\Master\Children\ChildPhoneController;
 use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
+use App\Http\Controllers\Api\Nurseries\Activities\ActivityNurseryController;
 use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
 use App\Http\Controllers\Api\Nurseries\NurseryController;
@@ -356,6 +357,11 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('showBookingDetails ', [BookingController::class,'showBookingDetails']);
     Route::apiResource('notes', NoteController::class);
     Route::apiResource('presence', PresenceController::class);
+
+
+    ######################activity Nursery ############################
+    Route::apiResource('activitiesNursery', ActivityNurseryController::class);
+
 
 
 

@@ -10,6 +10,7 @@ use App\Repositories\Classes\Api\Master\ChildAllergyRepository;
 use App\Repositories\Classes\Api\Master\ChildPhoneRepository;
 use App\Repositories\Classes\Api\Master\ChildSicknessRepository;
 use App\Repositories\Classes\Api\Master\MasterJoinRequestRepository;
+use App\Repositories\Classes\Api\Nurseries\ActivityNuseryRepository;
 use App\Repositories\Classes\Api\Nurseries\BookingNurseryRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabysitterQulificationRepository;
 use App\Repositories\Classes\Api\Nurseries\Profile\BabySitterRepository;
@@ -24,6 +25,7 @@ use App\Repositories\Interfaces\Api\Master\IChildAllergyRepository;
 use App\Repositories\Interfaces\Api\Master\IChildPhoneRepository;
 use App\Repositories\Interfaces\Api\Master\IChildSicknessRepository;
 use App\Repositories\Interfaces\Api\Master\IBookingRequestRepository;
+use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabysitterQulificationRepository;
 use App\Repositories\Interfaces\Api\Nurseries\Profile\IBabySitterRepository;
@@ -128,6 +130,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IBookingNurseryRepository::class, BookingNurseryRepository::class);
         $this->app->bind(IPaymentRepository::class, PaymentRepository::class);
         $this->app->bind(IChildPhoneRepository::class, ChildPhoneRepository::class);
+        $this->app->bind(IActivityNurseryRepository::class, ActivityNuseryRepository::class);
 
 
     }

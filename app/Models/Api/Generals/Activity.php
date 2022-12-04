@@ -20,6 +20,7 @@ class Activity extends BaseModel
         'type_id',
         'is_active',
         'user_id',
+        'nursery_id',
     ];
 
 

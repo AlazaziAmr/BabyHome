@@ -202,6 +202,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->with([
             "Booking.children",
             "PaymentMethod",
+            "Booking.nurseries",
             "Booking.masters",
             'Booking.children.sicknesses',
             'Booking.children.languages',

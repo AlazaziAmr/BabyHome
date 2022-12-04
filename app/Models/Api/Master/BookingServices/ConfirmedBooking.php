@@ -15,6 +15,7 @@ class ConfirmedBooking extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
+        'id',
         'nursery_id',
         'booking_id',
         'payment_method_id',
