@@ -13,5 +13,6 @@ interface IBookingNurseryRepository extends IBaseRepository
     public function confirmedShow();
     public function rejectBooking();
     public function showBooking();
+    public function showChildrenBooking();
 
 }

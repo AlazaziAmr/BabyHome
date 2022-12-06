@@ -68,7 +68,6 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $Nurseryactivity=$this->nurseryActivity($request,$addActivities);
 
             return $addActivity;
-
     }
     public function nurseryActivity($request,$addActivities){
         if($request['nursery_id'] ==null){

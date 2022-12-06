@@ -6,6 +6,8 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Http\Requests\Api\Nurseries\ActivityRequest;
+use App\Models\Api\Generals\Activity;
+use App\Models\Api\Master\BookingServices\BookingService;
 use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use App\Traits\ApiTraits;
@@ -19,6 +21,79 @@ class ActivityNurseryController extends Controller
     public function __construct(IActivityNurseryRepository $ActivityNurseryRepository)
     {
         $this->ActivityNursery = $ActivityNurseryRepository;
+    }
+    public function model()
+    {
+        return BookingService::class;
+    }
+    public function active(Request $request){
+
+        try {
+            $requestProcess=   Activity::where('id', $request['active_id'])->where()->update([
+                'is_active' => 1,
+            ]);
+                $msg='تم تحديث البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    public function addImageActivity(Request $request){
+
+        try {
+            $requestProcess = BookingService::where('service_id',$request->service_id)
+                ->where('child_id',$request->child_id)->where('booking_id',$request->booking_id)
+                ->first();
+            $data = [
+                'child_id' => $request->child_id,
+            ];
+            $requestProcess->update($data);
+            if ($requestProcess) {
+                if (!empty($request['attachments'])) uploadAttachment($requestProcess, $request['attachments'], 'attachments', 'booking_services');
+                $msg='تم إضافة المرفق  بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    public function executingActivity(Request $request){
+
+        try {
+            $requestProcess = BookingService::where('service_id',$request->service_id)
+                ->where('child_id',$request->child_id)->where('booking_id',$request->booking_id)
+                ->first();
+
+            $data = [
+                'status' => $request->status,
+            ];
+            if ($requestProcess){
+                $requestProcess->update($data);
+                if (!empty($request['licenses'])) uploadAttachment($requestProcess, $request['licenses'], 'attachments', 'booking_services');
+                $msg='تم تحديث البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+
+
+    public function un_active(Request $request){
+        try {
+            $requestProcess=   Activity::where('id', $request['active_id'])->where()->update([
+                'is_active' => 0,
+            ]);
+            $msg='تم تحديث البيانات بنجاح';
+            return $this->returnData($requestProcess,$msg);
+
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
     }
     /**
      * Display a listing of the resource.

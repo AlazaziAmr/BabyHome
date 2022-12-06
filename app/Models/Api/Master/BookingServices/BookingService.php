@@ -2,6 +2,7 @@
 
 namespace App\Models\Api\Master\BookingServices;
 
+use App\Models\Api\Generals\Attachment;
 use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
@@ -50,6 +51,10 @@ class BookingService extends Model
     public function children(): BelongsTo
     {
         return $this->BelongsTo(BelongsTo::class, 'child_id', 'id');
+    }
+    public function attachmentable()
+    {
+        return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
 }

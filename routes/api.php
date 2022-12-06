@@ -351,6 +351,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::post('confirmed ', [BookingNurseryController::class,'confirmed']);
     Route::get('confirmedShow ', [BookingNurseryController::class,'confirmedShow']);
     Route::get('rejectBooking ', [BookingNurseryController::class,'rejectBooking']);
+    Route::get('showChildrenBooking ', [BookingNurseryController::class,'showChildrenBooking']);
     Route::get('confirmedShowMaster ', [BookingController::class,'confirmedShow']);
     Route::get('rejectBookingMaster ', [BookingController::class,'rejectBooking']);
     Route::get('BookingWaitMaster ', [BookingController::class,'BookingWait']);
@@ -361,6 +362,11 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 
     ######################activity Nursery ############################
     Route::apiResource('activitiesNursery', ActivityNurseryController::class);
+    Route::post('activitiesNursery/active ', [ActivityNurseryController::class,'active']);
+    Route::post('activitiesNursery/unactive', [ActivityNurseryController::class,'un_active']);
+    Route::post('activitiesNursery/executing-activity', [ActivityNurseryController::class,'executingActivity']);
+    Route::post('activitiesNursery/add-image-activity', [ActivityNurseryController::class,'addImageActivity']);
+
 
 
 

@@ -217,4 +217,34 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     }
 
+
+    public function showChildrenBooking()
+    {
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+
+
+        $dateToday=now()->format('Y:m:d');
+/*        $TimeNow=now()->format('H:m:s');*/
+
+
+        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
+            ->where('booking_date',$dateToday)
+/*            ->where('end_datetime', '>=', $TimeNow)*/
+            ->pluck('id');
+
+        $ConfirmedBooking=ConfirmedBooking::select('id','booking_id')->whereIn('booking_id',$booking)->with([
+            "Booking.masters:id,first_name,last_name",
+            'Booking.children:id,name',
+            'Booking.children.attachmentable:attachmentable_id,attachmentable_type,path',
+        ])->get();
+        if ($ConfirmedBooking->isEmpty()) {
+            return null;
+        }else{
+            return $ConfirmedBooking;
+        }
+
+    }
+
+
 }
