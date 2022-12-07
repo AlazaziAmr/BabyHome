@@ -51,7 +51,7 @@ class ActivityNurseryController extends Controller
             ];
             $requestProcess->update($data);
             if ($requestProcess) {
-                if (!empty($request['attachments'])) uploadAttachment($requestProcess, $request['attachments'], 'attachments', 'booking_services');
+                if (!empty($request['attachments'])) uploadAttachment($requestProcess, $request, 'attachments', 'booking_services');
                 $msg='تم إضافة المرفق  بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }
@@ -70,9 +70,9 @@ class ActivityNurseryController extends Controller
             $data = [
                 'status' => $request->status,
             ];
+
             if ($requestProcess){
                 $requestProcess->update($data);
-                if (!empty($request['licenses'])) uploadAttachment($requestProcess, $request['licenses'], 'attachments', 'booking_services');
                 $msg='تم تحديث البيانات بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }
