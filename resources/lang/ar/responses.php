@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'msg_added_successfully_with_code' => 'تمت الإضافته بنجاح وإرسال الكود',
+    'msg_added_successfully_with_code' => 'تمت الإضافه بنجاح وإرسال الكود',
     'msg_updated_successfully_with_code' => 'تم التحديث بنجاح وإرسال الكود',
     'msg_added_successfully' => 'السجل قد تمت أضافته بنجاح',
     'msg_updated_successfully' => 'السجل قد تم تحديثه بنجاح',

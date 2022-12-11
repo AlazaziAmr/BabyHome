@@ -129,6 +129,7 @@ if (!function_exists('sendAdMessage')) {
                     "msg"         => $message,
                     "msgEncoding" => "UTF8",
                 ]);
+                return $response;
 
             } catch (\Exception $e) {
                 return JsonResponse::errorResponse($e->getMessage());

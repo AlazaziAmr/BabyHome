@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Auth\MasterLoginRequest;
 use App\Http\Requests\Api\Master\Auth\MasterRegistrationRequest;
+use App\Http\Requests\Api\Master\Auth\MasterSetProfileRequest;
 use App\Http\Requests\Api\Master\Auth\RestoreMasterRequest;
 use App\Http\Resources\Api\Master\Auth\MasterResource;
 use App\Models\Api\Master\Master;
@@ -170,6 +171,38 @@ class MasterAuthController extends Controller
         }
     }
 
+    public function setProfile(MasterSetProfileRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $data['activation_code'] = OTPGenrator();
+            $checkEmail = Master::where('email',$data['email'])->whereNotNull('email_verified_at')->get();
+            if ($checkEmail->count() > 0)
+            {
+                return JsonResponse::errorResponse('هذا الإيميل مستخدم.');
+            }
+            unset($data['master_id']);
+//            $master = new MasterResource($this->masterRepository->setProfile($data,$data['master_id']));
+            $master = $this->masterRepository->update($data,$request->master_id);
+            if ($master) {
+                $master = new MasterResource($this->masterRepository->findBy('id', $request->master_id));
+            }
+            return JsonResponse::successfulResponse('msg_added_successfully_with_code', $master);
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
+    public function updateProfile(MasterSetProfileRequest $request,$id): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $master = $this->masterRepository->update($request->validated(),$id);
+            return JsonResponse::successfulResponse('msg_success');
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+
     public function updateEmail(Request $request)
     {
         try {
@@ -184,7 +217,7 @@ class MasterAuthController extends Controller
                 $master->activation_code = OTPGenrator();
                 $master->save();
                 $master->sendEmailVerificationNotification();
-                return JsonResponse::successfulResponse('تم تغيير الإيميل وإرسال رمز التأكيد إليه.', $master);
+                return JsonResponse::successfulResponse('msg_added_successfully_with_code', $master);
             }
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

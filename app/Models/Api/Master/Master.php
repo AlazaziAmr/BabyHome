@@ -19,7 +19,7 @@ class Master extends Authenticatable
     protected $guard = 'master';
     public $translatable = ['first_name','last_name','gender'];
     protected $fillable = [
-//        'name',
+        'name',
         'uid',
         'first_name',
         'last_name',
@@ -52,5 +52,16 @@ class Master extends Authenticatable
     public function children(): BelongsToMany
     {
         return $this->belongsToMany(Child::class, 'master_children', 'master_id', 'child_id')->withTimestamps();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($master) {
+            foreach ($master->children()->get() as $child) {
+                $child->delete();
+            }
+        });
     }
 }

@@ -18,27 +18,28 @@ class MasterRepository extends BaseRepository implements IMasterRepository
     public function profile($master_id){
         return $this->model()->with(['nationality'])->find($master_id);
     }
+
     public function register($payload)
     {
 //        dd($payload);
         return $this->model->create(
             [
-//                'name'         => $payload['name'],
+                'name' => $payload['name'],
                 'uid' => uid($this->model()),
-                'first_name' => $payload['first_name'],
-                'last_name' => $payload['last_name'],
-                'gender' => $payload['gender'],
-                'card_expiration_date' => $payload['card_expiration_date'],
-                'date_of_birth' => $payload['date_of_birth'],
-                'email'        => $payload['email'],
+//                'first_name' => $payload['first_name'],
+//                'last_name' => $payload['last_name'],
+//                'gender' => $payload['gender'],
+//                'card_expiration_date' => $payload['card_expiration_date'],
+//                'date_of_birth' => $payload['date_of_birth'],
+//                'email'        => $payload['email'],
                 'phone' => $payload['phone'],
-                'national_id' => $payload['national_id'],
-                'address' => $payload['address'],
-                'latitude' => $payload['latitude'],
-                'longitude' => $payload['longitude'],
+//                'national_id' => $payload['national_id'],
+//                'address' => $payload['address'],
+//                'latitude' => $payload['latitude'],
+//                'longitude' => $payload['longitude'],
                 'password'     => Hash::make($payload['password']),
                 'activation_code'  => $payload['activation_code'],
-                'nationality_id'  => $payload['nationality_id'],
+//                'nationality_id'  => $payload['nationality_id'],
                 "preferred_language" => "ar",
                 'created_at'     => date("Y-m-d h:i:s"),
                 'updated_at'     => date("Y-m-d h:i:s"),

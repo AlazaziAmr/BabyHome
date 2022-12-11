@@ -15,7 +15,7 @@ class AddYaqindataToMasterTable extends Migration
     {
         Schema::table('masters', function (Blueprint $table) {
             //
-            $table->json('first_name')->after('uid');
+            $table->json('first_name')->after('name');
             $table->json('last_name')->after('first_name');
             $table->json('gender')->after('last_name');
             $table->string('card_expiration_date')->after('gender');

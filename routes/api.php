@@ -47,6 +47,12 @@ use \App\Http\Controllers\Api\Master\Children\ChildAllergyController;
 use \App\Http\Controllers\Api\Master\Children\ChildAlertController;
 
 //  ========================================================Public==================================================================
+Route::post('/test-ad-sms',function (){
+   return sendAdMessage('966581773710','مرحباً,
+   هذه رسالة تجريبية من داخل النظام.');
+//   return 'yes';
+});
+
 Route::post('/testsave',function (\Illuminate\Http\Request $request){
    dd($request['licenses']['attachments']);
 });
@@ -300,6 +306,8 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     // Auth
     Route::get('/profile', [MasterAuthController::class, 'profile']);
     Route::get('/master-profile', [MasterAuthController::class, 'profile']);
+    Route::post('/set-profile', [MasterAuthController::class, 'setProfile']);
+    Route::put('/update-profile/{id}', [MasterAuthController::class, 'updateProfile']);
     Route::post('/logout', [MasterAuthController::class, 'logout']);
     Route::post('/resend', [MasterAuthController::class, 'resendOTP']);
     Route::post('/verify', [MasterAuthController::class, 'verifyOTP']);
