@@ -362,6 +362,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::get('showChildrenBooking ', [BookingNurseryController::class,'showChildrenBooking']);
     Route::get('confirmedShowMaster ', [BookingController::class,'confirmedShow']);
     Route::get('rejectBookingMaster ', [BookingController::class,'rejectBooking']);
+    Route::post('onlineStatus', [BookingNurseryController::class,'onlineStatus']);
     Route::get('BookingWaitMaster ', [BookingController::class,'BookingWait']);
     Route::get('showBookingDetails ', [BookingController::class,'showBookingDetails']);
     Route::apiResource('notes', NoteController::class);

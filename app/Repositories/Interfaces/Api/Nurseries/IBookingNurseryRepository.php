@@ -14,5 +14,7 @@ interface IBookingNurseryRepository extends IBaseRepository
     public function rejectBooking();
     public function showBooking();
     public function showChildrenBooking();
+    public function onlineStatus(Request $request);
+
 
 }

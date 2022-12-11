@@ -60,6 +60,18 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     }
 
+    public function onlineStatus(Request $request){
+
+        if (Nursery::where('id', $request['nursery_id'])->exists()) {
+            $request = Nursery::where('id', $request['nursery_id'])->update([
+                'online' => $request['online_status'],
+            ]);
+            return $request;
+        }else{
+            return null;
+        }
+
+    }
     public function rejectBooking()
     {
         $user_id = auth('api')->user()->id;

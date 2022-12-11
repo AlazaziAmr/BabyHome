@@ -105,6 +105,24 @@ class BookingNurseryController extends Controller
 
     }
 
+    public function onlineStatus(Request $request){
+        try {
+            $requestProcess=$this->BookingNursery->onlineStatus($request);
+//            dd($requestProcess);
+            if ($requestProcess == null){
+                $msg=' يرجئ التأكد من وجود الحاضنة';
+                return $this->returnEmpty($msg);
+            }else{
+//                $msg='تم  التفعيل بنجاح';
+                return JsonResponse::successfulResponse('تم التحديث بنجاح',new NurseryResource(Nursery::where('id',$request->nursery_id)->with(['country','city','owner','neighborhood'])->first()));
+//                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -164,7 +164,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
             foreach ($request['child_id'] as $child_id) {
 
-                $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)->first();
+                $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)
+                    ->where('online',1)->first();
                 $capacity = $nursery_capacity->capacity;
                 $checkBooking = $this->checkBookingNursery($request);
                 if ($checkBooking <= $capacity) {
