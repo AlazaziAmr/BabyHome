@@ -115,6 +115,10 @@ class NurseryController extends Controller
     {
         try {
             $this->nurseryRepository->delete($nurseries['id']);
+            $has_nursery = Nursery::where('user_id',user()->id)->get();
+            if (!$has_nursery->count() > 0) {
+                user()->update(['has_nursery' => 0]);
+            }
             return JsonResponse::successfulResponse('msg_deleted_succssfully');
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

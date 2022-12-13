@@ -280,13 +280,19 @@ class NurseryController extends Controller
     public function remove($id){
         $nursery = Nursery::findOrFail($id);
         $user = User::find($nursery->user_id);
-        $user->update([
-            'email' => "deleted_account".rand(0,10000000).'@app.com',
-            'phone' => rand(0,10000000),
-        ]);
+//        $user->update([
+//            'email' => "deleted_account".rand(0,10000000).'@app.com',
+//            'phone' => rand(0,10000000),
+//        ]);
 
         $nursery->delete();
-        $user->delete();
+        $has_nurseries = Nursery::where('user_id',$user->id)->get();
+        if (!$has_nurseries->count() > 0) {
+            $user->update([
+                'has_nursery' => 0,
+            ]);
+        }
+//        $user->delete();
         return response()->json(array('success' => true), 200);
     }
 }
