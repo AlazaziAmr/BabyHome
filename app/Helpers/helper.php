@@ -95,6 +95,7 @@ if (!function_exists('sendOTP')) {
                     "msg"         => $message,
                     "msgEncoding" => "UTF8",
                 ]);
+                return $response;
 //                dd($response->body());
             } catch (\Exception $e) {
                 return JsonResponse::errorResponse($e->getMessage());

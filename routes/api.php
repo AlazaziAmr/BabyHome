@@ -53,6 +53,11 @@ Route::post('/test-ad-sms',function (){
 //   return 'yes';
 });
 
+Route::post('/test-sms',function (){
+   return sendOTP('1234','966581773710','');
+//   return 'yes';
+});
+
 Route::post('/testsave',function (\Illuminate\Http\Request $request){
    dd($request['licenses']['attachments']);
 });
