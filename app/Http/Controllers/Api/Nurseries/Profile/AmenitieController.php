@@ -23,7 +23,7 @@ class AmenitieController extends Controller
     public function index()
     {
         try {
-            return JsonResponse::successfulResponse('', NurseryAmenityResource::collection($this->amenityRepository->fetchAll(['amenity','attachmentable'])));
+            return JsonResponse::successfulResponse('', NurseryAmenityResource::collection($this->amenityRepository->fetchAllForCurrentUser(['amenity','attachmentable'])));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

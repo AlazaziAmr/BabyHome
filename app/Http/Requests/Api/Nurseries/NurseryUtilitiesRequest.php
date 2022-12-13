@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Nurseries;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BabysitterInfoRequest extends FormRequest
+class NurseryUtilitiesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,11 @@ class BabysitterInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'years_of_experince'  => 'required|integer',
-//            'date_of_birth'  => 'required|date',
-            'free_of_disease' => 'required|integer',
-            'languages' => 'nullable|array',
-//            'national_id' =>  'required',
-//            'nationality'  => 'required|integer',
+            //
+            'nursery_id' => 'required|numeric',
+            // utilities
+            'utilities' => 'array',
+            'utilities.*' => 'exists:utilities,id',
         ];
     }
 }

@@ -49,14 +49,19 @@ class BabySitterController extends Controller
                 $babySitter = BabysitterInfo::find($nursery_id);
                 if($babySitter){
                     $this->babySitterRepository->update($request->validated(), $babySitter['id']);
-                }else{
-                    $request_data = $request->validated();
-                    $request_data['nursery_id'] = $nursery_id;
-                    $this->babySitterRepository->create($request_data);
+                    if (!empty($request['languages'])) {
+                        $babySitter->languages()->detach();
+                        $babySitter->languages()->sync($request['languages']);
+                    }
                 }
+//                else{
+//                    $request_data = $request->validated();
+//                    $request_data['nursery_id'] = $nursery_id;
+//                    $this->babySitterRepository->create($request_data);
+//                }
                 return JsonResponse::successfulResponse('msg_updated_succssfully');
             }else{
-                return JsonResponse::errorResponse('');
+                return JsonResponse::errorResponse('msg_not_found');
             }
              } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

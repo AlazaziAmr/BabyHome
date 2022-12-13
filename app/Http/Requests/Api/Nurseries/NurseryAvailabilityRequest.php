@@ -23,10 +23,21 @@ class NurseryAvailabilityRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-            'from_hour' => 'required|date_format:H:i',
-            'to_hour' => 'required|date_format:H:i',
-        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            return [
+                //
+                'nursery_id' => 'required|numeric',
+                'day_id' => 'required|exists:days,id',
+                'from_hour' => 'required|date_format:H:i',
+                'to_hour' => 'required|date_format:H:i',
+            ];
+        }else {
+            return [
+                //
+                'day_id' => 'required|exists:days,id',
+                'from_hour' => 'required|date_format:H:i',
+                'to_hour' => 'required|date_format:H:i',
+            ];
+        }
     }
 }

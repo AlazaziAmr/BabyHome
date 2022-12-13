@@ -17,19 +17,27 @@ class NurseryAmenityRepository extends BaseRepository implements INurseryAmenity
         return NurseryAmenity::class;
     }
 
+    public function fetchAllForCurrentUser($with = [], $columns = array('*'))
+    {
+        $nursery = Nursery::where('user_id', user()->id)->first();
+        return $this->model->where('nursery_id',$nursery->id)->with($with)->get($columns);
+//        user()->nurseries()->with($with)->get($columns);
+    }
+
     public function fetchAll($with = [], $columns = array('*'))
     {
-        $nursery = Nursery::where('user_id',user()->id)->first();
+        $nursery = Nursery::where('user_id', user()->id)->first();
         $query = $this->model;
-        $query->where('nursery_id',$nursery->id);
+        $query->where('nursery_id', $nursery->id);
         if (!empty($with))
             return $query->with($with)->get($columns);
         else
-            return $query->get($columns);    }
+            return $query->get($columns);
+    }
 
     public function create($payload)
     {
-        $nursery = Nursery::where('user_id',user()->id)->first();
+        $nursery = Nursery::where('user_id', user()->id)->first();
 
         $amenity = $this->model->create([
             'nursery_id' => $nursery->id,

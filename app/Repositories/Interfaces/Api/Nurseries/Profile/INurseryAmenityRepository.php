@@ -6,5 +6,5 @@ use App\Repositories\Interfaces\IBaseRepository;
 
 interface INurseryAmenityRepository extends IBaseRepository
 {
-
+    public function fetchAllForCurrentUser($with = [], $columns = array('*'));
 }

@@ -294,7 +294,8 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::apiResource('/nursery-services', \App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class);
     Route::delete('attachments/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class, 'delete_attachment']);
     Route::apiResource('/nursery-qualifications', \App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
-    Route::apiResource('/nursery-availabilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController::class)->except(['index','create','store','edit','delete']);
+    Route::apiResource('/nursery-availabilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController::class)->except(['index','create','edit']);
+    Route::apiResource('/nursery-utilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryUtilitiesController::class)->except(['index','create','edit','delete']);
 
 
     Route::apiResource('nurseries', NurseryController::class);
