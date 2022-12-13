@@ -28,6 +28,7 @@ class BookingChildResource extends JsonResource
         $data = [
             'booking' => [
             'id' => $this->id,
+            'child_id' => $this->booking->children->id,
             'confirmDates' => $this->confirm_date,
             'name' => $this->booking->children->name,
             'dateOfBirth' => $this->booking->children->date_of_birth,
