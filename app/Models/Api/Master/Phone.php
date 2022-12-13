@@ -18,6 +18,8 @@ class Phone extends Model
         'relation_type',
         'name'
     ];
+    protected $hidden = ['created_at','updated_at'];
+
 
     public function relationType(): BelongsTo
     {

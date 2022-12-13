@@ -4,6 +4,10 @@ namespace App\Models\Api\Master;
 
 use App\Models\Api\Generals\Attachment;
 use App\Models\Api\Generals\Gender;
+use App\Models\Api\Generals\Service;
+use App\Models\Api\Master\BookingServices\Booking;
+use App\Models\Api\Master\BookingServices\BookingService;
+use App\Models\Api\Master\BookingServices\ConfirmedBooking;
 use App\Models\BaseModel;
 use App\Models\Api\Generals\Language;
 use Carbon\Carbon;
@@ -111,6 +115,10 @@ class Child extends BaseModel
     public function allergies()
     {
         return $this->hasMany(ChildAllergy::class);
+    }
+    public function bookingService()
+    {
+        return $this->hasMany(BookingService::class, 'child_id',  'id');
     }
 
     public static function boot()

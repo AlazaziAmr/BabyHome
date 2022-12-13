@@ -18,6 +18,7 @@ class Master extends Authenticatable
 
     protected $guard = 'master';
     public $translatable = ['first_name','last_name','gender'];
+
     protected $fillable = [
         'name',
         'uid',
@@ -43,7 +44,9 @@ class Master extends Authenticatable
 
     protected $hidden = [
         'password',
-        'pivot'
+        'pivot',
+        'created_at',
+        'updated_at'
     ];
 
     public function nationality(){

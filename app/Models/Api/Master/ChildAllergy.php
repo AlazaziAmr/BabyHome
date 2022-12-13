@@ -11,4 +11,6 @@ class ChildAllergy extends BaseModel
         'child_id',
         'allergy_name',
     ];
+    protected $hidden = ['created_at','updated_at'];
+
 }

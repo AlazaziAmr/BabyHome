@@ -2,6 +2,7 @@
 
 namespace App\Models\Api\Master\BookingServices;
 
+use App\Models\Api\Generals\Service;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Master\Booking\PaymentMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,10 @@ class ConfirmedBooking extends Model
     ];
 
 
+    public function bookingServices(): HasMany
+    {
+        return $this->HasMany(BookingService::class, 'booking_id', 'booking_id');
+    }
     public function nurseries(): HasMany
     {
         return $this->HasMany(Nursery::class, 'nursery_id', 'id');
@@ -40,4 +45,5 @@ class ConfirmedBooking extends Model
     {
         return $this->BelongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
+
 }

@@ -30,6 +30,8 @@ class BookingService extends Model
         'notes',
         'status',
     ];
+    protected $hidden = ['created_at','updated_at'];
+
 
 
     public function nurseries(): HasMany
@@ -42,7 +44,7 @@ class BookingService extends Model
     }
     public function services(): BelongsTo
     {
-        return $this->BelongsTo(Service::class, 'child_id', 'id');
+        return $this->BelongsTo(Service::class, 'service_id', 'id');
     }
     public function Master(): BelongsTo
     {
@@ -55,6 +57,12 @@ class BookingService extends Model
     public function attachmentable()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');
+    }
+    public function service(): BelongsTo
+    {
+        /*        return $this->hasManyThrough(Amenity::class, NurseryAmenity::class, 'nursery_id',  'id', 'id', 'amenity_id');*/
+        return $this->belongsTo(Service::class,  'service_id',  'id');
+
     }
 
 }

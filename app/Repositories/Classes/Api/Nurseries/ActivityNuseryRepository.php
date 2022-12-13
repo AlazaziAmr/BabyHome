@@ -3,6 +3,7 @@
 namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Models\Api\Generals\Activity;
+use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Booking\RejectResReasons;
 use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
@@ -29,13 +30,36 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     {
         return Nursery::class;
     }
+    public function showActivityToday()
+    {
 
-    public function showActivity()
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+
+        $dateToday=now()->format('Y:m:d');
+        $TimeNow=now()->format('Y:m:d');
+
+        $booking=Booking::where('status_id',1)->whereIn('nursery_id',$nursery_id)
+            ->where('booking_date', $TimeNow)
+            ->pluck('id');
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
+            ->pluck('booking_id');
+        $BookingService['servicesBooking']=BookingService::whereIn('booking_id',$ConfirmedBooking)
+            ->whereIn('nursery_id',$nursery_id)->with([
+            "services",
+        ])->get();
+        if ($BookingService==null) {
+            return null;
+        }else{
+            return $BookingService;
+        }
+    }
+    public function showAllActivityBooking()
     {
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-        $nurseryBooking=NurseryActivity::whereIn("nursery_id",$nursery_id)->with([
-            'activity'
+        $nurseryBooking=BookingService::whereIn("nursery_id",$nursery_id)->with([
+            'services'
         ])->get();
 
         if ($nurseryBooking->isEmpty()) {
@@ -43,7 +67,20 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         }else{
             return $nurseryBooking;
         }
+    }
+    public function showDetailsActivityComplate()
+    {
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+        $nurseryBooking=BookingService::whereIn("nursery_id",$nursery_id)->with([
+            'services'
+        ])->get();
 
+        if ($nurseryBooking->isEmpty()) {
+            return null;
+        }else{
+            return $nurseryBooking;
+        }
     }
 
 

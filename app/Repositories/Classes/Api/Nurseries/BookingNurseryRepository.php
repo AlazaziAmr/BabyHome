@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Classes\Api\Nurseries;
 
+use App\Http\Resources\Api\Nurseries\BookingChildResource;
 use App\Models\Api\Master\Booking\RejectResReasons;
 use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\BookingServices\ConfirmedBooking;
+use App\Models\Api\Master\Child;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
 use App\Repositories\Classes\BaseRepository;
@@ -204,24 +206,22 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
 
         $dateToday=now()->format('Y:m:d');
-        $TimeNow=now()->format('H:m:s');
-
+        $TimeNow=now()->format('Y:m:d');
 
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
-            ->where('booking_date',$dateToday)
-            ->where('end_datetime', '>=', $TimeNow)
+            ->where('booking_date', $TimeNow)
             ->pluck('id');
-        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->with([
+        $ConfirmedBooking['booking']=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)->with([
             "Booking.children",
             "PaymentMethod",
-            "Booking.nurseries",
+            "bookingServices.services",
             "Booking.masters",
             'Booking.children.sicknesses',
-            'Booking.children.languages',
+            'Booking.children.languages:name',
             'Booking.children.allergies',
             'Booking.children.attachmentable',
         ])->get();
-        if ($ConfirmedBooking->isEmpty()) {
+        if ($ConfirmedBooking==null) {
             return null;
         }else{
             return $ConfirmedBooking;
@@ -237,23 +237,38 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
 
         $dateToday=now()->format('Y:m:d');
-/*        $TimeNow=now()->format('H:m:s');*/
-
+        $TimeNow=now()->format('Y:m:d');
 
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
-            ->where('booking_date',$dateToday)
-/*            ->where('end_datetime', '>=', $TimeNow)*/
+            ->where('booking_date', $TimeNow)
             ->pluck('id');
-
-        $ConfirmedBooking=ConfirmedBooking::select('id','booking_id')->whereIn('booking_id',$booking)->with([
-            "Booking.masters:id,first_name,last_name",
-            'Booking.children:id,name',
-            'Booking.children.attachmentable:attachmentable_id,attachmentable_type,path',
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)->with([
+            "Booking.children","Booking.children.attachmentable"
         ])->get();
-        if ($ConfirmedBooking->isEmpty()) {
+        if ($ConfirmedBooking==null) {
             return null;
         }else{
-            return $ConfirmedBooking;
+            return BookingChildResource::collection($ConfirmedBooking);
+        }
+/*ghjkl;'*/
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+
+
+        $dateToday=now()->format('Y:m:d');
+        $TimeNow=now()->format('Y:m:d');
+
+        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
+            ->where('booking_date', $TimeNow)
+            ->pluck('child_id');
+        return $booking;
+        $data['child'] = Child::with(['languages', 'attachmentable','bookingService.service'])
+            ->where('id', $booking)
+            ->get();
+        if ($data->isEmpty()) {
+            return null;
+        }else{
+            return $data;
         }
 
     }

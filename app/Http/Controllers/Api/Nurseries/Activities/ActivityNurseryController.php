@@ -60,16 +60,41 @@ class ActivityNurseryController extends Controller
         }
 
     }
-    public function executingActivity(Request $request){
-
+    public function attendedActivityChild(Request $request){
         try {
-            $requestProcess = BookingService::where('service_id',$request->service_id)
-                ->where('child_id',$request->child_id)->where('booking_id',$request->booking_id)
-                ->first();
+            foreach ($request['child_id'] as $child_id) {
 
-            $data = [
-                'status' => $request->status,
-            ];
+                $requestProcess = BookingService::where('service_id', $request->service_id)
+                    ->where('child_id', $child_id)->where('booking_id', $request->booking_id)
+                    ->first();
+
+                $data = [
+                    'status' => $request->status,
+                ];
+            }
+
+            if ($requestProcess){
+                $requestProcess->update($data);
+                $msg='تم تحديث البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    public function executingActivity(Request $request){
+        try {
+            foreach ($request['child_id'] as $child_id) {
+
+                $requestProcess = BookingService::where('service_id', $request->service_id)
+                    ->where('child_id', $child_id)->where('booking_id', $request->booking_id)
+                    ->first();
+
+                $data = [
+                    'status' => $request->status,
+                ];
+            }
 
             if ($requestProcess){
                 $requestProcess->update($data);
@@ -104,7 +129,23 @@ class ActivityNurseryController extends Controller
     {
 
         try {
-            $requestProcess=$this->ActivityNursery->showActivity();
+            $requestProcess=$this->ActivityNursery->showActivityToday();
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجد أنشطة لعرضها حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
+    public function AllActivityBooking()
+    {
+
+        try {
+            $requestProcess=$this->ActivityNursery->showAllActivityBooking();
             if ($requestProcess==null){
                 $msg='عذراَ لايوجد أنشطة لعرضها حالياَ';
                 return $this->returnEmpty($msg);
@@ -153,12 +194,12 @@ class ActivityNurseryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-  /*  public function show($id)
+    public function show($id)
     {
+dd('fg');
 
 
-
-    }*/
+    }
 
     /**
      * Show the form for editing the specified resource.

@@ -10,11 +10,12 @@ class Language extends BaseModel
     use HasTranslations;
 
     public $translatable = ['name'];
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = ['created_at','updated_at','pivot'];
+
 
 
     protected $fillable = [
         'name',
-        'logo'
+        'logo',
     ];
 }

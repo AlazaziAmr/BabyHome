@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 interface IActivityNurseryRepository extends IBaseRepository
 {
 
-    public function showActivity();
+    public function showActivityToday();
 
     public function addActivity($request);
+    public function showAllActivityBooking();
 
 }

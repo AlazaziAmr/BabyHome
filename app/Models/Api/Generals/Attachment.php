@@ -14,4 +14,6 @@ class Attachment extends BaseModel
         'description',
         'path',
     ];
+    protected $hidden = ['created_at','updated_at'];
+
 }

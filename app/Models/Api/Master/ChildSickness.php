@@ -15,4 +15,6 @@ class ChildSickness extends BaseModel
         'sickness_desc',
         'sickness_status',
     ];
+    protected $hidden = ['created_at','updated_at'];
+
 }
