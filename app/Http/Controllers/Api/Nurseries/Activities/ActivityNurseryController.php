@@ -9,6 +9,7 @@ use App\Http\Requests\Api\Nurseries\ActivityRequest;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
+use App\Models\Api\Master\Child;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
@@ -25,6 +26,22 @@ class ActivityNurseryController extends Controller
     public function model()
     {
         return BookingService::class;
+    }
+    public function activityCompleteDetails($id){
+        try {
+            $bookingServices=   BookingService::where('service_id',$id )->where('complete',1)->get();
+            $child_id=   BookingService::where('service_id',$id )->pluck('child_id');
+            $data=Child::whereIn('id',$child_id)->with('bookingService')->get();
+            $msg='تم إرجاع البيانات بنجاح';
+
+            $msg='تم تحديث البيانات بنجاح';
+            return $this->returnData($data,$msg);
+
+
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
     }
     public function active(Request $request){
 
