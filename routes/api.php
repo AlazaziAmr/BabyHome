@@ -289,13 +289,13 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
 
     // Nurseries
 
-    Route::apiResource('nursery-amenity', \App\Http\Controllers\Api\Nurseries\Profile\AmenitieController::class);
+    Route::apiResource('nursery-amenity', \App\Http\Controllers\Api\Nurseries\Profile\AmenitieController::class)->except('destroy');
     Route::apiResource('/nursery-skills', BabySitterSkillController::class);
     Route::apiResource('/nursery-services', \App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class);
     Route::delete('attachments/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class, 'delete_attachment']);
     Route::apiResource('/nursery-qualifications', \App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
     Route::apiResource('/nursery-availabilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController::class)->except(['index','create','edit']);
-    Route::apiResource('/nursery-utilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryUtilitiesController::class)->except(['index','create','edit','delete']);
+    Route::apiResource('/nursery-utilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryUtilitiesController::class)->except(['index','create','edit','destroy']);
 
 
     Route::apiResource('nurseries', NurseryController::class);

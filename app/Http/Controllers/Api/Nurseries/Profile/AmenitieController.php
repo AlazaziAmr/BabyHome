@@ -42,10 +42,10 @@ class AmenitieController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
-    public function update(NurseryAmenityRequest $request, NurseryAmenity $amenity)
+    public function update(NurseryAmenityRequest $request, $id)
     {
         try {
-            $this->amenityRepository->update($request->validated(), $amenity['id']);
+            $this->amenityRepository->update($request->validated(), $id);
             return JsonResponse::successfulResponse('msg_updated_succssfully');
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
@@ -54,12 +54,12 @@ class AmenitieController extends Controller
 
     public function destroy(NurseryAmenity $amenity)
     {
-        try {
-            $this->amenityRepository->delete($amenity['id']);
-            return JsonResponse::successfulResponse('msg_deleted_succssfully');
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
+//        try {
+//            $this->amenityRepository->delete($amenity['id']);
+//            return JsonResponse::successfulResponse('msg_deleted_succssfully');
+//        } catch (\Exception $e) {
+//            return JsonResponse::errorResponse($e->getMessage());
+//        }
     }
 
 }

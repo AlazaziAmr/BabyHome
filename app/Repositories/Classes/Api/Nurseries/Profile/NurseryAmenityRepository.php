@@ -38,11 +38,13 @@ class NurseryAmenityRepository extends BaseRepository implements INurseryAmenity
     public function create($payload)
     {
         $nursery = Nursery::where('user_id', user()->id)->first();
-
-        $amenity = $this->model->create([
-            'nursery_id' => $nursery->id,
-            'amenity_id' => $payload['amenity_id']
-        ]);
+        $amenity = $this->model->where(['nursery_id'=>$nursery->id, 'amenity_id'=>$payload['amenity_id']])->first();
+        if ($amenity == null) {
+            $amenity = $this->model->create([
+                'nursery_id' => $nursery->id,
+                'amenity_id' => $payload['amenity_id']
+            ]);
+        }
         if (!empty($payload['attachments']))
             uploadAttachment($amenity, $payload, 'attachments', 'amenities');
     }
@@ -52,7 +54,7 @@ class NurseryAmenityRepository extends BaseRepository implements INurseryAmenity
     {
         $amenity = $this->model::find($id);
         $amenity->update([
-            'nursery_id' => $payload['nursery_id'],
+//            'nursery_id' => $payload['nursery_id'],
             'amenity_id' => $payload['amenity_id']
         ]);
         if (!empty($payload['attachments']))
