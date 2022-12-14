@@ -68,7 +68,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             $request = Nursery::where('id', $request['nursery_id'])->update([
                 'online' => $request['online_status'],
             ]);
-            return $request->online;
+            return $request;
         }else{
             return null;
         }

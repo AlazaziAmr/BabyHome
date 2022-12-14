@@ -26,6 +26,7 @@ use App\Models\Api\Nurseries\NurseryAmenity;
 use App\Models\Api\Nurseries\NurseryAvailability;
 use App\Models\Api\Nurseries\NurseryService;
 use App\Models\Api\Nurseries\NurseryUtility;
+use App\Models\User;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Master\IBookingRequestRepository;
 use Carbon\Carbon;
@@ -191,6 +192,12 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $this->reservedTimes($request);
                         /*            $this->bookingStatus($request,$last);*/
                         $this->bookingServices($request, $last);
+                        $user=User::where('id',$nursery_capacity->user_id);
+                        $fcm = new \App\Functions\FcmNotification();
+                        $phone = str_replace("+9660","966",$user->phone);
+                        $phone = str_replace("+966","966",$phone);
+                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
+                        return response()->json(array('success' => true), 200);
                         /*   }
 
                            if (!empty($request['payment'])) {
@@ -354,7 +361,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         $check = $this->check($request);
         $NurseryAvailability = $this->nurseryAvailability($request);
-
         $sortOrder = $check['sortOrder'];
         $age_find = $check['age_find'];
         $from_hour = $NurseryAvailability['from_hour'];
@@ -367,7 +373,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $children_lang = $check['children_lang'];
         $nursery_id = $NurseryAvailability['nursery_id'];
         $day_id = $NurseryAvailability['day_id'];
-
 
         $x = $model::where('is_active', 1)->where('status', 5)->whereIn('id', $nursery_id)
             ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
@@ -398,6 +403,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+
+
         if ($x->isEmpty()){
             return null;
         }

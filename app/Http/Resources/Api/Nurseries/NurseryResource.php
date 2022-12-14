@@ -41,6 +41,7 @@ class NurseryResource extends JsonResource
             'building_type' => $this->building_type,
             'price' => $this->price,
             'online' => $this->online ? 'متصل' : 'غير متصل',
+            'online_status' => $this->online,
         ];
     }
 }

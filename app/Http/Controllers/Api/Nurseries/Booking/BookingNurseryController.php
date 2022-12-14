@@ -109,8 +109,8 @@ class BookingNurseryController extends Controller
 
     public function onlineStatus(Request $request){
         try {
+
             $requestProcess=$this->BookingNursery->onlineStatus($request);
-//            dd($requestProcess);
             if ($requestProcess == null){
                 $msg=' يرجئ التأكد من وجود الحاضنة';
                 return $this->returnEmpty($msg);
