@@ -352,7 +352,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function filterMaster($request)
     {
-       $validation= $request->validate([
+        $validation= $request->validate([
             'children_id' => 'exists:children,id',
             'city_id' => 'exists:cities,id',
             'day' => 'exists:days,id',
@@ -395,7 +395,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 'neighborhood:id,city_id,name',
                 'babySitter:id,nursery_id',
                 'babySitter.skills',
-                'babySitter.getImages',
+                'babySitter.attachmentable',
                 'services',
                 'services.sub_type:id,name',
                 'availabilities'
@@ -403,8 +403,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
                 'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
             ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
-
-
         if ($x->isEmpty()){
             return null;
         }
