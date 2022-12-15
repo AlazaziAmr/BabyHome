@@ -190,13 +190,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         ]);
                         $this->bookingLog($last);
                         $this->reservedTimes($request);
-                        /*            $this->bookingStatus($request,$last);*/
+                        /*
+                                 $this->bookingStatus($request,$last);*/
                         $this->bookingServices($request, $last);
-                        $user=User::where('id',$nursery_capacity->user_id);
+                     /*   $user=User::where('id',$nursery_capacity->user_id);
                         $fcm = new \App\Functions\FcmNotification();
                         $phone = str_replace("+9660","966",$user->phone);
                         $phone = str_replace("+966","966",$phone);
-                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
+                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
                         return response()->json(array('success' => true), 200);
                         /*   }
 
