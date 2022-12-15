@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Classes\Api\Nurseries;
 
+use App\Http\Resources\Api\Nurseries\BookingActivityResource;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Booking\RejectResReasons;
@@ -49,10 +50,13 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             ->whereIn('nursery_id',$nursery_id)->with([
             "services",
         ])->get();
-        if ($BookingService==null) {
+//        return $BookingService;
+        if ($BookingService) {
             return null;
         }else{
-            return $BookingService;
+            $data= BookingActivityResource::collection($BookingService);
+
+            return $data;
         }
     }
     public function showAllActivityBooking()

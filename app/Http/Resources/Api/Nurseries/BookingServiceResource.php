@@ -28,12 +28,10 @@ class BookingServiceResource extends JsonResource
                 'services'=>$this->services->name,
                 'services_description'=>$this->services->description,
                 'services_is_paid'=>$this->services->is_paid,
-                'image' => $images,
-
-
             ],
-
         ];
+        $data['image'] = $images;
+
 
         return $data;
     }

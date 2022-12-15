@@ -177,6 +177,7 @@ class ActivityNurseryController extends Controller
                 return $this->returnEmpty($msg);
             }else{
                 $msg='تم إرجاع البيانات بنجاح';
+
                 return $this->returnData($requestProcess,$msg);
             }
         }catch (\Exception $e) {
