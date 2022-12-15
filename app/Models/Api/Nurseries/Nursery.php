@@ -302,9 +302,9 @@ class Nursery extends BaseModel
 
         static::deleting(function ($nursery) {
             $nursery->babySitter()->delete();
-            foreach ($nursery->utilities()->get() as $utility) {
-                $utility->delete();
-            }
+//            foreach ($nursery->utilities()->get() as $utility) {
+//                $utility->delete();
+//            }
             foreach ($nursery->services()->get() as $service) {
                 $service->delete();
             }
