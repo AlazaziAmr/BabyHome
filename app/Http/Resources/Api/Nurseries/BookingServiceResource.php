@@ -9,30 +9,31 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookingServiceResource extends JsonResource
 {
-    public function toArray($request,$booking)
+    public function toArray($attended)
     {
-
         $images = array();
-        if($this->booking['booking_services']->attachmentable()) {
-            foreach ($this->booking['booking_services']->attachmentable()->get() as $index=>$image) {
+        if($this->attachmentable()) {
+            foreach ($this->attachmentable()->get() as $index=>$image) {
                 $images[$index]['id'] =  $image->id;
                 $images[$index]['image_path'] =  asset('storage/booking_services/' . $image->path);
             }
         }
         $data = [
-            'booking' => [
-                'id' => $this->id,
-                'child_id' => $this->booking->children->id,
-                'confirmDates' => $this->confirm_date,
-                'name' => $this->booking->children->name,
-                'dateOfBirth' => $this->booking->children->date_of_birth,
-                'description' => $this->booking->children->description,
-                'gender' => $this->booking->children->gender_id,
+            'attended' => [
+                'notes'=>$this->notes,
+                'child_id'=>$this->children->id,
+                'child'=>$this->children->name,
+                'date_of_birth'=>$this->children->date_of_birth,
+                'description'=>$this->children->description,
+                'services'=>$this->services->name,
+                'services_description'=>$this->services->description,
+                'services_is_paid'=>$this->services->is_paid,
                 'image' => $images,
+
+
             ],
+
         ];
-
-
 
         return $data;
     }

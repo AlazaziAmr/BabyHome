@@ -6,6 +6,8 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Http\Requests\Api\Nurseries\ActivityRequest;
+use App\Http\Resources\Api\Nurseries\BookingServiceResource;
+
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
@@ -13,6 +15,8 @@ use App\Models\Api\Master\Child;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ActivityNurseryController extends Controller
 {
@@ -27,23 +31,39 @@ class ActivityNurseryController extends Controller
     {
         return BookingService::class;
     }
-    public function activityCompleteDetails($id){
+    public function activityCompleteDetails(Request $request){
         try {
-            $bookingServices=   BookingService::where('service_id',$id )->where('complete',1)->get();
-            $child_id=   BookingService::where('service_id',$id )->pluck('child_id');
-            $data=Child::whereIn('id',$child_id)->with('bookingService')->get();
-            $msg='تم إرجاع البيانات بنجاح';
+            $unattended=   BookingService::where('service_id',$request->booking_service_id)
+                ->where('booking_id',$request->booking_id)
+                ->where('nursery_id',$request->nursery_id)
+                ->where('status',1)->with([
+                    'children',
+                    'services',
+                ])->where('complete',1)->get();
 
-            $msg='تم تحديث البيانات بنجاح';
-            return $this->returnData($data,$msg);
+
+            $attended=   BookingService::where('service_id',$request->booking_service_id)
+                ->where('booking_id',$request->booking_id)
+                ->where('nursery_id',$request->nursery_id)->where('status',2)->with([
+                    'children',
+                    'services',
+                    'attachmentable'
+                ])->where('complete',1)->get();
+
+
+            if ($unattended==null &&$attended==null) {
+                return null;
+            }else{
+                $data= BookingServiceResource::collection($attended);
+                return $data;
+            }
 
 
         }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
 
-    }
-    public function active(Request $request){
+    }    public function active(Request $request){
 
         try {
             $requestProcess=   Activity::where('id', $request['active_id'])->where()->update([
@@ -72,12 +92,19 @@ class ActivityNurseryController extends Controller
                 $msg='تم إضافة المرفق  بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }
+            return null;
+
         }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
 
     }
     public function attendedActivityChild(Request $request){
+        $validation= $request->validate([
+            'child_id' => 'exists:children,id',
+            'service_id' => 'exists:booking_services,service_id',
+
+        ]);
         try {
             foreach ($request['child_id'] as $child_id) {
 
@@ -102,19 +129,17 @@ class ActivityNurseryController extends Controller
     }
     public function executingActivity(Request $request){
         try {
-            foreach ($request['child_id'] as $child_id) {
 
-                $requestProcess = BookingService::where('service_id', $request->service_id)
-                    ->where('child_id', $child_id)->where('booking_id', $request->booking_id)
-                    ->first();
+            $updateData = [
+                'complete' => 1,
+            ];
 
-                $data = [
-                    'status' => $request->status,
-                ];
-            }
+            $requestProcess=   DB::table('booking_services')
+                ->where('service_id', $request->service_id)
+                ->where('booking_id', $request->booking_id)
+                ->update($updateData);
 
             if ($requestProcess){
-                $requestProcess->update($data);
                 $msg='تم تحديث البيانات بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }

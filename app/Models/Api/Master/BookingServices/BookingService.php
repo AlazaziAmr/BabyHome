@@ -6,6 +6,7 @@ use App\Models\Api\Generals\Attachment;
 use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
+use App\Models\Api\Master\Child;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,7 +53,7 @@ class BookingService extends Model
     }
     public function children(): BelongsTo
     {
-        return $this->BelongsTo(BelongsTo::class, 'child_id', 'id');
+        return $this->BelongsTo(Child::class, 'child_id', 'id');
     }
     public function attachmentable()
     {
