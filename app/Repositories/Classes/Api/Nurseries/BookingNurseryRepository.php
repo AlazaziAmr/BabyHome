@@ -45,7 +45,6 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     }
     public function showBooking()
     {
-
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
@@ -55,15 +54,13 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'BookingStatus:id,name',
             'nurseries',
         ])->get();
-
         if ($nurseryBooking->isEmpty()) {
             return null;
         }else{
-            return BookingNurseryResource::collection($nurseryBooking);
-
+            return $nurseryBooking;
         }
-
     }
+
 
     public function onlineStatus(Request $request){
 
