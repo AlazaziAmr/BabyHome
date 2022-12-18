@@ -82,6 +82,22 @@ class BookingNurseryController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
+    public function showAllChildrenBooking(){
+
+        try {
+            $requestProcess=$this->BookingNursery->showAllChildrenBooking();
+
+            if ($requestProcess==null){
+                $msg='عذراَ لايوجدأطفال حالياَ';
+                return $this->returnEmpty($msg);
+            }else{
+                $msg='تم إرجاع البيانات بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+    }
     public function rejected(Request $request){
         try {
             return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->rejected($request));

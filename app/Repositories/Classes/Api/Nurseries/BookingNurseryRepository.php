@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Classes\Api\Nurseries;
 
+use App\Http\Resources\Api\Master\Booking\BookingNurseryResource;
 use App\Http\Resources\Api\Nurseries\BookingChildResource;
 use App\Models\Api\Master\Booking\RejectResReasons;
 use App\Models\Api\Master\BookingServices\Booking;
@@ -44,6 +45,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     }
     public function showBooking()
     {
+
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
@@ -57,7 +59,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         if ($nurseryBooking->isEmpty()) {
             return null;
         }else{
-            return $nurseryBooking;
+            return BookingNurseryResource::collection($nurseryBooking);
+
         }
 
     }
@@ -235,10 +238,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
-
         $dateToday=now()->format('Y:m:d');
         $TimeNow=now()->format('Y:m:d');
-
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date', $TimeNow)
             ->pluck('id');
@@ -250,7 +251,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         }else{
             return BookingChildResource::collection($ConfirmedBooking);
         }
-        $user_id = auth('api')->user()->id;
+    /*    $user_id = auth('master')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
 
@@ -268,6 +269,21 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             return null;
         }else{
             return $data;
+        }*/
+
+    }
+    public function showAllChildrenBooking()
+    {
+
+        $user_id = auth('api')->user()->id;
+        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
+        $booking=Booking::whereIn('nursery_id',$nursery_id)->with([
+            "children","children.attachmentable","masters","BookingStatus"
+        ])->get();
+        if ($booking==null) {
+            return null;
+        }else{
+            return BookingNurseryResource::collection($booking);
         }
 
     }

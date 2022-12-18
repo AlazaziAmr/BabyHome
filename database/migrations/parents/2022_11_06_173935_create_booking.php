@@ -22,6 +22,7 @@ class CreateBooking extends Migration
             $table->bigInteger('child_id')->constrained('children')->onUpdate('cascade')->onDelete('cascade');
             $table->bigInteger('status_id')->constrained('booking_status')->onUpdate('cascade')->onDelete('cascade');
             $table->date('booking_date');
+            $table->time('booking_time');
             $table->timestamp('start_datetime');
             $table->timestamp('end_datetime');
             $table->time('total_hours');

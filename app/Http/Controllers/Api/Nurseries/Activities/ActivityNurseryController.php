@@ -170,6 +170,7 @@ class ActivityNurseryController extends Controller
     public function index()
     {
 
+
         try {
             $requestProcess=$this->ActivityNursery->showActivityToday();
             if ($requestProcess==null){
@@ -184,7 +185,7 @@ class ActivityNurseryController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
-    public function AllActivityBooking()
+    public function allActivity()
     {
 
         try {

@@ -161,6 +161,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         if (!empty($request['child_id'])) {
             $countChild=count($request['child_id']);
+            $booking_time = Carbon::now()->format('H:i:m');
+
 
             foreach ($request['child_id'] as $child_id) {
 
@@ -183,6 +185,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                             'child_id' => $child_id,
                             'status_id' => "1",
                             'booking_date' => $request->booking_date,
+                            'booking_time' => $booking_time,
                             'start_datetime' => $request->start_datetime,
                             'end_datetime' => $request->end_datetime,
                             'total_hours' => $request->total_hours,

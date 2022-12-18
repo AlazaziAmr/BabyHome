@@ -14,10 +14,7 @@ class BookingChildResource extends JsonResource
      */
     public function toArray($request)
     {
-       /* return [
 
-            'image' => $this->booking->children->name,
-        ];*/
         $images = array();
         if($this->booking['children']->attachmentable()) {
                 foreach ($this->booking['children']->attachmentable()->get() as $index=>$image) {
