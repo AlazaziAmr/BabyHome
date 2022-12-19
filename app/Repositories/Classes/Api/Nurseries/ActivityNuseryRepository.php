@@ -34,7 +34,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     public function showActivityToday()
     {
 
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
         $dateToday=now()->format('Y:m:d');
@@ -43,6 +43,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $booking=Booking::where('status_id',1)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date', $TimeNow)
             ->pluck('id');
+
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id');
@@ -50,8 +51,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             ->whereIn('nursery_id',$nursery_id)->with([
             "services",
         ])->get();
-//        return $BookingService;
-        if ($BookingService) {
+        if (!$BookingService) {
             return null;
         }else{
             $data= BookingActivityResource::collection($BookingService);
