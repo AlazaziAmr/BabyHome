@@ -73,27 +73,27 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ]);
     }
 
-    protected function bookingServices($request, $last)
+    protected function bookingServices($request, $last, $child_id)
     {
 
         if (!empty($request['services'])) {
             foreach ($request['services'] as $k => $service) {
-                foreach($service['child_id']as $k => $child_id){
+//                foreach($service['child_id']as $k => $child_id){
 
-                    $babySitter = BookingService::create([
-                        'nursery_id' => $last->nursery_id,
-                        'booking_id' => $last->id,
-                        'service_id' => $service['id'],
-                        'master_id' => $last->master_id,
-                        'child_id' => $child_id,
-                        'service_type_id' => $service['service_type_id'],
-                        'service_price' => $service['service_price'],
-                        'service_quantity' => $service['service_quantity'],
-                        'notes' => $service['notes'],
-                        'status' => 1,
+                $babySitter = BookingService::create([
+                    'nursery_id' => $last->nursery_id,
+                    'booking_id' => $last->id,
+                    'service_id' => $service['id'],
+                    'master_id' => $last->master_id,
+                    'child_id' => $child_id,
+                    'service_type_id' => $service['service_type_id'],
+                    'service_price' => $service['service_price'],
+                    'service_quantity' => $service['service_quantity'],
+                    'notes' => $service['notes'],
+                    'status' => 1,
 
-                    ]);
-                }
+                ]);
+//                }
             }
         }
     }
@@ -160,6 +160,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     $status_id=0;
                 }*/
 
+
         if (!empty($request['child_id'])) {
             $countChild=count($request['child_id']);
             $booking_time = Carbon::now()->format('H:i:m');
@@ -173,7 +174,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $checkBooking = $this->checkBookingNursery($request);
                 if ($checkBooking <= $capacity) {
                     $capacityFree=$capacity-$checkBooking;
-
                     $checkCapacity=$capacityFree -$countChild;
                     if ($checkCapacity >=0){
                         $total = $this->prices($request);
@@ -196,13 +196,13 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $this->reservedTimes($request);
                         /*
                                  $this->bookingStatus($request,$last);*/
-                        $this->bookingServices($request, $last);
-                     /*   $user=User::where('id',$nursery_capacity->user_id);
-                        $fcm = new \App\Functions\FcmNotification();
-                        $phone = str_replace("+9660","966",$user->phone);
-                        $phone = str_replace("+966","966",$phone);
-                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
-                        return response()->json(array('success' => true), 200);
+                        $this->bookingServices($request, $last, $child_id);
+
+                        /*   $user=User::where('id',$nursery_capacity->user_id);
+                           $fcm = new \App\Functions\FcmNotification();
+                           $phone = str_replace("+9660","966",$user->phone);
+                           $phone = str_replace("+966","966",$phone);
+                           $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
                         /*   }
 
                            if (!empty($request['payment'])) {
@@ -222,6 +222,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     return "عذراً الحاضنة ممتلئة";
                 }
             }
+            return response()->json(array('success' => true), 200);
         }
 
     }
