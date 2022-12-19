@@ -39,9 +39,9 @@ class Booking extends Model
     {
         return $this->BelongsTo(Master::class, 'master_id', 'id');
     }
-    public function children(): BelongsTo
+    public function children(): HasMany
     {
-        return $this->BelongsTo(Child::class, 'child_id', 'id');
+        return $this->hasMany(Child::class, 'id', 'child_id');
     }
     public function BookingStatus(): BelongsTo
     {

@@ -13,11 +13,11 @@ class BookingActivityResource extends JsonResource
     {
         $data = [
             'attended' => [
-                'services_is'=>$this->service_id,
-                'name'=>$this->services->name,
-                'description'=>$this->services->description,
-                'price'=>$this->services->price,
-                'is_paid'=>$this->services->is_paid,
+                'services_is'=>$this->servicesBooking->service_id,
+                'name'=>$this->servicesBooking->services->name,
+                'description'=>$this->servicesBooking->services->description,
+                'price'=>$this->servicesBooking->services->price,
+                'is_paid'=>$this->servicesBooking->services->is_paid,
             ],
         ];
 

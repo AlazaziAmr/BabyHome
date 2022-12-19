@@ -46,8 +46,11 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     public function showBooking()
     {
         $user_id = user()->id;
+        $date=now()->format('Y:m:d');
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-        $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
+
+        $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)
+            ->where('status_id', 1)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'children.attachmentable',

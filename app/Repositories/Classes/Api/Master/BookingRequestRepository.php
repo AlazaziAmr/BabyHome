@@ -75,6 +75,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     protected function bookingServices($request, $last)
     {
+
         if (!empty($request['services'])) {
             foreach ($request['services'] as $k => $service) {
                 foreach($service['child_id']as $k => $child_id){
@@ -447,6 +448,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 ->where('babysitter_id', $data['babysitter']->id)
                 ->get();
         }
+
 
         return $data;
 

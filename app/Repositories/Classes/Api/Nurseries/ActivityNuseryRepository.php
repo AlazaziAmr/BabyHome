@@ -40,8 +40,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $dateToday=now()->format('Y:m:d');
         $TimeNow=now()->format('Y:m:d');
 
-        $booking=Booking::where('status_id',1)->whereIn('nursery_id',$nursery_id)
-            ->where('booking_date', $TimeNow)
+        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->pluck('id');
 
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
@@ -54,9 +53,10 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         if (!$BookingService) {
             return null;
         }else{
-            $data= BookingActivityResource::collection($BookingService);
+            return $BookingService;
 
-            return $data;
+/*            $data= BookingActivityResource::collection($BookingService);*/
+
         }
     }
     public function showAllActivityBooking()
