@@ -92,9 +92,9 @@ class NurseryRequest extends FormRequest
         else{
             return [
                 // personal Info
-                'name' => 'array',
-                'name.ar' => 'required|string',
-                'name.en' => 'required|string',
+                'name' => 'required',
+//                'name.ar' => 'required|string',
+//                'name.en' => 'required|string',
 
                 'capacity' => 'required|numeric|max:5',
                 'acceptance_age_type' => 'required|numeric',
