@@ -32,7 +32,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     public function Booking()
     {
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
             'masters:id,uid,first_name',
@@ -45,7 +45,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     }
     public function showBooking()
     {
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 1)->with([
             'masters:id,uid,first_name',
@@ -76,7 +76,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     }
     public function rejectBooking()
     {
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)->where('status_id', 3)->with([
             'masters:id,uid,first_name',
@@ -201,7 +201,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     public function confirmedShow()
     {
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
 
@@ -232,7 +232,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     public function showChildrenBooking()
     {
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
         $dateToday=now()->format('Y:m:d');
@@ -272,7 +272,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     public function showAllChildrenBooking()
     {
 
-        $user_id = auth('api')->user()->id;
+        $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
         $booking=Booking::whereIn('nursery_id',$nursery_id)->with([
             "children","children.attachmentable","masters","BookingStatus"
