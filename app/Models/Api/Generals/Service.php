@@ -11,7 +11,7 @@ class Service extends BaseModel
     use HasTranslations;
 
     public $translatable = ['name'];
-    protected $hidden = ['pivot'];
+    protected $hidden = ['pivot','created_at','updated_at'];
 
     protected $fillable = [
         'name',

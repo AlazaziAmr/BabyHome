@@ -151,6 +151,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function createRequest($request)
     {
+       /* $user_id=Nursery::where("id",$request->nursery_id)->first();
+        $user_id=$user_id->user_id;
+        $user=User::where("id",$user_id)->first();
+        $fcm = new \App\Functions\FcmNotification();
+        $phone = str_replace("+9660","966",$user->phone);
+        $phone = str_replace("+966","966",$phone);
+        return $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
+
         /*يتم إرجاع السعر جاهز */
 
         /*
@@ -222,6 +230,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     return "عذراً الحاضنة ممتلئة";
                 }
             }
+
+
             return response()->json(array('success' => true), 200);
         }
 
@@ -261,10 +271,21 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
             if ($request->children_id != null) {
                 $find = Child::whereIn('id', $request->children_id)->first();
-                $age_find = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
+                $age_find_y = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
+                $age_find_m = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%m');
             } else {
                 $age_find = 1;
             }
+        if ($age_find_y>0){
+            $age_find=$age_find_y;
+            $age_type=2;
+        }else{
+            $age_find=$age_find_m;
+            $age_type=1;
+
+
+        }
+
         if ($request->children_lang != null ? explode($children_lang = ',', $request->dchildren_lang) : $children_lang = Language::pluck('id')->toArray())
 
             $model = new Nursery();
@@ -285,6 +306,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         return [
             'sortOrder' => $sortOrder,
             'age_find' => $age_find,
+            'age_type' => $age_type,
             /*            'from_hour' => $from_hour,*/
             /*            'to_hour' => $to_hour,*/
             'blog_query' => $model,
@@ -382,6 +404,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $NurseryAvailability = $this->nurseryAvailability($request);
         $sortOrder = $check['sortOrder'];
         $age_find = $check['age_find'];
+        $age_type = $check['age_type'];
         $from_hour = $NurseryAvailability['from_hour'];
         $to_hour = $NurseryAvailability['to_hour'];
         $model = $check['blog_query'];
@@ -392,36 +415,68 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $children_lang = $check['children_lang'];
         $nursery_id = $NurseryAvailability['nursery_id'];
         $day_id = $NurseryAvailability['day_id'];
+if ($age_type==2) {
+    $x = $model::where('is_active', 1)->where('acceptance_age_type',2)->where('status', 5)->whereIn('id', $nursery_id)
+        ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
+        ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
+        ->where(function ($query) use ($search) {
+            $query->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('uid', 'LIKE', '%' . $search . '%')
+                ->orWhere('address_description', 'LIKE', '%' . $search . '%');
+        })->with(['availabilities' =>
+            function ($item) use ($from_hour, $to_hour) {
+                $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                    ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
+                    ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
+            },])
+        ->with([
+            'country:id,name',
+            'city:id,country_id,name',
+            'neighborhood:id,city_id,name',
+            'babySitter:id,nursery_id',
+            'babySitter.skills',
+            'babySitter.attachmentable',
+            'services',
+            'services.sub_type:id,name',
+            'availabilities'
+        ])
+        ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+            'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
+        ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+}else{
 
-        $x = $model::where('is_active', 1)->where('status', 5)->whereIn('id', $nursery_id)
-            ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
-            ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
-            ->where(function ($query) use ($search) {
-                $query->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('first_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('last_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('uid', 'LIKE', '%' . $search . '%')
-                    ->orWhere('address_description', 'LIKE', '%' . $search . '%');
-            })->with(['availabilities' =>
-                function ($item) use ($from_hour, $to_hour) {
-                    $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
-                        ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
-                        ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
-                },])
-            ->with([
-                'country:id,name',
-                'city:id,country_id,name',
-                'neighborhood:id,city_id,name',
-                'babySitter:id,nursery_id',
-                'babySitter.skills',
-                'babySitter.attachmentable',
-                'services',
-                'services.sub_type:id,name',
-                'availabilities'
-            ])
-            ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
-                'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
-            ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+    $x = $model::where('is_active', 1)->where('acceptance_age_type',1)->where('status', 5)->whereIn('id', $nursery_id)
+        ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
+        ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
+        ->where(function ($query) use ($search) {
+            $query->where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('first_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                ->orWhere('uid', 'LIKE', '%' . $search . '%')
+                ->orWhere('address_description', 'LIKE', '%' . $search . '%');
+        })->with(['availabilities' =>
+            function ($item) use ($from_hour, $to_hour) {
+                $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                    ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
+                    ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
+            },])
+        ->with([
+            'country:id,name',
+            'city:id,country_id,name',
+            'neighborhood:id,city_id,name',
+            'babySitter:id,nursery_id',
+            'babySitter.skills',
+            'babySitter.attachmentable',
+            'services',
+            'services.sub_type:id,name',
+            'availabilities'
+        ])
+        ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+            'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
+        ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+}
         if ($x->isEmpty()){
             return null;
         }

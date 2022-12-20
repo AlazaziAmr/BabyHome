@@ -12,6 +12,7 @@ use App\Models\Api\Master\BookingServices\ConfirmedBooking;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
+use App\Models\User;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use Carbon\Carbon;
@@ -105,6 +106,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
     public function showBookingDetails($id)
     {
+
 
         $nurseryBooking=Booking::where('id',$id)->with([
             'masters:id,first_name,uid',
