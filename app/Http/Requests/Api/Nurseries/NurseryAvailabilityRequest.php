@@ -34,7 +34,7 @@ class NurseryAvailabilityRequest extends FormRequest
         }else {
             return [
                 //
-                'day_id' => 'required|exists:days,id',
+//                'day_id' => 'required|exists:days,id',
                 'from_hour' => 'required|date_format:H:i',
                 'to_hour' => 'required|date_format:H:i',
             ];
