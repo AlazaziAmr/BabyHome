@@ -170,7 +170,6 @@ class ActivityNurseryController extends Controller
     public function index()
     {
 
-
         try {
             $requestProcess=$this->ActivityNursery->showActivityToday();
             if ($requestProcess==null){
