@@ -37,7 +37,7 @@ class MasterJoinRequestController extends Controller
     public function filterMaster(Request $request){
 
 
-        $requestProcess=$this->joinRequestRepository->filterMaster( $request);
+        $requestProcess=$this->joinRequestRepository->filterMaster($request);
         if ($requestProcess==null){
             return response()->json([
                 'status'=>false,
