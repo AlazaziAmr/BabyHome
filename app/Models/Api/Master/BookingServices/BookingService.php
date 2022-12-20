@@ -20,6 +20,7 @@ class BookingService extends Model
 /*    use HasTranslations;*/
 
     protected $fillable = [
+        'id',
         'nursery_id',
         'booking_id',
         'service_id',
@@ -43,10 +44,7 @@ class BookingService extends Model
     {
         return $this->BelongsTo(Booking::class, 'booking_id', 'id');
     }
-    public function services(): BelongsTo
-    {
-        return $this->BelongsTo(Service::class, 'service_id', 'id');
-    }
+
     public function Master(): BelongsTo
     {
         return $this->BelongsTo(Master::class, 'master_id', 'id');

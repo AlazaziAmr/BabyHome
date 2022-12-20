@@ -301,6 +301,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     public function nurseryAvailability($request)
     {
 
+
         $from_hour=$request->from_hour != null ? $request->from_hour :"00:00";
         $to_hour=$request->to_hour != null ? $request->to_hour : "23:59";
         $day = $request->day != null ? $request->day : Day::pluck('id')->toArray();
@@ -342,8 +343,11 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     }
     public function showBookingDetails($id)
     {
-        $nurseryBooking=Booking::where('id',$id)->with([
+        $masterId=  auth('master')->user()->id;
+
+        $nurseryBooking=Booking::where('id',$id)->where('master_id',$masterId)->with([
             'masters.children:id,name,date_of_birth',
+            'serviceBooking.service',
             'BookingStatus:id,name',
             'children.sicknesses',
             'children.languages',
@@ -351,6 +355,15 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'children.attachmentable',
 
         ])->get();
+       /* $nurseryBooking['services']=BookingService::where('booking_id',$id)->where('child_id',$nurseryBooking->child_id)->with([
+            'masters.children:id,name,date_of_birth',
+            'BookingStatus:id,name',
+            'children.sicknesses',
+            'children.languages',
+            'children.allergies',
+            'children.attachmentable',
+
+        ])->get();*/
 
         return $nurseryBooking;
 

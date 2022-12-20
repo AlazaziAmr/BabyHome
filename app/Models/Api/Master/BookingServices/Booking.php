@@ -43,6 +43,10 @@ class Booking extends Model
     {
         return $this->hasMany(Child::class, 'id', 'child_id');
     }
+    public function serviceBooking(): HasMany
+    {
+        return $this->hasMany(BookingService::class, 'booking_id', 'id');
+    }
     public function BookingStatus(): BelongsTo
     {
         return $this->BelongsTo(BookingsStatus::class, 'status_id', 'id');

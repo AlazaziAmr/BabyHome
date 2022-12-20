@@ -56,6 +56,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'children.attachmentable',
             'BookingStatus:id,name',
             'nurseries',
+
         ])->get();
         if ($nurseryBooking->isEmpty()) {
             return null;
@@ -88,6 +89,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'BookingStatus:id,name',
             'nurseries',
             'RejectResReasons',
+            'serviceBooking.service',
         ])->get();
 
         if ($nurseryBooking->isEmpty()) {
@@ -105,7 +107,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
     {
 
         $nurseryBooking=Booking::where('id',$id)->with([
-            'masters.children:id,name,date_of_birth',
+            'masters:id,first_name,uid',
+            'serviceBooking.service',
             'BookingStatus:id,name',
             'children.sicknesses',
             'children.languages:name',

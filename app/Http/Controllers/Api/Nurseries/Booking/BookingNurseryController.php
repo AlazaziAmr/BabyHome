@@ -174,10 +174,20 @@ class BookingNurseryController extends Controller
     public function show($id)
     {
 
-        try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->BookingNursery->showBookingDetails($id));
-        } catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
+        $requestProcess=$this->BookingNursery->showBookingDetails($id);
+        if ($requestProcess==null){
+            return response()->json([
+                'status'=>false,
+                'err'=>'500',
+                'msg'=>'غذراَ لايوجد بيانات لعرضها',
+                'data'=>$requestProcess
+            ]);
+        }else{
+            return response()->json([
+                'status'=>true,
+                'msg'=>'تم إرجاع البيانات بنجاح',
+                'data'=>$requestProcess
+            ]);
         }
 
     }
