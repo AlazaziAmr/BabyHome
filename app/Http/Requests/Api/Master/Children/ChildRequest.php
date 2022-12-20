@@ -40,7 +40,7 @@ class ChildRequest extends FormRequest
             return [
                 'name' => 'required|string',
                 'gender_id'      => 'required|exists:genders,id',
-                'relation_id'      => 'required|exists:relations,id',
+//                'relation_id'      => 'required|exists:relations,id',
                 'date_of_birth' => 'required|date',
                 'description' => 'required|string',
                 'has_disability' => 'required|boolean',
