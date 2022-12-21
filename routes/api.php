@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Generals\QualificationController;
 use App\Http\Controllers\Api\Generals\RelationController;
 use App\Http\Controllers\Api\Generals\ServiceController;
 use App\Http\Controllers\Api\Generals\UtilityController;
+use App\Http\Controllers\Api\Master\Activities\ActivityMasterController;
 use App\Http\Controllers\Api\Master\Auth\MasterAuthController;
 use App\Http\Controllers\Api\Master\Auth\MasterResetPasswordController;
 use App\Http\Controllers\Api\Master\Booking\BookingController;
@@ -386,6 +387,12 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::post('activitiesNursery/activityCompleteDetails', [ActivityNurseryController::class,'activityCompleteDetails']);
     Route::post('activitiesNursery/attended-activity-child', [ActivityNurseryController::class,'attendedActivityChild']);
     Route::get('all-activity',[ActivityNurseryController::class,'allActivity']);
+
+
+    ######################activity Master ############################
+    Route::post('activities-master/activities-child', [ActivityMasterController::class,'index']);
+    Route::post('activities-master/activity-details', [ActivityMasterController::class,'activityCompleteDetails']);
+
 
 
 

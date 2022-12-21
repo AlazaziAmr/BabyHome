@@ -3,6 +3,7 @@
 namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Http\Resources\Api\Nurseries\BookingActivityResource;
+use App\Http\Resources\Api\Nurseries\BookingActivityTodayResource;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Booking\RejectResReasons;
@@ -18,6 +19,7 @@ use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ActivityNuseryRepository extends BaseRepository implements IActivityNurseryRepository
@@ -40,12 +42,18 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $dateToday=now()->format('Y:m:d');
         $TimeNow=now()->format('Y:m:d');
 
-        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
+        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
             ->pluck('id');
 
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id');
+      /*  $BookingService = BookingService::with([
+            "services",
+            "children",
+        ])->whereIn('booking_id',$ConfirmedBooking)
+              ->whereIn('nursery_id',$nursery_id)
+               ->get()->groupBy('service_id');*/
         $BookingService['servicesBooking']=BookingService::whereIn('booking_id',$ConfirmedBooking)
             ->whereIn('nursery_id',$nursery_id)->with([
             "services",
@@ -56,7 +64,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         }else{
             return $BookingService;
 
-/*            $data= BookingActivityResource::collection($BookingService);*/
+          //  return BookingActivityTodayResource::collection($BookingService);
 
         }
     }
