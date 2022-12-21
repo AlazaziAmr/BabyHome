@@ -89,11 +89,12 @@ class UserAuthController extends Controller
 //                if (!$request->has('activation_code')) {
                     $user->update(['activation_code' => OTPGenrator()]);
                     sendOTP($user['activation_code'], $user['phone'],'');
-                    if (Hash::check($request['password'], $user['password'])) {
-                        return $this->userWithToken($user);
-                    } else {
-                        return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
-                    }
+                    return JsonResponse::errorResponse('حساب غير محقق.');
+//                    if (Hash::check($request['password'], $user['password'])) {
+//                        return $this->userWithToken($user);
+//                    } else {
+//                        return JsonResponse::errorResponse('كلمة المرور غير مطابقة');
+//                    }
                 }
 //                if (Hash::check($request['password'], $user['password']) && $user['activation_code'] == $request['activation_code']) {
                 if (Hash::check($request['password'], $user['password'])) {
