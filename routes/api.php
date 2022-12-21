@@ -393,12 +393,6 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::post('activities-master/activities-child', [ActivityMasterController::class,'index']);
     Route::post('activities-master/activity-details', [ActivityMasterController::class,'activityCompleteDetails']);
 
-
-
-
-
-
-
 });
 
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {

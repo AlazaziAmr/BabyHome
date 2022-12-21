@@ -278,10 +278,10 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             }
         if ($age_find_y>0){
             $age_find=$age_find_y;
-            $age_type=2;
+            $age_type=1;
         }else{
             $age_find=$age_find_m;
-            $age_type=1;
+            $age_type=2;
 
 
         }
@@ -415,6 +415,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $children_lang = $check['children_lang'];
         $nursery_id = $NurseryAvailability['nursery_id'];
         $day_id = $NurseryAvailability['day_id'];
+
 if ($age_type==2) {
     $x = $model::where('is_active', 1)->where('acceptance_age_type',2)->where('status', 5)->whereIn('id', $nursery_id)
         ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
