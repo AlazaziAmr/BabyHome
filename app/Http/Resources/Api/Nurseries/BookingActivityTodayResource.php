@@ -11,6 +11,7 @@ class BookingActivityTodayResource extends JsonResource
 {
     public function toArray($attended)
     {
+
         $data = [
             'activity' => [
                 'id'=>$this->id,

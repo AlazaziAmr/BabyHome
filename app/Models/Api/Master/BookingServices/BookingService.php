@@ -7,6 +7,7 @@ use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Master\Child;
+use http\Exception\BadConversionException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,9 +53,9 @@ class BookingService extends Model
     {
         return $this->BelongsTo(Master::class, 'master_id', 'id');
     }
-    public function children(): HasMany
+    public function children(): BelongsTo
     {
-        return $this->hasMany(Child::class, 'child_id', 'id');
+        return $this->belongsTo(Child::class, 'child_id', 'id');
     }
     public function attachmentable()
     {

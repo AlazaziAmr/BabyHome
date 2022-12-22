@@ -381,17 +381,21 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     ######################activity Nursery ############################
     Route::apiResource('activitiesNursery', ActivityNurseryController::class);
     Route::post('activitiesNursery/active ', [ActivityNurseryController::class,'active']);
+    Route::post('activitiesNursery/show-details', [ActivityNurseryController::class,'show']);
     Route::post('activitiesNursery/unactive', [ActivityNurseryController::class,'un_active']);
     Route::post('activitiesNursery/executing-activity', [ActivityNurseryController::class,'executingActivity']);
     Route::post('activitiesNursery/add-image-activity', [ActivityNurseryController::class,'addImageActivity']);
     Route::post('activityCompleteDetails', [ActivityNurseryController::class,'activityCompleteDetails']);
-    Route::post('activitiesNursery/attended-activity-child', [ActivityNurseryController::class,'attendedActivityChild']);
+   // Route::post('activitiesNursery/attended-activity-child', [ActivityNurseryController::class,'attendedActivityChild']);
+    Route::post('attended', [ActivityNurseryController::class,'attended']);
     Route::get('all-activity',[ActivityNurseryController::class,'allActivity']);
 
 
     ######################activity Master ############################
     Route::post('activities-master/activities-child', [ActivityMasterController::class,'index']);
     Route::post('activities-master/activity-details', [ActivityMasterController::class,'activityCompleteDetails']);
+    Route::get('all-activity-master',[ActivityMasterController::class,'allActivity']);
+
 
 });
 

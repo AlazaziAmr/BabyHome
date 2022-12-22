@@ -12,6 +12,7 @@ use App\Http\Resources\Api\Nurseries\BookingServiceResource;
 
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Master\BookingServices\BookingService;
+use App\Models\Api\Nurseries\Nursery;
 use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
 use App\Models\Api\Master\Child;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
@@ -29,6 +30,13 @@ class ActivityMasterController extends Controller
     public function model()
     {
         return BookingService::class;
+    }
+
+    public function all(Request $request){
+        $nurseryBooking=BookingService::whereIn("master_id",$request->master_id)->with([
+            'services'
+        ])->get();
+
     }
 
 

@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Http\Requests\Api\Nurseries\ActivityRequest;
+use App\Http\Resources\Api\Nurseries\ActivityDetailsResource;
 use App\Http\Resources\Api\Nurseries\BookingServiceResource;
 
 use App\Models\Api\Generals\Activity;
@@ -99,26 +100,16 @@ class ActivityNurseryController extends Controller
         }
 
     }
-    public function attendedActivityChild(Request $request){
-        $validation= $request->validate([
-            'child_id' => 'exists:children,id',
-            'service_id' => 'exists:booking_services,service_id',
-
-        ]);
+    public function attended(Request $request){
         try {
-            foreach ($request['child_id'] as $child_id) {
 
                 $requestProcess = BookingService::where('service_id', $request->service_id)
-                    ->where('child_id', $child_id)->where('booking_id', $request->booking_id)
-                    ->first();
-
-                $data = [
-                    'status' => $request->status,
-                ];
-            }
+                    ->whereIn('child_id', $request->child_id)->whereIn('booking_id', $request->booking_id)
+                    ->update([
+                        'status'=>$request->status,
+                    ]);
 
             if ($requestProcess){
-                $requestProcess->update($data);
                 $msg='تم تحديث البيانات بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }
@@ -237,8 +228,17 @@ class ActivityNurseryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
+        $BookingServices =BookingService::whereIn('booking_id',$request->booking_id)
+                ->where('service_id',$request->service_id) ->with([
+                'children.attachmentable',
+                'services.attachmentable',
+            ])->get();
+
+        return ActivityDetailsResource::collection($BookingServices);
+
+
 
 
     }
