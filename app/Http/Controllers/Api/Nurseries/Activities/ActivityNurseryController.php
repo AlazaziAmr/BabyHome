@@ -100,7 +100,28 @@ class ActivityNurseryController extends Controller
         }
 
     }
-    public function attended(Request $request){
+    public function addImage(Request $request){
+        try {
+            $requestProcess = BookingService::where('service_id',$request->service_id)
+                ->where('booking_id',$request->booking_id)
+                ->first();
+            $data = [
+                'service_id' => $request->service_id,
+            ];
+            $requestProcess->update($data);
+            if ($requestProcess) {
+                if (!empty($request['attachments'])) uploadAttachment($requestProcess, $request, 'attachments', 'booking_services');
+                $msg='تم إضافة المرفق  بنجاح';
+                return $this->returnData($requestProcess,$msg);
+            }
+            return null;
+
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+    }
+    /*    public function attended(Request $request){
         try {
 
                 $requestProcess = BookingService::where('service_id', $request->service_id)
@@ -112,6 +133,24 @@ class ActivityNurseryController extends Controller
             if ($requestProcess){
                 $msg='تم تحديث البيانات بنجاح';
                 return $this->returnData($requestProcess,$msg);
+            }
+        }catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
+
+        }*/
+    public function attendedChild(Request $request){
+        try {
+            $requestProcess = BookingService::where('service_id', $request->service_id)
+                ->whereIn('child_id', $request->child_id)
+                ->whereIn('booking_id', $request->booking_id)->update([
+                    'attended'=>$request->status,
+                ]);
+
+
+            if ($requestProcess){
+                $msg='تم تحديث البيانات بنجاح';
+                return $this->returnData('$requestProcess',$msg);
             }
         }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
