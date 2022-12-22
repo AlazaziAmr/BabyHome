@@ -50,12 +50,10 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
                ->whereIn('nursery_id',$nursery_id)->groupBy('service_id')
                 ->get();*/
 
-        $BookingServices['service_booking'] =BookingService::select('id','service_id')->whereIn('booking_id',$ConfirmedBooking)
-            ->whereIn('nursery_id',$nursery_id)->get();
+
         $service_id= DB::table('booking_services')
             ->select('service_id')->groupByRaw('service_id')
             ->pluck('service_id');
-        $BookingServices['services']=Service::whereIn('id',$service_id)->get();
 
 
 
@@ -74,11 +72,18 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
                "services",
                "children",
            ])->get();*/
+        $BookingServices['service_booking'] =BookingService::select('id','service_id')->whereIn('booking_id',$ConfirmedBooking)
+            ->whereIn('nursery_id',$nursery_id)->get();
         if (!$BookingServices) {
             return null;
         }else{
-            return $BookingServices;
-            //  return BookingActivityTodayResource::collection($BookingServices);
+          //  return $BookingServices;
+            $Services=Service::whereIn('id',$service_id)->get();
+          //  return $Services;
+
+            $BookingServices['services']= BookingActivityTodayResource::collection($Services);
+
+            return  $BookingServices;
         }
     }
     public function showAllActivityBooking()
