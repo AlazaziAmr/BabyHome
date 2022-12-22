@@ -11,6 +11,7 @@ use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\BookingServices\ConfirmedBooking;
+use App\Models\Api\Master\Child;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\Api\Nurseries\NurseryActivity;
@@ -20,6 +21,7 @@ use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\Translation\t;
 
 
 class ActivityNuseryRepository extends BaseRepository implements IActivityNurseryRepository
@@ -35,37 +37,48 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     }
     public function showActivityToday()
     {
-
         $user_id = user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-
         $dateToday=now()->format('Y:m:d');
         $TimeNow=now()->format('Y:m:d');
-
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
             ->pluck('id');
-
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id');
-      /*  $BookingService = BookingService::with([
-            "services",
-            "children",
-        ])->whereIn('booking_id',$ConfirmedBooking)
-              ->whereIn('nursery_id',$nursery_id)
-               ->get()->groupBy('service_id');*/
-        $BookingService['servicesBooking']=BookingService::whereIn('booking_id',$ConfirmedBooking)
-            ->whereIn('nursery_id',$nursery_id)->with([
-            "services",
-            "children",
-        ])->get();
-        if (!$BookingService) {
+        /* $BookingService  =DB::table('booking_services')->select(DB::raw('count(*) as nursery_id,service_id,booking_id'))->whereIn('booking_id',$ConfirmedBooking)
+               ->whereIn('nursery_id',$nursery_id)->groupBy('service_id')
+                ->get();*/
+
+        $BookingServices['service_booking'] =BookingService::select('id','service_id')->whereIn('booking_id',$ConfirmedBooking)
+            ->whereIn('nursery_id',$nursery_id)->get();
+        $service_id= DB::table('booking_services')
+            ->select('service_id')->groupByRaw('service_id')
+            ->pluck('service_id');
+        $BookingServices['services']=Service::whereIn('id',$service_id)->get();
+
+
+
+        /* $BookingService['ss'] = BookingService::select('service_id','nursery_id')->with([
+             "services",
+             "children",
+         ])->whereIn('booking_id',$ConfirmedBooking)
+               ->whereIn('nursery_id',$nursery_id)
+                ->get()->groupBy('service_id');
+
+         return $BookingService;*/
+
+
+        /*   $BookingService['servicesBooking']=BookingService::whereIn('booking_id',$ConfirmedBooking)
+               ->whereIn('nursery_id',$nursery_id)->with([
+               "services",
+               "children",
+           ])->get();*/
+        if (!$BookingServices) {
             return null;
         }else{
-            return $BookingService;
-
-          //  return BookingActivityTodayResource::collection($BookingService);
-
+            return $BookingServices;
+            //  return BookingActivityTodayResource::collection($BookingServices);
         }
     }
     public function showAllActivityBooking()
@@ -118,7 +131,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
 
         $Nurseryactivity=$this->nurseryActivity($request,$addActivities);
 
-            return $addActivity;
+        return $addActivity;
     }
     public function nurseryActivity($request,$addActivities){
         if($request['nursery_id'] ==null){

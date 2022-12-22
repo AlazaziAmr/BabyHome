@@ -46,11 +46,11 @@ class ActivityMasterController extends Controller
                     'services',
                 ])->get();
 
-          /*  $user_info = DB::table('booking_services')->where('child_id',$request->child_id)
-                ->where('nursery_id',$request->nursery_id)
-                ->select('booking_id', DB::raw('count(*) as total'))
-                ->groupBy('service_id','nursery_id','booking_id','master_id')->with([ 'services'])
-                ->get();*/
+            /*  $user_info = DB::table('booking_services')->where('child_id',$request->child_id)
+                  ->where('nursery_id',$request->nursery_id)
+                  ->select('booking_id', DB::raw('count(*) as total'))
+                  ->groupBy('service_id','nursery_id','booking_id','master_id')->with([ 'services'])
+                  ->get();*/
 
             if ($activities==null ) {
                 return null;
@@ -89,7 +89,6 @@ class ActivityMasterController extends Controller
 
     public function activities(Request $request)
     {
-        dd($request) ;
 
         try {
             $requestProcess=$this->ActivityNursery->showActivityToday();
@@ -127,8 +126,8 @@ class ActivityMasterController extends Controller
 
         try {
             $requestProcess=$this->ActivityNursery->addActivity($request);
-                $msg='تم الحفظ  بنجاح';
-                return $this->returnData($requestProcess,$msg);
+            $msg='تم الحفظ  بنجاح';
+            return $this->returnData($requestProcess,$msg);
 
         }catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());

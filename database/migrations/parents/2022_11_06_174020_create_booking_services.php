@@ -28,6 +28,7 @@ class CreateBookingServices extends Migration
             $table->integer('service_quantity');
             $table->string('notes',191);
             $table->tinyInteger('status');
+            $table->tinyInteger('attended');
             $table->softDeletes();
             $table->timestamps();
         });
