@@ -32,7 +32,9 @@ use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
 use App\Http\Controllers\Api\Nurseries\Activities\ActivityNurseryController;
 use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
+use App\Http\Controllers\Api\Nurseries\LicenseController;
 use App\Http\Controllers\Api\Nurseries\NurseryController;
+use App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController;
 use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\Users\Auth\RestPasswordController;
 use App\Http\Controllers\Api\Users\Auth\UserAuthController;
@@ -295,8 +297,10 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:user', '
     Route::apiResource('/nursery-services', \App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class);
     Route::delete('attachments/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\NurseryServiceInfoController::class, 'delete_attachment']);
     Route::apiResource('/nursery-qualifications', \App\Http\Controllers\Api\Nurseries\Profile\BabySitterQuanlificationController::class);
-    Route::apiResource('/nursery-availabilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController::class)->except(['index','create','edit']);
+    Route::get('/nursery-unavailable/{id}', [NurseryAvailabilitiesController::class,'index']);
+    Route::apiResource('/nursery-availabilities', NurseryAvailabilitiesController::class)->except(['index','create','edit']);
     Route::apiResource('/nursery-utilities', \App\Http\Controllers\Api\Nurseries\Profile\NurseryUtilitiesController::class)->except(['index','create','edit','destroy']);
+    Route::apiResource('/nursery-license',LicenseController::class);
 
 
     Route::apiResource('nurseries', NurseryController::class);
@@ -326,6 +330,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 
     // Children
     Route::apiResource('children', ChildController::class);
+    Route::post('children', [ChildController::class,'update']);
     Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
     Route::apiResource('child-phone', ChildPhoneController::class)->except(['show','edit','create']);
 

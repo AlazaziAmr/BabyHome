@@ -194,7 +194,6 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
 
     public function createRequest($request)
     {
-
         try {
             DB::beginTransaction();
 
@@ -234,7 +233,8 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             $this->updateUser();
 
             $this->babySitterInfo($request, $nursery);
-            // a`va`ilabilities
+
+            // availabilities
             if (!empty($request['days'])) {
                 $this->availabilities($request['days'], $nursery);
             }
@@ -243,6 +243,7 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             if (!empty($request['utilities'])) {
                 $nursery->utilities()->sync($request['utilities']);
             }
+
             // amenities
             if (!empty($request['amenities'])) {
                 foreach ($request['amenities'] as $amenity) {
@@ -253,11 +254,11 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
                     if (!empty($amenity['attachments'])) uploadAttachment($savedAmenity, $amenity, 'attachments', 'amenities');
                 }
             }
+
             // services
             if (!empty($request['services'])) {
                 $nursery->services()->sync($request['services']);
             }
-
 
             // additional_activities
             if (!empty($request['additional_services'])) {
@@ -323,5 +324,14 @@ class NurseryRepository extends BaseRepository implements INurseryRepository
             'to' => $request['to'],
             'notes' => $request['note'] ?? null,
         ]);
+    }
+
+    public function addLicense($request, $id)
+    {
+        $nursery = $this->model->findOrFail($id);
+        $nursery->update([
+            'license_no' => $request['license_no'],
+        ]);
+        if (!empty($request['licenses'])) uploadAttachment($nursery, $request['licenses'], 'attachments', 'licenses');
     }
 }

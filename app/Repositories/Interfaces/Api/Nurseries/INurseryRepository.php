@@ -36,4 +36,6 @@ interface INurseryRepository extends IBaseRepository
     public function fetchAllForAdmin($with = [], $columns = array('*'));
 
     public function assignTo($request);
+
+    public function addLicense($request, $id);
 }

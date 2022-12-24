@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\Nurseries\Profile;
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Nurseries\NurseryAvailabilityRequest;
+use App\Http\Resources\Api\Generals\DayResource;
 use App\Http\Resources\Api\Nurseries\Profile\NurseryAvailabilityResource;
+use App\Models\Api\Generals\Day;
 use App\Models\Api\Nurseries\NurseryAvailability;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,7 +21,14 @@ class NurseryAvailabilitiesController extends Controller
      */
     public function index($id)
     {
-        //
+        //Get the days that are not available for the nursery
+        try {
+            $availabilties = NurseryAvailability::where('nursery_id', $id)->pluck('day_id')->toArray();
+            $days = Day::whereNotIn('id', $availabilties)->get();
+            return JsonResponse::successfulResponse('msg_success', DayResource::collection($days));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
     }
 
     /**
@@ -62,10 +71,9 @@ class NurseryAvailabilitiesController extends Controller
      */
     public function show($id)
     {
-        //
         try {
             $availabilties = NurseryAvailability::with('day')->where('nursery_id', $id)->get();
-            return JsonResponse::successfulResponse('', NurseryAvailabilityResource::collection($availabilties));
+            return JsonResponse::successfulResponse('msg_success', NurseryAvailabilityResource::collection($availabilties));
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }

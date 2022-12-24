@@ -117,7 +117,6 @@ class ProfileController extends Controller
                         $data['qualifications'] = BabysitterQulificationResource::collection($qualifications);
                     }
                 }
-
             }
             return JsonResponse::successfulResponse('msg_success', $data);
         } catch (\Exception $e) {

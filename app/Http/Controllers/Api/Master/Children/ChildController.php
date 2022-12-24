@@ -14,6 +14,7 @@ use App\Models\Api\Master\Child;
 use App\Repositories\Interfaces\Api\Master\IChildAllergyRepository;
 use App\Repositories\Interfaces\Api\Master\IChildrenRepository;
 use App\Repositories\Interfaces\Api\Master\IChildSicknessRepository;
+use Illuminate\Http\Request;
 
 class ChildController extends Controller
 {
@@ -82,10 +83,23 @@ class ChildController extends Controller
      * @param  Child $Child
      * @return \Illuminate\Http\Response
      */
-    public function update(ChildRequest $request, Child $child)
+    public function update(Request $request)
     {
+        $request = $request->validate(
+            [
+                'child_id' => 'required|numeric',
+                'name' => 'required|string',
+                'gender_id'      => 'required|exists:genders,id',
+                'date_of_birth' => 'required|date',
+                'description' => 'required|string',
+                'has_disability' => 'required|boolean',
+                'languages' => 'required|array',
+                'languages.*'      => 'required|exists:languages,id',
+                'attachments' => 'array',
+                'attachments.*.file' => 'required|mimes:jpeg,png,jpg,gif',
+            ]);
         try {
-            $this->childrenRepository->update($request->validated(), $child['id']);
+            $this->childrenRepository->update($request, $request['child_id']);
             return JsonResponse::successfulResponse('msg_updated_succssfully');
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
