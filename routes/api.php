@@ -330,7 +330,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
 
     // Children
     Route::apiResource('children', ChildController::class);
-    Route::post('children', [ChildController::class,'update']);
+    Route::post('update-children', [ChildController::class,'update']);
     Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
     Route::apiResource('child-phone', ChildPhoneController::class)->except(['show','edit','create']);
 
