@@ -46,41 +46,17 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id');
-        /* $BookingService  =DB::table('booking_services')->select(DB::raw('count(*) as nursery_id,service_id,booking_id'))->whereIn('booking_id',$ConfirmedBooking)
-               ->whereIn('nursery_id',$nursery_id)->groupBy('service_id')
-                ->get();*/
 
-
-        $service_id= DB::table('booking_services')
+        $service_id= DB::table('booking_services')->whereIn('booking_id',$ConfirmedBooking)
             ->select('service_id')->groupByRaw('service_id')
             ->pluck('service_id');
 
-
-
-        /* $BookingService['ss'] = BookingService::select('service_id','nursery_id')->with([
-             "services",
-             "children",
-         ])->whereIn('booking_id',$ConfirmedBooking)
-               ->whereIn('nursery_id',$nursery_id)
-                ->get()->groupBy('service_id');
-
-         return $BookingService;*/
-
-
-        /*   $BookingService['servicesBooking']=BookingService::whereIn('booking_id',$ConfirmedBooking)
-               ->whereIn('nursery_id',$nursery_id)->with([
-               "services",
-               "children",
-           ])->get();*/
         $BookingServices['service_booking'] =BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
             ->whereIn('nursery_id',$nursery_id)->get();
         if (!$BookingServices) {
             return null;
         }else{
-          //  return $BookingServices;
             $Services=Service::whereIn('id',$service_id)->with('attachmentable')->get();
-          //  return $Services;
-          //  return $Services;
 
             $BookingServices['services']= BookingActivityTodayResource::collection($Services);
 
