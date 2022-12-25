@@ -2,6 +2,8 @@
 
 namespace App\Models\Api\Generals;
 
+use App\Models\Api\Master\BookingServices\BookingService;
+use App\Models\Api\Master\Child;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
@@ -38,6 +40,14 @@ class Service extends BaseModel
     {
         return $this->belongsTo(NurseryServiceType::class, 'sub_category_id', 'id');
     }
+
+    public function booking_service(){
+        return $this->hasMany(BookingService::class,'service_id','id');
+    }
+
+//    public function children(){
+//        return $this->hasManyThrough(BookingService::class,Child::class,'service_id','id');
+//    }
 
     public function attachmentable()
     {

@@ -151,13 +151,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function createRequest($request)
     {
-       /* $user_id=Nursery::where("id",$request->nursery_id)->first();
-        $user_id=$user_id->user_id;
-        $user=User::where("id",$user_id)->first();
-        $fcm = new \App\Functions\FcmNotification();
-        $phone = str_replace("+9660","966",$user->phone);
-        $phone = str_replace("+966","966",$phone);
-        return $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
 
         /*يتم إرجاع السعر جاهز */
 
@@ -206,12 +199,16 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                                  $this->bookingStatus($request,$last);*/
                         $this->bookingServices($request, $last, $child_id);
 
-                        /*   $user=User::where('id',$nursery_capacity->user_id);
-                           $fcm = new \App\Functions\FcmNotification();
-                           $phone = str_replace("+9660","966",$user->phone);
-                           $phone = str_replace("+966","966",$phone);
-                           $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);*/
-                        /*   }
+                        $user_id=Nursery::where("id",$request->nursery_id)->first();
+                        $user_id=$user_id->user_id;
+                        $user=User::where("id",$user_id)->first();
+                        $fcm = new \App\Functions\FcmNotification();
+                        $phone = str_replace("+9660","966",$user->phone);
+                        $phone = str_replace("+966","966",$phone);
+                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
+
+                        /*    }
+
 
                            if (!empty($request['payment'])) {
                                 $this->payment($request['services'], $request);

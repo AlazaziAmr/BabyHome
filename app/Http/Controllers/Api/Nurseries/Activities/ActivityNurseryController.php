@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Nurseries\Activities;
 
 use App\Helpers\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Master\Booking\BookingRequest;
 use App\Http\Requests\Api\Nurseries\ActivityRequest;
 use App\Http\Resources\Api\Nurseries\ActivityDetailsResource;
 use App\Http\Resources\Api\Nurseries\BookingServiceResource;
@@ -12,8 +11,6 @@ use App\Http\Resources\Api\Nurseries\BookingServiceResource;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Repositories\Interfaces\Api\Nurseries\IActivityNurseryRepository;
-use App\Models\Api\Master\Child;
-use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
 use App\Traits\ApiTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +61,8 @@ class ActivityNurseryController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
 
-    }    public function active(Request $request){
+    }
+    public function active(Request $request){
 
         try {
             $requestProcess=   Activity::where('id', $request['active_id'])->where()->update([
@@ -121,24 +119,7 @@ class ActivityNurseryController extends Controller
         }
 
     }
-    /*    public function attended(Request $request){
-        try {
 
-                $requestProcess = BookingService::where('service_id', $request->service_id)
-                    ->whereIn('child_id', $request->child_id)->whereIn('booking_id', $request->booking_id)
-                    ->update([
-                        'status'=>$request->status,
-                    ]);
-
-            if ($requestProcess){
-                $msg='تم تحديث البيانات بنجاح';
-                return $this->returnData($requestProcess,$msg);
-            }
-        }catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
-        }
-
-        }*/
     public function attendedChild(Request $request){
         try {
             $requestProcess = BookingService::where('service_id', $request->service_id)

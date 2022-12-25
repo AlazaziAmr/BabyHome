@@ -57,6 +57,10 @@ class BookingService extends Model
     {
         return $this->belongsTo(Child::class, 'child_id', 'id');
     }
+    public function childrens(): HasMany
+    {
+        return $this->hasMany(Child::class, 'id', 'child_id');
+    }
     public function attachmentable()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');

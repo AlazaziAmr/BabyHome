@@ -38,12 +38,13 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     public function showActivityToday()
     {
         $user_id = user()->id;
-        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-        $dateToday=now()->format('Y:m:d');
-        $TimeNow=now()->format('Y:m:d');
-        $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
+        $nursery_id= Nursery::where('user_id',$user_id)->pluck('id');
+        $dateToday= now()->format('Y:m:d');
+        $TimeNow= now()->format('Y:m:d');
+//        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
+        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->pluck('id');
-        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
+        $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id');
 
@@ -51,18 +52,22 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             ->select('service_id')->groupByRaw('service_id')
             ->pluck('service_id');
 
-        $BookingServices['service_booking'] =BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
+        $BookingServices['service_booking'] = BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
             ->whereIn('nursery_id',$nursery_id)->get();
+
+        $Services = Service::whereIn('id',$service_id)->with(['booking_service','booking_service.childrens','attachmentable'])->get();
+
         if (!$BookingServices) {
             return null;
         }else{
             //   return  $BookingServices;
 
-            $Services=Service::whereIn('id',$service_id)->with('attachmentable')->get();
 
-            $BookingServices['services']= BookingActivityTodayResource::collection($Services);
+//            $BookingServices['services']= BookingActivityTodayResource::collection($Services);
+//            $BookingServices['services']= BookingActivityTodayResource::collection($BookingServices['service_booking']);
 
-            return  $BookingServices;
+
+            return  BookingActivityTodayResource::collection($Services);
         }
     }
     public function showAllActivityBooking()

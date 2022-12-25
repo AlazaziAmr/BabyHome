@@ -61,7 +61,7 @@ class FcmNotification
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
         $result = curl_exec($ch);
         curl_close($ch);
-//        echo json_encode($result);
+       // echo json_encode($result);
         return true;
     }
 }
