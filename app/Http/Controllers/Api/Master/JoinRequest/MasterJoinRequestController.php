@@ -25,8 +25,11 @@ class MasterJoinRequestController extends Controller
      */
     public function store(MasterJoinRequest  $request)
     {
-
-        return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->createRequest($request->validated()));
+        try {
+            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->createRequest($request->validated()));
+        } catch (\Exception $e) {
+            return JsonResponse::errorResponse($e->getMessage());
+        }
     }
 
     public function showNurseries()

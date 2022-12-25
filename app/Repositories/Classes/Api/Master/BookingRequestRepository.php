@@ -390,10 +390,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function filterMaster($request)
     {
+
+        $time=now()->format('H:i');
         $validation= $request->validate([
             'children_id' => 'exists:children,id',
             'city_id' => 'exists:cities,id',
             'day' => 'exists:days,id',
+          //  'from_hour' => 'required|after_or_equal:'.$time,
+            'to_hour' => 'required|after_or_equal:from_hour',
 
         ]);
 
@@ -525,7 +529,9 @@ if ($age_type==2) {
     {
 
         $user_id = auth('master')->user()->id;
-        $nurseryBooking=Booking::where("master_id",$user_id)->where('status_id', 1)->with([
+        $dateToday=now()->format('Y:m:d');
+
+        $nurseryBooking=Booking::where("master_id",$user_id)->where('status_id', 1)->where('booking_date',$dateToday)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
             'BookingStatus:id,name',

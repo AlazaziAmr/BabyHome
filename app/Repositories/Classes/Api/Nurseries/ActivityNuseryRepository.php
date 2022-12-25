@@ -40,9 +40,10 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $user_id = user()->id;
         $nursery_id= Nursery::where('user_id',$user_id)->pluck('id');
         $dateToday= now()->format('Y:m:d');
-        $TimeNow= now()->format('Y:m:d');
+      //  $TimeNow= now()->format('Y:m:d');
 //        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
         $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
+            ->where('booking_date',$dateToday)
             ->pluck('id');
         $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)

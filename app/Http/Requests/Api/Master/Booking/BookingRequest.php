@@ -24,7 +24,7 @@ class BookingRequest extends FormRequest
      */
     public function rules()
     {
-        $time=now()->format('H:i');
+       // $time=now()->format('H:i');
 
         return [
             'nursery_id'      => 'required|exists:nurseries,id',
@@ -33,7 +33,8 @@ class BookingRequest extends FormRequest
             'booking_date'      => 'required|date|after_or_equal:'.now()->format('Y-m-d').'',
             'start_datetime'      => 'required|date|after_or_equal:'.now()->format('Y-m-d').'',
             'end_datetime'      => 'required|date|after_or_equal:start_datetime',
-            'start_time' => 'required|after_or_equal:'.$time,
+         //   'start_time' => 'required|after_or_equal:'.$time,
+            'start_time' => 'required',
             'end_time' => 'required|after_or_equal:start_time',
             'service_id' => 'nullable|array|exists:services',
 
@@ -50,9 +51,9 @@ class BookingRequest extends FormRequest
             'booking_date.required'=>__('booking.booking_date_required'),
             'booking_date.date'=>__('booking.booking_date_date'),
             'start_time.required'=>__('booking.start_time_required'),
-            'start_time.after_or_equal'=>__('booking.start_time_after_or_equal'),
+         //   'start_time.after_or_equal'=>__('booking.start_time_after_or_equal'),
             'end_time.required'=>__('booking.end_time_required'),
-            'end_time.after'=>__('booking.end_time_after'),
+            'end_time.after_or_equal'=>__('booking.end_time_after'),
             'service_id.array'=>__('booking.service_id_array'),
             'service_id.exists'=>__('booking.service_id_exists'),
 

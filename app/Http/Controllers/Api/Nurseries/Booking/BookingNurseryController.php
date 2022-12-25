@@ -59,6 +59,7 @@ class BookingNurseryController extends Controller
                 $msg='عذراَ لايوجد حجوزات تم الموافقة عليها لعرضها حالياَ';
                 return $this->returnEmpty($msg);
             }else{
+              //  $accept=__("booking.accept");
                 $msg='تم إرجاع البيانات بنجاح';
                 return $this->returnData($requestProcess,$msg);
             }
