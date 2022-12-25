@@ -56,6 +56,8 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         if (!$BookingServices) {
             return null;
         }else{
+            //   return  $BookingServices;
+
             $Services=Service::whereIn('id',$service_id)->with('attachmentable')->get();
 
             $BookingServices['services']= BookingActivityTodayResource::collection($Services);
