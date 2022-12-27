@@ -101,7 +101,7 @@ class ActivityNurseryController extends Controller
     public function addImage(Request $request){
         try {
             $requestProcess = BookingService::where('service_id',$request->service_id)
-                ->where('booking_id',$request->booking_id)
+                ->whereIn('booking_id',$request->booking_id)
                 ->first();
             $data = [
                 'service_id' => $request->service_id,
@@ -147,7 +147,7 @@ class ActivityNurseryController extends Controller
 
             $requestProcess=   DB::table('booking_services')
                 ->where('service_id', $request->service_id)
-                ->where('booking_id', $request->booking_id)
+                ->whereIn('booking_id', $request->booking_id)
                 ->update($updateData);
 
             if ($requestProcess){
