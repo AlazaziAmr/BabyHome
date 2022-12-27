@@ -10,6 +10,7 @@ use App\Models\Api\Master\BookingServices\BookingLog;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\BookingServices\ConfirmedBooking;
 use App\Models\Api\Master\Child;
+use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
 use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
@@ -51,7 +52,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)
-            ->where('booking_date',$date)
+/*            ->where('booking_date',$date)*/
             ->where('status_id', 1)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
@@ -121,7 +122,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
 
 
         if ($nurseryBooking->isEmpty()) {
-            return "عذراً لايوجد أي حجوزات لعرضها.";
+            return null;
         }else{
             return $nurseryBooking;
         }
@@ -162,6 +163,13 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             ->update([
                 'status' => $status,
             ]);
+/*        $master_id=Booking::where('id',$request->booking_id)->first();
+        $master=Master::where('id',$master_id->master_id)->first();
+
+        $fcm = new \App\Functions\FcmNotification();
+        $phone = str_replace("+9660","966",$master->phone);
+        $phone = str_replace("+966","966",$phone);
+        $fcm->send_notification("حالة الحجز",'عذراً تم رفض الحجز.',$phone);*/
 
     }
     public function confirmed(Request $request)
@@ -178,6 +186,15 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
          * status
          * child_id
          * */
+
+      /*  $master_id=Booking::where('id',$request->booking_id)->first();
+        $master=Master::where('id',$master_id->master_id)->first();
+        $fcm = new \App\Functions\FcmNotification();
+        $phone = str_replace("+9660","966",$master->phone);
+        $phone = str_replace("+966","966",$phone);
+        $fcm->send_notification("حالة الحجز",' تم قبول الحجز.',$phone);*/
+
+
 
         $price_per_hour=Nursery::select('price')->where('id',$request->nursery_id)->first();
         $total_services_price=BookingService::where('booking_id',$request->booking_id)
@@ -205,6 +222,10 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $request = Booking::where('id', $request->booking_id)->update([
             'status_id' => $status,
         ]);
+
+
+
+
     }
 
 

@@ -224,7 +224,11 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     }
 
                 } else {
-                    return "عذراً الحاضنة ممتلئة";
+                    return [
+                       'msg'=> "عذراً الحاضنة ممتلئة",
+                        'data'=>null,
+                        'status'=>false,
+                    ];
                 }
             }
 
@@ -325,6 +329,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $to_hour=$request->to_hour != null ? $request->to_hour : "23:59";
         $day = $request->day != null ? $request->day : Day::pluck('id')->toArray();
 
+        /* $from_hour = gmdate('H:i', strtotime($request->start_time));
+      $to_hour = gmdate('H:i', strtotime($request->end_time));
+      $to = Carbon::createFromFormat('H:m',$to_hour );
+      $from = Carbon::createFromFormat('H:m',$from_hour );*/
+        /*  $today_check_in = Carbon::parse($request->start_time);
+          $check_out = Carbon::parse($request->end_time);
+          $duration = $today_check_in->diff($check_out)->format('%H:%I');*/
+
         $from_hour = gmdate('H:i', strtotime($from_hour));
 
         $to_hour = gmdate('H:i', strtotime($to_hour));
@@ -396,8 +408,10 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'children_id' => 'exists:children,id',
             'city_id' => 'exists:cities,id',
             'day' => 'exists:days,id',
-          //  'from_hour' => 'required|after_or_equal:'.$time,
-            'to_hour' => 'required|after_or_equal:from_hour',
+            'from_hour' => 'required',
+           // 'to_hour' => 'required|before_or_equal:from_hour',
+            'to_hour' => 'required|after:from_hour',
+
 
         ]);
 
