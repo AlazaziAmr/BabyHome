@@ -20,6 +20,9 @@ class BookingActivityTodayResource extends JsonResource
             $details[$k]['service_id'] = $kids->service_id;
             $details[$k]['booking_id'] = $kids->booking_id;
             $details[$k]['child_id'] = $kids->child_id;
+            $details[$k]['status'] = $kids->status;
+            $details[$k]['notes'] = $kids->notes;
+            $details[$k]['complete'] = $kids->complete;
             foreach($kids->childrens()->get() as $kid) {
                 $children[$k]['id'] = $kid->id;
                 $children[$k]['name'] = $kid->name;
