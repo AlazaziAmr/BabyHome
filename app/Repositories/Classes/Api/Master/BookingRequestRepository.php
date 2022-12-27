@@ -236,8 +236,9 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 }
             }
 
+            $msg='تم حفظ البيانات بنجاح';
+            return $this->returnData($last,$msg);
 
-            return response()->json(array('success' => true), 200);
         }
 
     }

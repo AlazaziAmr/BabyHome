@@ -54,7 +54,7 @@ class BookingController extends Controller
         dd( $fcm);*/
 
         try {
-            return JsonResponse::successfulResponse('msg_created_succssfully', $this->joinRequestRepository->createRequest($request));
+            return  $this->joinRequestRepository->createRequest($request);
         } catch (\Exception $e) {
             return JsonResponse::errorResponse($e->getMessage());
         }
