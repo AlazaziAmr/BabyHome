@@ -29,12 +29,15 @@ use App\Models\Api\Nurseries\NurseryUtility;
 use App\Models\User;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Master\IBookingRequestRepository;
+use App\Traits\ApiTraits;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
 class BookingRequestRepository extends BaseRepository implements IBookingRequestRepository
 {
+    use ApiTraits;
+
     public function model()
     {
         return JoinRequest::class;
@@ -219,16 +222,17 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                                 $this->services($request['services'], $request);
                             }*/
                     }else{
-                        return "عذراَ لايتوفر العدد المطلوب من المقاعد .";
+
+                        $msg='عذراَ لايتوفر العدد المطلوب من المقاعد .َ';
+                        return $this->returnEmpty($msg);
+
 
                     }
 
                 } else {
-                    return [
-                       'msg'=> "عذراً الحاضنة ممتلئة",
-                        'data'=>null,
-                        'status'=>false,
-                    ];
+                    $msg='عذراً الحاضنة ممتلئة .';
+                    return $this->returnEmpty($msg);
+
                 }
             }
 

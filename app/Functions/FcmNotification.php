@@ -25,7 +25,8 @@ class FcmNotification
     }
     public function send_notification($title, $message, $topic)
     {
-        define('API_ACCESS_KEY', $this->server_key);
+      //  define('API_ACCESS_KEY', $this->server_key);
+        if (!defined('API_ACCESS_KEY')) define('API_ACCESS_KEY', $this->server_key);
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
         $topic = str_replace('+9660','966',$topic);
