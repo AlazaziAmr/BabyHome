@@ -89,7 +89,8 @@ class UserAuthController extends Controller
                 $user->update(['activation_code' => $OTP]);
                 if (!$user['is_verified']) {
 //                if (!$request->has('activation_code')) {
-                    sendOTP($OTP, $request['phone'],'');
+                    sendOTP(1234, $request['phone'],'');
+//                    sendOTP($OTP, $request['phone'],'');
 //                    return JsonResponse::errorResponse('حساب غير محقق.');
                     if (Hash::check($request['password'], $user['password'])) {
                         return $this->userWithToken($user);
@@ -99,7 +100,8 @@ class UserAuthController extends Controller
                 }
 //                if (Hash::check($request['password'], $user['password']) && $user['activation_code'] == $request['activation_code']) {
                 if (Hash::check($request['password'], $user['password'])) {
-                    sendOTP($OTP, $request['phone'],'');
+                    sendOTP(1234, $request['phone'],'');
+//                    sendOTP($OTP, $request['phone'],'');
 //                    $user->update(['is_verified' => 1]);
                     return $this->VerfiedUserWithToken($user);
                 } else {

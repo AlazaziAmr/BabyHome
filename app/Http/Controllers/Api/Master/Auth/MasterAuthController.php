@@ -77,7 +77,8 @@ class MasterAuthController extends Controller
                 $master->update(['activation_code' => $OTP]);
 //                if (!$request->has('activation_code')) {
                 if (!$master['is_verified']) {
-                    sendOTP($OTP, $request['phone'], '');
+                    sendOTP(1234, $request['phone'], '');
+//                    sendOTP($OTP, $request['phone'], '');
                     if (Hash::check($request['password'], $master['password'])) {
                         return $this->masterWithToken($master);
                     } else {
@@ -86,7 +87,8 @@ class MasterAuthController extends Controller
                 }
 //                if (Hash::check($request['password'], $master['password']) && $master['activation_code'] == $request['activation_code']) {
                 if (Hash::check($request['password'], $master['password'])) {
-                    sendOTP($OTP, $request['phone'], '');
+                    sendOTP(1234, $request['phone'], '');
+//                    sendOTP($OTP, $request['phone'], '');
 //                    $master->update(['is_verified' => 1]);
                     return $this->VerfiedMasterWithToken($master);
                 } else {
