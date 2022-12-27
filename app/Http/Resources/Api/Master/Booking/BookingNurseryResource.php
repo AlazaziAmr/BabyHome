@@ -15,11 +15,14 @@ class BookingNurseryResource extends JsonResource
     public function toArray($request)
     {
         $images = array();
-        if($this->children->attachmentable()) {
-                foreach ($this->children->attachmentable()->get() as $index=>$image) {
-                    $images[$index]['id'] =  $image->id;
-                    $images[$index]['image_path'] =  asset('storage/children/' . $image->path);
-                }
+        $child = array();
+        if($this->children()) {
+                foreach ($this->children()->get() as $kid) {
+                    $child['child_id']=$kid->id;
+                    $child['child_name']=$kid->name;
+                    $child['date_of_birth']=$kid->date_of_birth;
+                    $images['image'] = env('APP_URL').'/storage/children/'.$kid->attachmentable()->first()->path;
+  }
             }
         $data = [
             'booking' => [
@@ -27,15 +30,13 @@ class BookingNurseryResource extends JsonResource
                 'status_id' => $this->status_id,
                 'BookingStatus' => $this->BookingStatus->name,
                 'total_hours' => $this->total_hours,
-                'child_id' => $this->children->id,
-                'child_name' => $this->children->name,
-                'date_of_birth' => $this->children->date_of_birth,
                 'booking_id' => $this->id,
                 'nursery_id' => $this->nursery_id,
                 'master_id' => $this->master_id,
                 'master_uid' => $this->masters->uid,
                 'master_first_name' => $this->masters->master_first_name,
                 'booking_date' => $this->booking_date,
+                'child' => $child,
                 'image' => $images,
                 /*                'child_id' => $this->booking->children->id,*/
              /*   'confirmDates' => $this->booking_date,
