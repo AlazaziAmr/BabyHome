@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\Nurseries\Activities\ActivityNurseryController;
 use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
 use App\Http\Controllers\Api\Nurseries\LicenseController;
+use App\Http\Controllers\Api\Nurseries\LocationController;
 use App\Http\Controllers\Api\Nurseries\NurseryController;
 use App\Http\Controllers\Api\Nurseries\Profile\NurseryAvailabilitiesController;
 use App\Http\Controllers\Api\Payment\PaymentController;
@@ -402,6 +403,10 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
     Route::post('activities-master/activities-child', [ActivityMasterController::class,'index']);
     Route::post('activities-master/activity-details', [ActivityMasterController::class,'activityCompleteDetails']);
     Route::get('all-activity-master',[ActivityMasterController::class,'allActivity']);
+
+    #####################change location nursery ###################################
+    Route::apiResource('location-change', LocationController::class);
+
 
 
 });
