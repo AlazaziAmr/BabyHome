@@ -52,7 +52,7 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
 
         $nurseryBooking=Booking::whereIn("nursery_id",$nursery_id)
-/*            ->where('booking_date',$date)*/
+            ->where('booking_date',$date)
             ->where('status_id', 1)->with([
             'masters:id,uid,first_name',
             'children:id,name,date_of_birth',
