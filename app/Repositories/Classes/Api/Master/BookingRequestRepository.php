@@ -328,10 +328,16 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
     public function nurseryAvailability($request)
     {
+        if ($request->to_hour =="00:00" ||$request->to_hour =="00:30"){
+            $to_hour="23:59";
+        }else{
+            $to_hour=$request->to_hour;
+        }
+
 
 
         $from_hour=$request->from_hour != null ? $request->from_hour :"00:00";
-        $to_hour=$request->to_hour != null ? $request->to_hour : "23:59";
+        $to_hour=$to_hour != null ? $to_hour : "23:59";
         $day = $request->day != null ? $request->day : Day::pluck('id')->toArray();
 
         /* $from_hour = gmdate('H:i', strtotime($request->start_time));
@@ -408,16 +414,15 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     public function filterMaster($request)
     {
 
+
         $time=now()->format('H:i');
         $validation= $request->validate([
             'children_id' => 'exists:children,id',
             'city_id' => 'exists:cities,id',
             'day' => 'exists:days,id',
-            'from_hour' => 'required',
+          //  'from_hour' => 'required',
            // 'to_hour' => 'required|before_or_equal:from_hour',
-            'to_hour' => 'required|after:from_hour',
-
-
+           // 'to_hour' => 'required|after:from_hour',
         ]);
 
         $check = $this->check($request);
