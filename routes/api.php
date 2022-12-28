@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\Master\Booking\BookingController;
 use App\Http\Controllers\Api\Master\Children\ChildController;
 use App\Http\Controllers\Api\Master\Children\ChildPhoneController;
 use App\Http\Controllers\Api\Master\JoinRequest\MasterJoinRequestController;
+use App\Http\Controllers\Api\Master\Payment\MasterPaymentController;
 use App\Http\Controllers\Api\Nurseries\Activities\ActivityNurseryController;
 use App\Http\Controllers\Api\Nurseries\Booking\BookingNurseryController;
 use App\Http\Controllers\Api\Nurseries\JoinRequest\JoinRequestController;
@@ -347,8 +348,10 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     Route::get('/nursery/{nursery}/packages-type/{type}', [NurseryController::class, 'getPackages']);
     Route::get('/nursery/{nursery}/activities', [NurseryController::class, 'getActivities']);
 
-
     Route::post('/join-request', [MasterJoinRequestController::class, 'store']);
+
+    // Payments
+    Route::post('/new-payment', [MasterPaymentController::class,'newPayment']);
 });
 
 

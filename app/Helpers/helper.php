@@ -307,3 +307,100 @@ if (!function_exists('uidn')) {
         }
 
 }
+
+// For Visa and Master
+if (!function_exists('paymentViMs')) {
+
+    function paymentViMs($request) {
+        $url = "https://eu-test.oppwa.com/payments";
+        $data = "entityId=8ac7a4ca84c684140184c7b2b95e01c3" .
+            "&testMode=EXTERNAL".
+            "&merchantTransactionId=".$request['master_id'].
+            "&customer.email=".$request['email'].
+            "&billing.street1=".$request['street1'].
+            "&billing.city=".$request['city'].
+            "&billing.state=".$request['state'].
+            "&billing.country=".$request['country'].
+            "&billing.postcode=".$request['postcode'].
+            "&customer.givenName=".$request['givenName'].
+            "&customer.surname=".$request['surname'].
+            "&amount=".$request['amount'] .
+            "&currency=SAR" .
+            "&paymentBrand=".$request['paymentBrand'] .
+            "&paymentType=DB" .
+            "&card.number=".$request['cardNumber'] .
+            "&card.holder=".$request['cardHolder'] .
+            "&card.expiryMonth=".$request['expiryMonth'] .
+            "&card.expiryYear=".$request['expiryYear'] .
+            "&card.cvv=".$request['cvv'] .
+            "&standingInstruction.mode=INITIAL" .
+            "&standingInstruction.source=CIT" .
+            "&createRegistration=true"
+        ;
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization:Bearer OGFjN2E0Y2E4NGM2ODQxNDAxODRjN2FkNzI0YzAxYjl8ZVQydEhoTjhBag=='));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        return $responseData;
+    }
+}
+
+// For Mada and Apple Pay
+if (!function_exists('paymentMaAp')) {
+
+    function paymentMaAp($request) {
+        $url = "https://eu-test.oppwa.com/payments";
+        $data = "entityId=8ac7a4ca84c684140184c7b550b901c7" .
+            "&testMode=EXTERNAL".
+            "&merchantTransactionId=".$request['master_id'].
+            "&customer.email=".$request['email'].
+            "&billing.street1=".$request['street1'].
+            "&billing.city=".$request['city'].
+            "&billing.state=".$request['state'].
+            "&billing.country=".$request['country'].
+            "&billing.postcode=".$request['postcode'].
+            "&customer.givenName=".$request['givenName'].
+            "&customer.surname=".$request['surname'].
+            "&amount=".$request['amount'] .
+            "&currency=SAR" .
+            "&paymentBrand=".$request['paymentBrand'] .
+            "&paymentType=DB" .
+            "&card.number=".$request['cardNumber'] .
+            "&card.holder=".$request['cardHolder'] .
+            "&card.expiryMonth=".$request['expiryMonth'] .
+            "&card.expiryYear=".$request['expiryYear'] .
+            "&card.cvv=".$request['cvv'] .
+            "&standingInstruction.mode=INITIAL" .
+            "&standingInstruction.source=CIT" .
+            "&createRegistration=true"
+        ;
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization:Bearer OGFjN2E0Y2E4NGM2ODQxNDAxODRjN2FkNzI0YzAxYjl8ZVQydEhoTjhBag=='));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        return $responseData;
+    }
+
+}
