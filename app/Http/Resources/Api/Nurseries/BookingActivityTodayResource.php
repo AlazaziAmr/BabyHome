@@ -5,7 +5,11 @@ namespace App\Http\Resources\Api\Nurseries;
 use App\Http\Resources\Api\Generals\LanguageResource;
 use App\Http\Resources\Api\Generals\NameResource;
 use App\Http\Resources\Api\Generals\NationalityResource;
+use App\Models\Api\Master\BookingServices\Booking;
+use App\Models\Api\Master\BookingServices\ConfirmedBooking;
+use App\Models\Api\Nurseries\Nursery;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class BookingActivityTodayResource extends JsonResource
 {
@@ -15,7 +19,16 @@ class BookingActivityTodayResource extends JsonResource
         $children = array();
         $images = array();
         $details = array();
-        foreach($this->nurseryTodayBookingService as $k => $kids){
+        $nursery = Nursery::where('user_id',user()->id)->first();
+        $dateToday= now()->format('Y:m:d');
+        $booking= Booking::where('status_id',2)->where('nursery_id',$nursery->id)
+            ->where('booking_date',$dateToday)
+            ->pluck('id')->toArray();
+        $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->where('nursery_id',$nursery->id)
+            ->where('status',2)
+            ->pluck('booking_id')->toArray();
+
+        foreach($this->booking_service()->whereIn('booking_id',$ConfirmedBooking)->get() as $k => $kids){
             $details[$k]['id'] = $kids->id;
             $details[$k]['service_id'] = $kids->service_id;
             $details[$k]['booking_id'] = $kids->booking_id;
@@ -26,12 +39,7 @@ class BookingActivityTodayResource extends JsonResource
             foreach($kids->childrens()->get() as $kid) {
                 $children[$k]['id'] = $kid->id;
                 $children[$k]['name'] = $kid->name;
-//                foreach( as $k => $childImages) {
-//                    $images[$k]['id'] =  $childImages->id;
-//                    $images[$k]['image_path'] =  asset('storage/children/' . $childImages->path);
-//                }
-                $children[$k]['image'] = env('APP_URL').'/storage/children/'.$kid->attachmentable()->first()->path;
-//                $children[$k]['id'] = $kid->id;
+                $children[$k]['image'] = config('app.url').'/storage/children/'.$kid->attachmentable()->first()->path;
             }
         }
 
@@ -51,7 +59,6 @@ class BookingActivityTodayResource extends JsonResource
        /* $data['child']=[
             $this->children->service_id->id
         ];*/
-
 
         return $data;
     }

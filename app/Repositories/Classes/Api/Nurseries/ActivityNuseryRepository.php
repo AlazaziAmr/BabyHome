@@ -38,35 +38,33 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     public function showActivityToday()
     {
         $user_id = user()->id;
-        $nursery_id= Nursery::where('user_id',$user_id)->pluck('id');
+        $nursery_id= Nursery::where('user_id',$user_id)->pluck('id')->toArray();
         $dateToday= now()->format('Y:m:d');
       //  $TimeNow= now()->format('Y:m:d');
 //        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
         $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date',$dateToday)
-            ->pluck('id');
+            ->pluck('id')->toArray;
         $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
-            ->pluck('booking_id');
+            ->pluck('booking_id')->toArray();
 
         $service_id= DB::table('booking_services')->whereIn('booking_id',$ConfirmedBooking)
             ->select('service_id')->groupByRaw('service_id')
-            ->pluck('service_id');
+            ->pluck('service_id')->toArray();
 
         $BookingServices['service_booking'] = BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
             ->whereIn('nursery_id',$nursery_id)->get();
 
-        $Services = Service::whereIn('id',$service_id)->with(['nurseryTodayBookingService','nurseryTodayBookingService.childrens','attachmentable'])->get();
+        $Services = Service::whereIn('id',$service_id)->with(['booking_service','booking_service.childrens','attachmentable'])->get();
 
         if (!$BookingServices) {
             return null;
         }else{
             //   return  $BookingServices;
 
-
 //            $BookingServices['services']= BookingActivityTodayResource::collection($Services);
 //            $BookingServices['services']= BookingActivityTodayResource::collection($BookingServices['service_booking']);
-
 
             return  BookingActivityTodayResource::collection($Services);
         }
