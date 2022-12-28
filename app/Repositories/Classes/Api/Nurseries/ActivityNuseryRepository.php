@@ -56,7 +56,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
         $BookingServices['service_booking'] = BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
             ->whereIn('nursery_id',$nursery_id)->get();
 
-        $Services = Service::whereIn('id',$service_id)->with(['booking_service','booking_service.childrens','attachmentable'])->get();
+        $Services = Service::whereIn('id',$service_id)->with(['nurseryTodayBookingService','nurseryTodayBookingService.childrens','attachmentable'])->get();
 
         if (!$BookingServices) {
             return null;

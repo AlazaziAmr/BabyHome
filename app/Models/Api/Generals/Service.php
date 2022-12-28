@@ -4,7 +4,9 @@ namespace App\Models\Api\Generals;
 
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\Child;
+use App\Models\Api\Nurseries\Nursery;
 use App\Models\BaseModel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
 
@@ -43,6 +45,11 @@ class Service extends BaseModel
 
     public function booking_service(){
         return $this->hasMany(BookingService::class,'service_id','id');
+    }
+
+    public function nurseryTodayBookingService(){
+        $nursery = Nursery::where('user_id',user()->id)->first();
+        return $this->hasMany(BookingService::class,'service_id','id')->where(['nursery_id'=>$nursery->id,'created_at'=>Carbon::today()]);
     }
 
 //    public function children(){

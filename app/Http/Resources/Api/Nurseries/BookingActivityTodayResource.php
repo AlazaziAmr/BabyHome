@@ -15,7 +15,7 @@ class BookingActivityTodayResource extends JsonResource
         $children = array();
         $images = array();
         $details = array();
-        foreach($this->booking_service as $k => $kids){
+        foreach($this->nurseryTodayBookingService as $k => $kids){
             $details[$k]['id'] = $kids->id;
             $details[$k]['service_id'] = $kids->service_id;
             $details[$k]['booking_id'] = $kids->booking_id;
