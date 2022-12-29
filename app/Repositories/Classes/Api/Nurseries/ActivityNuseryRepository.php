@@ -44,7 +44,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
 //        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
         $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date',$dateToday)
-            ->pluck('id')->toArray;
+            ->pluck('id')->toArray();
         $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
             ->pluck('booking_id')->toArray();
