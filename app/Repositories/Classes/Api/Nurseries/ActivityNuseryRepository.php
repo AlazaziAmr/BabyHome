@@ -4,6 +4,7 @@ namespace App\Repositories\Classes\Api\Nurseries;
 
 use App\Http\Resources\Api\Nurseries\BookingActivityResource;
 use App\Http\Resources\Api\Nurseries\BookingActivityTodayResource;
+use App\Http\Resources\Api\Nurseries\BookingServiceResource;
 use App\Models\Api\Generals\Activity;
 use App\Models\Api\Generals\Service;
 use App\Models\Api\Master\Booking\RejectResReasons;
@@ -43,7 +44,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
       //  $TimeNow= now()->format('Y:m:d');
 //        $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)->where('booking_date',$dateToday)
         $booking= Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
-            ->where('booking_date',$dateToday)
+/*            ->where('booking_date',$dateToday)*/
             ->pluck('id')->toArray();
         $ConfirmedBooking= ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
             ->where('status',2)
@@ -83,19 +84,30 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             return $nurseryBooking;
         }
     }
-    public function showDetailsActivityComplate()
+    public function showDetailsActivityComplate(Request $request)
     {
-        $user_id = auth('api')->user()->id;
-        $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-        $nurseryBooking=BookingService::whereIn("nursery_id",$nursery_id)->with([
-            'services'
-        ])->get();
 
-        if ($nurseryBooking->isEmpty()) {
+
+        $BookingServices = BookingService::
+            whereIn('id',$request->id)->whereIn('child_id',$request->child_id)
+            ->whereIn('booking_id',$request->booking_id)->with([
+                'childrens',
+                'attachmentable',
+                'childrens.attachmentable',
+                'services',
+                'services.attachmentable',
+                'attachmentable',
+            ])->get();
+
+        if (!$BookingServices) {
             return null;
         }else{
-            return $nurseryBooking;
+
+            return  BookingServiceResource::collection($BookingServices);
         }
+
+
+
     }
 
 

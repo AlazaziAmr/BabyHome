@@ -29,37 +29,21 @@ class ActivityNurseryController extends Controller
     {
         return BookingService::class;
     }
-    public function activityCompleteDetails(Request $request){
+    public function activityCompleteDetails(Request $request)
+    {
         try {
-            $unattended=   BookingService::where('service_id',$request->booking_service_id)
-                ->where('booking_id',$request->booking_id)
-                ->where('nursery_id',$request->nursery_id)
-                ->where('status',1)->with([
-                    'children',
-                    'services',
-                ])->where('complete',1)->get();
+        $requestProcess=$this->ActivityNursery->showDetailsActivityComplate($request);
+        if ($requestProcess==null){
+            $msg='عذراَ لايوجد أنشطة لعرضها حالياَ';
+            return $this->returnEmpty($msg);
+        }else{
+            $msg='تم إرجاع البيانات بنجاح';
 
-
-            $attended=   BookingService::where('service_id',$request->booking_service_id)
-                ->where('booking_id',$request->booking_id)
-                ->where('nursery_id',$request->nursery_id)->where('status',2)->with([
-                    'children',
-                    'services',
-                    'attachmentable'
-                ])->where('complete',1)->get();
-
-
-            if ($unattended==null &&$attended==null) {
-                return null;
-            }else{
-                $data= BookingServiceResource::collection($attended);
-                return $data;
-            }
-
-
-        }catch (\Exception $e) {
-            return JsonResponse::errorResponse($e->getMessage());
+            return $this->returnData($requestProcess,$msg);
         }
+    }catch (\Exception $e) {
+        return JsonResponse::errorResponse($e->getMessage());
+    }
 
     }
     public function active(Request $request){
@@ -101,7 +85,7 @@ class ActivityNurseryController extends Controller
     public function addImage(Request $request){
         try {
             $requestProcess = BookingService::where('service_id',$request->service_id)
-                ->whereIn('booking_id',$request->booking_id)
+                ->where('booking_id',$request->booking_id)
                 ->first();
             $data = [
                 'service_id' => $request->service_id,
