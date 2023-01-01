@@ -19,8 +19,9 @@ class BookingActivityTodayResource extends JsonResource
         $children = array();
         $images = array();
         $details = array();
+        $data = array();
         $nursery = Nursery::where('user_id',user()->id)->first();
-        $dateToday= now()->format('Y:m:d');
+        $dateToday= now()->format('Y-m-d');
         $booking= Booking::where('status_id',2)->where('nursery_id',$nursery->id)
             ->where('booking_date',$dateToday)
             ->pluck('id')->toArray();
@@ -29,21 +30,21 @@ class BookingActivityTodayResource extends JsonResource
             ->pluck('booking_id')->toArray();
 
         $booking_service = $this->booking_service()->whereIn('booking_id',$ConfirmedBooking)->get();
-        foreach($booking_service as $k => $kids){
-            $details[$k]['id'] = $kids->id;
-            $details[$k]['service_id'] = $kids->service_id;
-            $details[$k]['booking_id'] = $kids->booking_id;
-            $details[$k]['child_id'] = $kids->child_id;
-            $details[$k]['status'] = $kids->status;
-            $details[$k]['notes'] = $kids->notes;
-            $details[$k]['complete'] = $kids->complete;
-            foreach($kids->childrens()->get() as $kid) {
-                $children[$k]['id'] = $kid->id;
-                $children[$k]['name'] = $kid->name;
-                $children[$k]['image'] = url('/').'/storage/children/'.$kid->attachmentable()->first()->path;
+            foreach ($booking_service as $k => $kids) {
+                $details[$k]['id'] = $kids->id;
+                $details[$k]['service_id'] = $kids->service_id;
+                $details[$k]['booking_id'] = $kids->booking_id;
+                $details[$k]['child_id'] = $kids->child_id;
+                $details[$k]['status'] = $kids->status;
+                $details[$k]['notes'] = $kids->notes;
+                $details[$k]['complete'] = $kids->complete;
+                foreach ($kids->childrens()->get() as $kid) {
+                    $children[$k]['id'] = $kid->id;
+                    $children[$k]['name'] = $kid->name;
+                    $children[$k]['image'] = url('/') . '/storage/children/' . $kid->attachmentable()->first()->path;
+                }
             }
-        }
-        if ($booking_service->count() > 0) {
+
             $data = [
                 'activity' => [
                     'id' => $this->id,
@@ -56,8 +57,6 @@ class BookingActivityTodayResource extends JsonResource
                     'child' => $children,
                 ],
             ];
-        }
-
        /* $data['child']=[
             $this->children->service_id->id
         ];*/
