@@ -200,7 +200,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $this->reservedTimes($request);
                         /*
                                  $this->bookingStatus($request,$last);*/
-                        $this->bookingServices($request, $last, $child_id);
 
                         $user_id=Nursery::where("id",$request->nursery_id)->first();
                         $user_id=$user_id->user_id;
@@ -235,6 +234,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
                 }
             }
+            $this->bookingServices($request, $last, $child_id);
+
 
             $msg='تم حفظ البيانات بنجاح';
             return $this->returnData($last,$msg);
