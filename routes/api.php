@@ -399,7 +399,7 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
    // Route::post('activitiesNursery/attended-activity-child', [ActivityNurseryController::class,'attendedActivityChild']);
     Route::post('attended', [ActivityNurseryController::class,'attended']);
     Route::post('activitiesNursery/update', [ActivityNurseryController::class,'attendedChild']);
-    Route::get('all-activity',[ActivityNurseryController::class,'allActivity']);
+    Route::get('complete-activity',[ActivityNurseryController::class,'allCompleteActivity']);
 
 
     ######################activity Master ############################

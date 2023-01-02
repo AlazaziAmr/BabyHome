@@ -11,7 +11,7 @@ interface IActivityNurseryRepository extends IBaseRepository
     public function showActivityToday();
 
     public function addActivity($request);
-    public function showAllActivityBooking();
+    public function showCompleteActivityBooking();
     public function showDetailsActivityComplate(Request $request);
 
 }

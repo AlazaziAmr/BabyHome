@@ -55,7 +55,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             ->pluck('service_id')->toArray();
 
         $BookingServices['service_booking'] = BookingService::select('id','service_id','booking_id')->whereIn('booking_id',$ConfirmedBooking)
-            ->whereIn('nursery_id',$nursery_id)->get();
+            ->whereIn('nursery_id',$nursery_id)->where('complete',0)->get();
 
         $Services = Service::whereIn('id',$service_id)->with(['booking_service','booking_service.childrens','attachmentable'])->get();
 
@@ -70,24 +70,28 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
             return  BookingActivityTodayResource::collection($Services);
         }
     }
-    public function showAllActivityBooking()
+    public function showCompleteActivityBooking()
     {
         $user_id = auth('api')->user()->id;
         $nursery_id=Nursery::where('user_id',$user_id)->pluck('id');
-        $nurseryBooking=BookingService::whereIn("nursery_id",$nursery_id)->with([
-            'services'
-        ])->get();
+        $BookingServices=BookingService::whereIn("nursery_id",$nursery_id)->where('complete',1)->with([
+            'childrens',
+            'attachmentable',
+            'childrens.attachmentable',
+            'services',
+            'services.attachmentable',
+            'attachmentable',
+            ])->get();
 
-        if ($nurseryBooking->isEmpty()) {
+        if (!$BookingServices) {
             return null;
         }else{
-            return $nurseryBooking;
+
+            return  BookingServiceResource::collection($BookingServices);
         }
     }
     public function showDetailsActivityComplate(Request $request)
     {
-
-
         $BookingServices = BookingService::
             whereIn('id',$request->id)->whereIn('child_id',$request->child_id)
             ->whereIn('booking_id',$request->booking_id)->with([

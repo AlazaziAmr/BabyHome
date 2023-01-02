@@ -179,11 +179,11 @@ class ActivityNurseryController extends Controller
             return JsonResponse::errorResponse($e->getMessage());
         }
     }
-    public function allActivity()
+    public function allCompleteActivity()
     {
 
         try {
-            $requestProcess=$this->ActivityNursery->showAllActivityBooking();
+            $requestProcess=$this->ActivityNursery->showCompleteActivityBooking();
             if ($requestProcess==null){
                 $msg='عذراَ لايوجد أنشطة لعرضها حالياَ';
                 return $this->returnEmpty($msg);
