@@ -9,6 +9,7 @@ use App\Models\Api\Master\BookingServices\Booking;
 use App\Models\Api\Master\BookingServices\BookingLog;
 use App\Models\Api\Master\BookingServices\BookingService;
 use App\Models\Api\Master\BookingServices\ConfirmedBooking;
+use App\Models\Api\Master\BookingServices\ReservedTime;
 use App\Models\Api\Master\Child;
 use App\Models\Api\Master\Master;
 use App\Models\Api\Nurseries\JoinRequest\JoinRequest;
@@ -95,6 +96,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             'serviceBooking.service',
         ])->get();
 
+
+
         if ($nurseryBooking->isEmpty()) {
             return null;
         }else{
@@ -163,13 +166,11 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             ->update([
                 'status' => $status,
             ]);
-/*        $master_id=Booking::where('id',$request->booking_id)->first();
-        $master=Master::where('id',$master_id->master_id)->first();
+        ReservedTime::where('booking_id', $request->booking_id)->update(
+            ['num_of_unconfirmed_res' , 1]
+        );
 
-        $fcm = new \App\Functions\FcmNotification();
-        $phone = str_replace("+9660","966",$master->phone);
-        $phone = str_replace("+966","966",$phone);
-        $fcm->send_notification("حالة الحجز",'عذراً تم رفض الحجز.',$phone);*/
+
 
     }
     public function confirmed(Request $request)

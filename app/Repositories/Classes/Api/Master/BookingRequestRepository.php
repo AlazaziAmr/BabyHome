@@ -112,7 +112,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ]);
     }
 
-    protected function reservedTimes($request)
+    protected function reservedTimes($request,$last)
     {
 
         if (!empty($request['date'])) {
@@ -125,6 +125,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     'date' => $data['date'],
                     'start_hour' => $request->start_time,
                     'end_hour' => $request->end_time,
+                    'booking_id' => $last->id,
                     'num_of_confirmed_res' => "0",
                     'num_of_unconfirmed_res' => 0,
 
@@ -146,7 +147,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 $bookingCount = ReservedTime::where('nursery_id',$request->nursery_id)->with('Nurseries')->with('Nurseries')
                     ->where('start_hour', '<=', $startTime)
                     ->where('end_hour', '>=', $endTime)
-                    ->whereNotIn('num_of_confirmed_res', [2])
+                    ->whereNotIn('num_of_confirmed_res', [2])->where('num_of_unconfirmed_res',0)
                     ->whereIn('date', $data)->get();
             }
         }
@@ -198,7 +199,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                             'created_by' => $request->created_by,
                         ]);
                         $this->bookingLog($last);
-                        $this->reservedTimes($request);
+                        $this->reservedTimes($request,$last);
                         /*
                                  $this->bookingStatus($request,$last);*/
 

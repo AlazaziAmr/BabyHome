@@ -336,6 +336,7 @@ Route::group(['as' => 'api.', 'middleware' => ['auth:sanctum', 'ability:master',
     Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
     Route::apiResource('child-phone', ChildPhoneController::class)->except(['show','edit','create']);
 
+
     Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
     Route::apiResource('child-sickness', ChildSicknessController::class)->except(['show']);
     Route::get('child-allergies/{id}', [ChildAllergyController::class,'index']);
@@ -417,6 +418,9 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'auth:sa
 Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale']], function () {
     Route::get('/profile', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'profile']);
     Route::get('/nursery-profile/{id}', [\App\Http\Controllers\Api\Nurseries\Profile\ProfileController::class, 'nursery_profile']);
+    Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
+    Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
+    Route::get('child-allergies/{id}', [ChildAllergyController::class,'index']);
 });
 Route::POST('/success-url', [PaymentController::class, 'successPayment']);
 Route::get('/error-url', [PaymentController::class, 'error']);
