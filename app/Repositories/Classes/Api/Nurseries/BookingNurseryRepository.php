@@ -150,6 +150,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
          * reason
          * nursery_id
          * */
+
+
         $RejectResReasons = RejectResReasons::create([
             'booking_id' => $request->booking_id,
             'reason' => $request->reason,
@@ -166,9 +168,9 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
             ->update([
                 'status' => $status,
             ]);
-        ReservedTime::where('booking_id', $request->booking_id)->update(
-            ['num_of_unconfirmed_res' , 1]
-        );
+        ReservedTime::where('booking_id', $request->booking_id)
+            ->update(
+            ['num_of_unconfirmed_res' => '1']);
 
 
 
