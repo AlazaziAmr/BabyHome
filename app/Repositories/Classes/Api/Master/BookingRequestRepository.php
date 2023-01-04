@@ -83,6 +83,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             foreach ($request['services'] as $k => $service) {
                 foreach($service['child_id']as $k => $child_id){
 
+
                 $babySitter = BookingService::create([
                     'nursery_id' => $last->nursery_id,
                     'booking_id' => $last->id,
@@ -183,7 +184,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $total = $this->prices($request);
                         $total_hours = Carbon::parse($total['totalTime']);
                         $id = $request['services'];
-                        /*        foreach ($request['child_id'] as $child) {*/
+                                foreach ($request['child_id'] as $child) {
                         $last = Booking::create([
                             'nursery_id' => $request->nursery_id,
                             'master_id' => $request->master_id,
@@ -209,7 +210,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $phone = str_replace("+966","966",$phone);
                         $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
 
-                        /*    }
+                         }   /*
 
 
                            if (!empty($request['payment'])) {
@@ -233,12 +234,11 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     return $this->returnEmpty($msg);
 
                 }
+                $this->bookingServices($request, $last, $child_id);
+                $msg='تم حفظ البيانات بنجاح';
+                return $this->returnData($last,$msg);
+
             }
-            $this->bookingServices($request, $last, $child_id);
-
-
-            $msg='تم حفظ البيانات بنجاح';
-            return $this->returnData($last,$msg);
 
         }
 
