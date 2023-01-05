@@ -38,6 +38,7 @@ class ActivityNuseryRepository extends BaseRepository implements IActivityNurser
     }
     public function showActivityToday()
     {
+
         $user_id = user()->id;
         $nursery_id= Nursery::where('user_id',$user_id)->pluck('id')->toArray();
         $dateToday= now()->format('Y-m-d');

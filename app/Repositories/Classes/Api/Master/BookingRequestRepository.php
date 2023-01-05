@@ -76,19 +76,22 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ]);
     }
 
-    protected function bookingServices($request, $last, $child_id)
+    protected function bookingServices($request, $booking_id, $child_id)
     {
 
         if (!empty($request['services'])) {
             foreach ($request['services'] as $k => $service) {
                 foreach($service['child_id']as $k => $child_id){
+                    foreach ($booking_id as  $booking) {
+                        if ($booking->child_id==$child_id){
 
 
-                $babySitter = BookingService::create([
-                    'nursery_id' => $last->nursery_id,
-                    'booking_id' => $last->id,
+
+                        $babySitter = BookingService::create([
+                    'nursery_id' => $booking->nursery_id,
+                    'booking_id' => $booking->id,
                     'service_id' => $service['id'],
-                    'master_id' => $last->master_id,
+                    'master_id' => $booking->master_id,
                     'child_id' => $child_id,
                     'service_type_id' => $service['service_type_id'],
                     'service_price' => $service['service_price'],
@@ -97,6 +100,8 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     'status' => 1,
 
                 ]);
+                        }
+                }
                 }
             }
         }
@@ -172,7 +177,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             $booking_time = Carbon::now()->format('H:i:m');
 
 
-            foreach ($request['child_id'] as $child_id) {
 
                 $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)
                     ->where('online',1)->first();
@@ -185,8 +189,12 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $total = $this->prices($request);
                         $total_hours = Carbon::parse($total['totalTime']);
                         $id = $request['services'];
-                                foreach ($request['child_id'] as $child) {
-                        $last = Booking::create([
+                             //   foreach ($request['child_id'] as $child) {
+                        $booking_id = array();
+
+                        foreach ($request['child_id'] as $child_id) {
+
+                            $last = Booking::create([
                             'nursery_id' => $request->nursery_id,
                             'master_id' => $request->master_id,
                             'child_id' => $child_id,
@@ -198,20 +206,22 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                             'total_hours' => $request->total_hours,
                             'created_by' => $request->created_by,
                         ]);
-                        $this->bookingLog($last);
-                        $this->reservedTimes($request,$last);
-                        /*
-                                 $this->bookingStatus($request,$last);*/
+                            $booking_id[] = $last;
 
-                        $user_id=Nursery::where("id",$request->nursery_id)->first();
+                       $this->bookingLog($last);
+                        $this->reservedTimes($request,$last);
+
+                        $this->bookingStatus($request,$last);
+
+                       $user_id=Nursery::where("id",$request->nursery_id)->first();
                         $user_id=$user_id->user_id;
                         $user=User::where("id",$user_id)->first();
                         $fcm = new \App\Functions\FcmNotification();
                         $phone = str_replace("+9660","966",$user->phone);
                         $phone = str_replace("+966","966",$phone);
                         $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
-
-                         }   /*
+                        }
+                           /* }
 
 
                            if (!empty($request['payment'])) {
@@ -235,13 +245,14 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                     return $this->returnEmpty($msg);
 
                 }
-                $this->bookingServices($request, $last, $child_id);
-                $msg='تم حفظ البيانات بنجاح';
-                return $this->returnData($last,$msg);
+
 
             }
 
-        }
+
+        $this->bookingServices($request, $booking_id, $child_id);
+        $msg='تم حفظ البيانات بنجاح';
+        return $this->returnData($last,$msg);
 
     }
 

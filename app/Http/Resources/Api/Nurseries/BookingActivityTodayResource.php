@@ -29,7 +29,7 @@ class BookingActivityTodayResource extends JsonResource
             ->where('status',2)
             ->pluck('booking_id')->toArray();
 
-        $booking_service = $this->booking_service()->whereIn('booking_id',$ConfirmedBooking)->get();
+        $booking_service = $this->booking_service()->whereIn('booking_id',$ConfirmedBooking)->where('complete',0)->get();
             foreach ($booking_service as $k => $kids) {
                 $details[$k]['id'] = $kids->id;
                 $details[$k]['service_id'] = $kids->service_id;
