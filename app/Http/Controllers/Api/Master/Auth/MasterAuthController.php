@@ -61,7 +61,9 @@ class MasterAuthController extends Controller
             $existMaster = Master::where('phone',$request->phone)->first();
             if ($existMaster != null)
             {
-                Master::where('phone',$request->phone)->update(['activation_code' => OTPGenrator()]);
+                $otp = OTPGenrator();
+                Master::where('phone',$request->phone)->update(['activation_code' => $otp]);
+                sendOTP($otp, $existMaster->phone, '');
                 return $this->existMasterWithToken($existMaster);
             }
             $data = $request->validated();

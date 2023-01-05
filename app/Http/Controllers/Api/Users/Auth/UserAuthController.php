@@ -65,7 +65,9 @@ class UserAuthController extends Controller
             $existUser = User::where('phone',$request->phone)->first();
             if ($existUser != null)
             {
-                User::where('phone',$request->phone)->update(['activation_code' => OTPGenrator()]);
+                $otp = OTPGenrator();
+                User::where('phone',$request->phone)->update(['activation_code' => $otp]);
+                sendOTP($otp, $existUser->phone, '');
                 return $this->existUserWithToken($existUser);
             }
             // sendOTP('15632', '966563064444');
