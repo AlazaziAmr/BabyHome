@@ -26,10 +26,11 @@ class UserRegistrationRequest extends FormRequest
     {
         return [
             'name'         => 'required|string|max:255|min:4',
-//            'email'        => 'required|string|email|max:191',
             'password'    => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
-            'phone' => 'required|max:15|phone_number|unique:users,phone',
+            'phone' => 'required|max:15|phone_number',
+//            'email'        => 'required|string|email|max:191',
+//            'phone' => 'required|max:15|phone_number|unique:users,phone',
             // 'national_id' => 'required|max:15|string|unique:users,national_id',
         ];
     }

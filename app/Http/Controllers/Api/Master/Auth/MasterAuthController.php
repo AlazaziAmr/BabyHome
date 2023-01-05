@@ -40,6 +40,14 @@ class MasterAuthController extends Controller
         return (new MasterResource($master))->additional(array_merge(['data' => $response], JsonResponse::sentSuccssfully()));
     }
 
+    public function existMasterWithToken($master)
+    {
+        config(['auth.guards.api.provider' => 'master']);
+
+        $response = ['token' => $master->createToken('Baby Home Client', ['master'])->plainTextToken];
+        return (new MasterResource($master))->additional(array_merge(['data' => $response], JsonResponse::success('msg_otp_sent_success')));
+    }
+
     /**
      * Master registerion
      *
@@ -50,6 +58,12 @@ class MasterAuthController extends Controller
     public function register(MasterRegistrationRequest $request)
     {
         try {
+            $existMaster = Master::where('phone',$request->phone)->first();
+            if ($existMaster != null)
+            {
+                Master::where('phone',$request->phone)->update(['activation_code' => OTPGenrator()]);
+                return $this->existMasterWithToken($existMaster);
+            }
             $data = $request->validated();
             $data['activation_code'] = OTPGenrator();
             $master = $this->masterRepository->register($data);

@@ -28,6 +28,7 @@ return [
     'msg_multi_resources_cannot_deleted' => 'لا يمكن حذف بعض السجلات',
     'msgl_ogged_in_succssfully' => 'تم تسجيل الدخول',
     'msg_logged_out_succssfully' => 'تم تسجيل الخروج',
+    'msg_otp_sent_success' => 'تم إرسال كود تحقق جديد إلى رقم هاتفك.',
 
     'msg_registered_successfully' => 'تم تسجيل الحساب بنجاح',
     'msg_password_mismatch' => 'كلمة المرور غير متطابقة',

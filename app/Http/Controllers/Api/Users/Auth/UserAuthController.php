@@ -43,6 +43,14 @@ class UserAuthController extends Controller
         $response = ['token' => $user->createToken('Baby Home Client', ['user'])->plainTextToken];
         return (new UserResource($user))->additional(array_merge(['data' => $response], JsonResponse::sentSuccssfully()));
     }
+
+    public function existUserWithToken($user)
+    {
+        config(['auth.guards.api.provider' => 'user']);
+
+        $response = ['token' => $user->createToken('Baby Home Client', ['user'])->plainTextToken];
+        return (new UserResource($user))->additional(array_merge(['data' => $response], JsonResponse::success('msg_otp_sent_success')));
+    }
     /**
      * User registerion
      *
@@ -53,10 +61,12 @@ class UserAuthController extends Controller
     public function register(UserRegistrationRequest $request)
     {
         try {
-            $user = User::where('email',$request->email)->whereNotNull('email_verified_at')->get();
-            if ($user->count() > 0)
+//            $user = User::where('email',$request->email)->whereNotNull('email_verified_at')->get();
+            $existUser = User::where('phone',$request->phone)->first();
+            if ($existUser != null)
             {
-                return JsonResponse::errorResponse('الإيميل مستخدم مسبقاً.');
+                User::where('phone',$request->phone)->update(['activation_code' => OTPGenrator()]);
+                return $this->existUserWithToken($existUser);
             }
             // sendOTP('15632', '966563064444');
             $data = $request->validated();

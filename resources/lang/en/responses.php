@@ -28,6 +28,7 @@ return [
     'msg_conflict_repo_namespace' => 'you can not chage repository namespace twice !!',
     'msg_cannot_deleted' => 'You cannot delete this record',
     'msg_multi_resources_cannot_deleted' => 'You cannot delete some of the records',
+    'msg_otp_sent_success' => 'A new OTP sent to your phone.',
 
 
     'msg_logged_in_succssfully' => 'Logged In Succssfully',
