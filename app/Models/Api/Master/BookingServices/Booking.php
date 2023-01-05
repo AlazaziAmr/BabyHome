@@ -26,6 +26,7 @@ class Booking extends Model
         'booking_date',
         'start_datetime',
         'end_datetime',
+        'booking_time',
         'total_hours',
         'created_by',
     ];

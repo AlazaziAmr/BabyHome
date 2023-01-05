@@ -244,7 +244,9 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date', $dateToday)
             ->pluck('id');
-        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)->with([
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)
+            ->where('booking_date', $dateToday)
+            ->whereIn('nursery_id',$nursery_id)->with([
             "Booking.children",
             "PaymentMethod",
             "bookingServices.services",
@@ -273,7 +275,8 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
         $booking=Booking::where('status_id',2)->whereIn('nursery_id',$nursery_id)
             ->where('booking_date', $TimeNow)
             ->pluck('id');
-        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)->with([
+        $ConfirmedBooking=ConfirmedBooking::whereIn('booking_id',$booking)->whereIn('nursery_id',$nursery_id)
+            ->where('confirm_date',$dateToday)->with([
             "Booking.children","Booking.children.attachmentable"
         ])->get();
         if ($ConfirmedBooking==null) {

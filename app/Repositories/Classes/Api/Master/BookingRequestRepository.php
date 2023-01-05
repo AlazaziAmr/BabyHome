@@ -193,7 +193,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                         $booking_id = array();
 
                         foreach ($request['child_id'] as $child_id) {
-
                             $last = Booking::create([
                             'nursery_id' => $request->nursery_id,
                             'master_id' => $request->master_id,
