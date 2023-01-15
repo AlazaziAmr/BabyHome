@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('booking.aborted')->everyMinute();
+        $schedule->command('booking.aborted')->everyMinute();
     }
 
     /**
@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands/booking.php');
+        $this->load('App/Console/Commands');
+        $this->load(__DIR__.'/Commands/concept.php');
 
         require base_path('routes/console.php');
     }
