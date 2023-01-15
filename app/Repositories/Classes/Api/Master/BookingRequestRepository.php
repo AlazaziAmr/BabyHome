@@ -254,6 +254,48 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         return $this->returnData($last,$msg);
 
     }
+    public function extension($request)
+    {
+
+                    $booking_time = Carbon::now()->format('H:i:m');
+                        $total = $this->prices($request);
+                        $total_hours = Carbon::parse($total['totalTime']);
+                        $id = $request['services'];
+                             //   foreach ($request['child_id'] as $child) {
+                        $booking_id = array();
+
+                        foreach ($request['child_id'] as $child_id) {
+                            $last = Booking::create([
+                            'nursery_id' => $request->nursery_id,
+                            'master_id' => $request->master_id,
+                            'child_id' => $child_id,
+                            'status_id' => "1",
+                            'booking_date' => $request->booking_date,
+                            'booking_time' => $booking_time,
+                            'start_datetime' => $request->start_datetime,
+                            'end_datetime' => $request->end_datetime,
+                            'total_hours' => $request->total_hours,
+                            'created_by' => $request->created_by,
+                        ]);
+                            $booking_id[] = $last;
+
+                       $this->bookingLog($last);
+                        $this->reservedTimes($request,$last);
+                        $this->bookingStatus($request,$last);
+
+                       $user_id=Nursery::where("id",$request->nursery_id)->first();
+                        $user_id=$user_id->user_id;
+                        $user=User::where("id",$user_id)->first();
+                        $fcm = new \App\Functions\FcmNotification();
+                        $phone = str_replace("+9660","966",$user->phone);
+                        $phone = str_replace("+966","966",$phone);
+                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
+                        }
+      //  $this->bookingServices($request, $booking_id, $child_id);
+        $msg='تم حفظ البيانات بنجاح';
+        return $this->returnData($last,$msg);
+
+    }
 
 
     public function fetchCustomerRequest($id)
@@ -289,17 +331,17 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
             if ($request->children_id != null) {
                 $find = Child::whereIn('id', $request->children_id)->first();
-                $age_find_y = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
-                $age_find_m = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%m');
+                $age_find_y = Carbon::parse($find->date_of_birth)->diffInYears(Carbon::now());
+                $age_find_m = Carbon::parse($find->date_of_birth)->diffInMonths(Carbon::now());
             } else {
-                $age_find = 1;
+                $age_find_m = 1;
             }
         if ($age_find_y>0){
             $age_find=$age_find_y;
-            $age_type=1;
+            $age_type=2;
         }else{
             $age_find=$age_find_m;
-            $age_type=2;
+            $age_type=1;
 
 
         }
@@ -366,7 +408,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
 
         if ($request->to_hour !=null){
-
 
             $NurseryAvailability = NurseryAvailability::where('from_hour', '<=', Carbon::parse($from_hour))
                 ->where('to_hour', '>=', Carbon::parse($to_hour))

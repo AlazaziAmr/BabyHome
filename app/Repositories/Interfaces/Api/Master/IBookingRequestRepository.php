@@ -20,9 +20,7 @@ interface IBookingRequestRepository extends IBaseRepository
     public function showBooking();
     public function showBookingDetails($id);
 
-
-
-
+    public function extension(\App\Http\Requests\Api\Master\Booking\BookingRequest $request);
 
 
 }
