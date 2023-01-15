@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Api\Master\Booking\RejectResReasons;
+use App\Models\Api\Master\BookingServices\BookingService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -41,8 +43,15 @@ class booking extends Command
         $time= Carbon::now()->format("H:i:s");
         $booking= \App\Models\Api\Master\BookingServices\Booking::where('status_id','1')->get();
         foreach ($booking as $item){
+            $RejectResReasons = RejectResReasons::create([
+                'booking_id' => $item->id,
+                'reason' => "عدم الموافقة في الوقت المحدد",
+            ]);
+            BookingService::where('booking_id', $item->id)->where('child_id',$item->child_id)
+                ->update([
+                    'status' => 3,
+                ]);
             $booking_time = Carbon::parse($item->booking_time)->format("H:i:s");
-
             $time = Carbon::parse($time);
             $diff_in_minutes = $time->diffInMinutes($booking_time);
             if ($diff_in_minutes  >10){
