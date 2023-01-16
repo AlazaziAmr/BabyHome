@@ -17,12 +17,15 @@ use App\Models\Api\Nurseries\Nursery;
 use App\Models\User;
 use App\Repositories\Classes\BaseRepository;
 use App\Repositories\Interfaces\Api\Nurseries\IBookingNurseryRepository;
+use App\Traits\ApiTraits;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
 class BookingNurseryRepository extends BaseRepository implements IBookingNurseryRepository
 {
+    use ApiTraits;
+
     public function model()
     {
         return JoinRequest::class;
@@ -190,47 +193,119 @@ class BookingNurseryRepository extends BaseRepository implements IBookingNursery
          * child_id
          * */
 
-      /*  $master_id=Booking::where('id',$request->booking_id)->first();
-        $master=Master::where('id',$master_id->master_id)->first();
-        $fcm = new \App\Functions\FcmNotification();
-        $phone = str_replace("+9660","966",$master->phone);
-        $phone = str_replace("+966","966",$phone);
-        $fcm->send_notification("حالة الحجز",' تم قبول الحجز.',$phone);*/
+        /*  $master_id=Booking::where('id',$request->booking_id)->first();
+          $master=Master::where('id',$master_id->master_id)->first();
+          $fcm = new \App\Functions\FcmNotification();
+          $phone = str_replace("+9660","966",$master->phone);
+          $phone = str_replace("+966","966",$phone);
+          $fcm->send_notification("حالة الحجز",' تم قبول الحجز.',$phone);*/
 
 
+        $StartTime=$request->start_time;
+        $EndTime=$request->end_time;
 
-        $price_per_hour=Nursery::select('price')->where('id',$request->nursery_id)->first();
-        $total_services_price=BookingService::where('booking_id',$request->booking_id)
-            ->where('child_id',$request->child_id) ->where('nursery_id',$request->nursery_id)->sum('service_price');
-        $total_payment=(($price_per_hour->price)*$request->total_hours)+$total_services_price;
-        $status="2";
-        $confirm_date =now()->format('Y-m-d');
-        $RejectResReasons = ConfirmedBooking::create([
-            'nursery_id' => $request->nursery_id,
-            'booking_id' => $request->booking_id,
-            'payment_method_id' => $request->payment_method_id,
-            'confirm_date' => $confirm_date,
-            'total_payment' => $total_payment,
-            'price_per_hour' => $price_per_hour->price,
-            'total_services_price' => $total_services_price,
-            'created_by' => $request->created_by,
-            'status' => "2",
-        ]);
-        BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)->update([
-            'status' => $status,
-        ]);
+        $Data = $this->SplitTime($StartTime, $EndTime, $Duration="60",$request);
 
-        $user_type=2;
-        $this->bookingLog($request,$status,$user_type);
-        $request = Booking::where('id', $request->booking_id)->update([
-            'status_id' => $status,
-        ]);
+        if ($Data['status'] == false) {
+            $msg='عذراً لايمكنك إستقبال طلبات في لأوقات التالبة !';
+            return $this->splitTimeReturn($Data['Data'],$msg);
+        }else{
 
+            $price_per_hour=Nursery::select('price')->where('id',$request->nursery_id)->first();
+            $total_services_price=BookingService::where('booking_id',$request->booking_id)
+                ->where('child_id',$request->child_id) ->where('nursery_id',$request->nursery_id)->sum('service_price');
+            $total_payment=(($price_per_hour->price)*$request->total_hours)+$total_services_price;
+            $status="2";
+            $confirm_date =now()->format('Y-m-d');
+            $RejectResReasons = ConfirmedBooking::create([
+                'nursery_id' => $request->nursery_id,
+                'booking_id' => $request->booking_id,
+                'payment_method_id' => $request->payment_method_id,
+                'confirm_date' => $confirm_date,
+                'total_payment' => $total_payment,
+                'price_per_hour' => $price_per_hour->price,
+                'total_services_price' => $total_services_price,
+                'created_by' => $request->created_by,
+                'status' => "2",
+            ]);
+            BookingService::where('booking_id', $request->booking_id)->where('child_id',$request->child_id)->update([
+                'status' => $status,
+            ]);
 
+            $user_type=2;
+            $this->bookingLog($request,$status,$user_type);
+            $request = Booking::where('id', $request->booking_id)->update([
+                'status_id' => $status,
+            ]);
 
+            return true;
 
+        }
     }
 
+    function SplitTime($StartTime, $EndTime, $Duration="60",$request){
+        $ReturnArray = array ();
+        $ReturnArrayTable = array ();// Define output
+        $StartTime    = strtotime ($StartTime); //Get Timestamp
+        $EndTime      = strtotime ($EndTime); //Get Timestamp
+
+        $AddMins  = $Duration * 60;
+
+        while ($StartTime <= $EndTime) //Run loop
+        {
+            $ReturnArray[] = date ("G:i", $StartTime);
+            $StartTime += $AddMins; //Endtime check
+        }
+        $ReturnTable=ReservedTime::where('nursery_id',$request->nursery_id)
+            ->where('date',$request->booking_date)
+            ->whereIn('start_hour',$ReturnArray)->where('num_of_confirmed_res',3)->get();
+        if ($ReturnTable->count()) {
+            return ['status'=>false,
+                'Data'=>$ReturnTable];
+
+        }else{
+            foreach ($ReturnArray as $array){
+                $time= Carbon::parse($array);
+                $start_time= $time->format('H:i');
+                $end_time= $time->addMinutes(60)->format('H:i');
+
+
+
+
+                $ReturnArrayTable=ReservedTime::where('nursery_id',$request->nursery_id)
+                    ->where('date',$request->booking_date)
+                    ->where('start_hour',$array)->first();
+                if ($ReturnArrayTable !=null){
+
+                    $ReturnArrayTable->update([
+                        'num_of_unconfirmed_res'=>$ReturnArrayTable->num_of_unconfirmed_res-1,
+                        'num_of_confirmed_res'=>$ReturnArrayTable->num_of_confirmed_res+1,
+                    ]);
+
+
+
+
+                }else{
+                    $booking_date = Carbon::now()->format('Y:m:d');
+
+                    $babySitter = ReservedTime::create([
+
+                        'nursery_id' => $request->nursery_id,
+                        'date' => $request->booking_date,
+                        'start_hour' => $start_time,
+                        'end_hour' => $end_time,
+                        'booking_id' => 1,
+                        'num_of_confirmed_res' => "0",
+                        'num_of_unconfirmed_res' => 1,
+                    ]);
+
+                }
+            }
+
+
+        }
+        return ['status'=>true];
+    }
 
     public function confirmedShow()
     {
