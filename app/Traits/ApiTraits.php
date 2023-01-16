@@ -12,6 +12,16 @@ trait ApiTraits
         ]);
 
     }
+
+    public function splitTimeReturn($data,$msg)
+    {
+        return response()->json([
+            'status'=>false,
+            'msg'=>$msg,
+            'data'=>$data
+        ]);
+
+    }
     public function returnEmpty($msg){
         return response()->json([
             'status'=>false,

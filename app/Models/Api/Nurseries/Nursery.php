@@ -6,6 +6,7 @@ use App\Models\Api\Admin\Admin;
 use App\Models\Api\Admin\Inspections\Inspection;
 use App\Models\Api\Generals\Attachment;
 use App\Models\Api\Master\BookingServices\Booking;
+use App\Models\Api\Master\BookingServices\ReservedTime;
 use App\Models\BaseModel;
 use App\Models\Api\Generals\City;
 use App\Models\Api\Generals\Country;
@@ -326,5 +327,9 @@ class Nursery extends BaseModel
                 $amenity->restore();
             }
         });
+    }
+    public function reservedTime(): HasMany
+    {
+        return $this->hasMany(ReservedTime::class, 'nursery_id', 'id');
     }
 }

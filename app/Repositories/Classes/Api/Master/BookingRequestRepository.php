@@ -87,21 +87,21 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
 
 
-                        $babySitter = BookingService::create([
-                    'nursery_id' => $booking->nursery_id,
-                    'booking_id' => $booking->id,
-                    'service_id' => $service['id'],
-                    'master_id' => $booking->master_id,
-                    'child_id' => $child_id,
-                    'service_type_id' => $service['service_type_id'],
-                    'service_price' => $service['service_price'],
-                    'service_quantity' => $service['service_quantity'],
-                    'notes' => $service['notes'],
-                    'status' => 1,
+                            $babySitter = BookingService::create([
+                                'nursery_id' => $booking->nursery_id,
+                                'booking_id' => $booking->id,
+                                'service_id' => $service['id'],
+                                'master_id' => $booking->master_id,
+                                'child_id' => $child_id,
+                                'service_type_id' => $service['service_type_id'],
+                                'service_price' => $service['service_price'],
+                                'service_quantity' => $service['service_quantity'],
+                                'notes' => $service['notes'],
+                                'status' => 1,
 
-                ]);
+                            ]);
                         }
-                }
+                    }
                 }
             }
         }
@@ -117,28 +117,35 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         ]);
     }
 
-    protected function reservedTimes($request,$last)
-    {
+    /*    protected function reservedTimes($request,$last)
+        {
 
-        if (!empty($request['date'])) {
 
-            foreach ($request['date'] as $data) {
+            $StartTime=$request->start_time;
+            $EndTime=$request->end_time;
 
-                $babySitter = ReservedTime::create([
+            $Data = $this->SplitTime($StartTime, $EndTime, $Duration = "60",$request);
 
-                    'nursery_id' => $request->nursery_id,
-                    'date' => $data['date'],
-                    'start_hour' => $request->start_time,
-                    'end_hour' => $request->end_time,
-                    'booking_id' => $last->id,
-                    'num_of_confirmed_res' => "0",
-                    'num_of_unconfirmed_res' => 0,
 
-                ]);
+            if (!empty($request['date'])) {
+
+                foreach ($request['date'] as $data) {
+
+                    $babySitter = ReservedTime::create([
+
+                        'nursery_id' => $request->nursery_id,
+                        'date' => $data['date'],
+                        'start_hour' => $request->start_time,
+                        'end_hour' => $request->end_time,
+                        'booking_id' => $last->id,
+                        'num_of_confirmed_res' => "0",
+                        'num_of_unconfirmed_res' => 0,
+
+                    ]);
+                }
             }
-        }
 
-    }
+        }*/
 
     public function checkBookingNursery($request)
     {
@@ -159,6 +166,144 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         return $bookingCount->count();
     }
 
+
+    function SplitTime($StartTime, $EndTime, $Duration="60",$request,$nursery_capacity){
+        $ReturnArray = array ();
+        $ReturnArrayTable = array ();// Define output
+        $ReturnApi = array ();// Define output
+        $StartTime    = strtotime ($StartTime); //Get Timestamp
+        $EndTime      = strtotime ($EndTime); //Get Timestamp
+
+        $AddMins  = $Duration * 60;
+
+        while ($StartTime <= $EndTime) //Run loop
+        {
+            $ReturnArray[] = date ("G:i", $StartTime);
+            $StartTime += $AddMins; //Endtime check
+        }
+        $countChild=count($request['child_id']);
+
+
+        $booking_date = Carbon::now()->format('Y:m:d');
+        $ReturnArrayTable=ReservedTime::where('nursery_id',$request->nursery_id)
+            ->where('date',$request->booking_date)
+            ->whereIn('start_hour',$ReturnArray)->get();
+
+        if (!empty($ReturnArrayTable)) {
+            foreach ($ReturnArrayTable as $value) {
+                $num_of_confirmed_res_and_countChild = $value->num_of_confirmed_res + $countChild;
+                if ($num_of_confirmed_res_and_countChild > $nursery_capacity->capacity) {
+                    $ReturnApi[] = ReservedTime::where('id', $value->id)
+                        ->get();
+                }
+
+            }
+            return $ReturnApi;
+        }
+        else{
+            return true;
+
+
+
+        }
+
+    }
+    function SplitTimeSave($StartTime, $EndTime, $Duration="60",$request){
+        $ReturnArray = array ();
+        $ReturnArrayTable = array ();// Define output
+        $StartTime    = strtotime ($StartTime); //Get Timestamp
+        $EndTime      = strtotime ($EndTime); //Get Timestamp
+
+        $AddMins  = $Duration * 60;
+
+        while ($StartTime <= $EndTime) //Run loop
+        {
+            $ReturnArray[] = date ("G:i", $StartTime);
+            $StartTime += $AddMins; //Endtime check
+        }
+        foreach ($ReturnArray as $array){
+            $time= Carbon::parse($array);
+            $start_time= $time->format('H:i');
+            $end_time= $time->addMinutes(60)->format('H:i');
+
+            $booking_date = Carbon::now()->format('Y:m:d');
+            $ReturnArrayTable=ReservedTime::where('nursery_id',$request->nursery_id)
+                ->where('start_hour',$start_time)->where('end_hour',$end_time)
+                ->where('date',$request->booking_date)->first();
+            $ReturnApi=ReservedTime::where('nursery_id',$request->nursery_id)
+                ->where('date',$request->booking_date)->get();
+            if ($ReturnArrayTable !=null){
+                $ReturnArrayTable->update([
+                    'num_of_unconfirmed_res'=>$ReturnArrayTable->num_of_unconfirmed_res+1,
+                ]);
+
+
+            }else{
+                $booking_date = Carbon::now()->format('Y:m:d');
+
+                $babySitter = ReservedTime::create([
+
+                    'nursery_id' => $request->nursery_id,
+                    'date' => $request->booking_date,
+                    'start_hour' => $start_time,
+                    'end_hour' => $end_time,
+                    'booking_id' => 1,
+                    'num_of_confirmed_res' => "0",
+                    'num_of_unconfirmed_res' => 1,
+                ]);
+
+
+            }
+
+        }
+        return $ReturnApi;
+    }
+
+    public function extension($request)
+    {
+
+
+
+        $booking_time = Carbon::now()->format('H:i:m');
+        $total = $this->prices($request);
+        $total_hours = Carbon::parse($total['totalTime']);
+        $id = $request['services'];
+        //   foreach ($request['child_id'] as $child) {
+        $booking_id = array();
+
+        foreach ($request['child_id'] as $child_id) {
+            $last = Booking::create([
+                'nursery_id' => $request->nursery_id,
+                'master_id' => $request->master_id,
+                'child_id' => $child_id,
+                'status_id' => "1",
+                'booking_date' => $request->booking_date,
+                'booking_time' => $booking_time,
+                'start_datetime' => $request->start_datetime,
+                'end_datetime' => $request->end_datetime,
+                'total_hours' => $request->total_hours,
+                'created_by' => $request->created_by,
+            ]);
+            $booking_id[] = $last;
+
+            $this->bookingLog($last);
+            $this->reservedTimes($request,$last);
+            $this->bookingStatus($request,$last);
+
+            $user_id=Nursery::where("id",$request->nursery_id)->first();
+            $user_id=$user_id->user_id;
+            $user=User::where("id",$user_id)->first();
+            $fcm = new \App\Functions\FcmNotification();
+            $phone = str_replace("+9660","966",$user->phone);
+            $phone = str_replace("+966","966",$phone);
+            $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
+        }
+        //  $this->bookingServices($request, $booking_id, $child_id);
+        $msg='تم حفظ البيانات بنجاح';
+        return $this->returnData($last,$msg);
+
+    }
+
     public function createRequest($request)
     {
 
@@ -172,128 +317,67 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
                 }*/
 
 
-        if (!empty($request['child_id'])) {
-            $countChild=count($request['child_id']);
-            $booking_time = Carbon::now()->format('H:i:m');
 
+        $StartTime=$request->start_time;
+        $EndTime=$request->end_time;
 
+        $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)
+            ->where('online',1)->first();
+        $Data=$this->SplitTime($StartTime, $EndTime, $Duration = "60",$request,$nursery_capacity);
+        if (!empty($Data)) {
+            $msg='عذراً لايوجد مقاعد في الساعات التالية';
+            return $this->splitTimeReturn($Data,$msg);
+        }else{
+            if (!empty($request['child_id'])) {
+                $countChild=count($request['child_id']);
+                $booking_time = Carbon::now()->format('H:i:m');
+                $total = $this->prices($request);
+                $total_hours = Carbon::parse($total['totalTime']);
+                $id = $request['services'];
+                //   foreach ($request['child_id'] as $child) {
+                $booking_id = array();
 
-                $nursery_capacity = Nursery::select('capacity')->where('id', $request->nursery_id)
-                    ->where('online',1)->first();
-                $capacity = $nursery_capacity->capacity;
-                $checkBooking = $this->checkBookingNursery($request);
-                if ($checkBooking <= $capacity) {
-                    $capacityFree=$capacity-$checkBooking;
-                    $checkCapacity=$capacityFree -$countChild;
-                    if ($checkCapacity >=0){
-                        $total = $this->prices($request);
-                        $total_hours = Carbon::parse($total['totalTime']);
-                        $id = $request['services'];
-                             //   foreach ($request['child_id'] as $child) {
-                        $booking_id = array();
+                foreach ($request['child_id'] as $child_id) {
+                    $last = Booking::create([
+                        'nursery_id' => $request->nursery_id,
+                        'master_id' => $request->master_id,
+                        'child_id' => $child_id,
+                        'status_id' => "1",
+                        'booking_date' => $request->booking_date,
+                        'booking_time' => $booking_time,
+                        'start_datetime' => $request->start_datetime,
+                        'end_datetime' => $request->end_datetime,
+                        'total_hours' => $request->total_hours,
+                        'created_by' => $request->created_by,
+                    ]);
+                    $booking_id[] = $last;
 
-                        foreach ($request['child_id'] as $child_id) {
-                            $last = Booking::create([
-                            'nursery_id' => $request->nursery_id,
-                            'master_id' => $request->master_id,
-                            'child_id' => $child_id,
-                            'status_id' => "1",
-                            'booking_date' => $request->booking_date,
-                            'booking_time' => $booking_time,
-                            'start_datetime' => $request->start_datetime,
-                            'end_datetime' => $request->end_datetime,
-                            'total_hours' => $request->total_hours,
-                            'created_by' => $request->created_by,
-                        ]);
-                            $booking_id[] = $last;
+                    $this->bookingLog($last);
+                    //    $this->reservedTimes($request,$last);
+                    $this->SplitTimeSave($StartTime, $EndTime, $Duration = "60",$request);
 
-                       $this->bookingLog($last);
-                        $this->reservedTimes($request,$last);
+                    $this->bookingStatus($request,$last);
 
-                        $this->bookingStatus($request,$last);
+                    $user_id=Nursery::where("id",$request->nursery_id)->first();
+                    $user_id=$user_id->user_id;
+                    $user=User::where("id",$user_id)->first();
+                    $fcm = new \App\Functions\FcmNotification();
+                    $phone = str_replace("+9660","966",$user->phone);
+                    $phone = str_replace("+966","966",$phone);
+                    $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
 
-                       $user_id=Nursery::where("id",$request->nursery_id)->first();
-                        $user_id=$user_id->user_id;
-                        $user=User::where("id",$user_id)->first();
-                        $fcm = new \App\Functions\FcmNotification();
-                        $phone = str_replace("+9660","966",$user->phone);
-                        $phone = str_replace("+966","966",$phone);
-                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
-                        }
-                           /* }
-
-
-                           if (!empty($request['payment'])) {
-                                $this->payment($request['services'], $request);
-                            }
-
-                           // qualicfications
-                           if (!empty($request['services'])) {
-                                $this->services($request['services'], $request);
-                            }*/
-                    }else{
-
-                        $msg='عذراَ لايتوفر العدد المطلوب من المقاعد .َ';
-                        return $this->returnEmpty($msg);
-
-
-                    }
-
-                } else {
-                    $msg='عذراً الحاضنة ممتلئة .';
-                    return $this->returnEmpty($msg);
 
                 }
 
+                $this->bookingServices($request, $booking_id, $child_id);
+                $msg='تم حفظ البيانات بنجاح';
+                return $this->returnData($last,$msg);
 
             }
+        }
 
 
-        $this->bookingServices($request, $booking_id, $child_id);
-        $msg='تم حفظ البيانات بنجاح';
-        return $this->returnData($last,$msg);
 
-    }
-    public function extension($request)
-    {
-
-                    $booking_time = Carbon::now()->format('H:i:m');
-                        $total = $this->prices($request);
-                        $total_hours = Carbon::parse($total['totalTime']);
-                        $id = $request['services'];
-                             //   foreach ($request['child_id'] as $child) {
-                        $booking_id = array();
-
-                        foreach ($request['child_id'] as $child_id) {
-                            $last = Booking::create([
-                            'nursery_id' => $request->nursery_id,
-                            'master_id' => $request->master_id,
-                            'child_id' => $child_id,
-                            'status_id' => "1",
-                            'booking_date' => $request->booking_date,
-                            'booking_time' => $booking_time,
-                            'start_datetime' => $request->start_datetime,
-                            'end_datetime' => $request->end_datetime,
-                            'total_hours' => $request->total_hours,
-                            'created_by' => $request->created_by,
-                        ]);
-                            $booking_id[] = $last;
-
-                       $this->bookingLog($last);
-                        $this->reservedTimes($request,$last);
-                        $this->bookingStatus($request,$last);
-
-                       $user_id=Nursery::where("id",$request->nursery_id)->first();
-                        $user_id=$user_id->user_id;
-                        $user=User::where("id",$user_id)->first();
-                        $fcm = new \App\Functions\FcmNotification();
-                        $phone = str_replace("+9660","966",$user->phone);
-                        $phone = str_replace("+966","966",$phone);
-                        $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
-                        }
-      //  $this->bookingServices($request, $booking_id, $child_id);
-        $msg='تم حفظ البيانات بنجاح';
-        return $this->returnData($last,$msg);
 
     }
 
@@ -331,17 +415,17 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
             if ($request->children_id != null) {
                 $find = Child::whereIn('id', $request->children_id)->first();
-                $age_find_y = Carbon::parse($find->date_of_birth)->diffInYears(Carbon::now());
-                $age_find_m = Carbon::parse($find->date_of_birth)->diffInMonths(Carbon::now());
+                $age_find_y = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%y');
+                $age_find_m = Carbon::parse($find->date_of_birth)->diff(Carbon::now())->format('%m');
             } else {
-                $age_find_m = 1;
+                $age_find = 1;
             }
         if ($age_find_y>0){
             $age_find=$age_find_y;
-            $age_type=2;
+            $age_type=1;
         }else{
             $age_find=$age_find_m;
-            $age_type=1;
+            $age_type=2;
 
 
         }
@@ -409,6 +493,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         if ($request->to_hour !=null){
 
+
             $NurseryAvailability = NurseryAvailability::where('from_hour', '<=', Carbon::parse($from_hour))
                 ->where('to_hour', '>=', Carbon::parse($to_hour))
                 ->whereIn('day_id', $day)->
@@ -450,15 +535,15 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'children.attachmentable',
 
         ])->get();
-       /* $nurseryBooking['services']=BookingService::where('booking_id',$id)->where('child_id',$nurseryBooking->child_id)->with([
-            'masters.children:id,name,date_of_birth',
-            'BookingStatus:id,name',
-            'children.sicknesses',
-            'children.languages',
-            'children.allergies',
-            'children.attachmentable',
+        /* $nurseryBooking['services']=BookingService::where('booking_id',$id)->where('child_id',$nurseryBooking->child_id)->with([
+             'masters.children:id,name,date_of_birth',
+             'BookingStatus:id,name',
+             'children.sicknesses',
+             'children.languages',
+             'children.allergies',
+             'children.attachmentable',
 
-        ])->get();*/
+         ])->get();*/
 
         return $nurseryBooking;
 
@@ -473,9 +558,9 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             'children_id' => 'exists:children,id',
             'city_id' => 'exists:cities,id',
             'day' => 'exists:days,id',
-          //  'from_hour' => 'required',
-           // 'to_hour' => 'required|before_or_equal:from_hour',
-           // 'to_hour' => 'required|after:from_hour',
+            //  'from_hour' => 'required',
+            // 'to_hour' => 'required|before_or_equal:from_hour',
+            // 'to_hour' => 'required|after:from_hour',
         ]);
 
         $check = $this->check($request);
@@ -494,68 +579,70 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
         $nursery_id = $NurseryAvailability['nursery_id'];
         $day_id = $NurseryAvailability['day_id'];
 
-if ($age_type==2) {
-    $x = $model::where('is_active', 1)->where('acceptance_age_type',2)->where('status', 5)->whereIn('id', $nursery_id)
-        ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
-        ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('first_name', 'LIKE', '%' . $search . '%')
-                ->orWhere('last_name', 'LIKE', '%' . $search . '%')
-                ->orWhere('uid', 'LIKE', '%' . $search . '%')
-                ->orWhere('address_description', 'LIKE', '%' . $search . '%');
-        })->with(['availabilities' =>
-            function ($item) use ($from_hour, $to_hour) {
-                $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
-                    ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
-                    ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
-            },])
-        ->with([
-            'country:id,name',
-            'city:id,country_id,name',
-            'neighborhood:id,city_id,name',
-            'babySitter:id,nursery_id',
-            'babySitter.skills',
-            'babySitter.attachmentable',
-            'services',
-            'services.sub_type:id,name',
-            'availabilities'
-        ])
-        ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
-            'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
-        ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
-}else{
+        if ($age_type==2) {
+            $x = $model::where('is_active', 1)->where('acceptance_age_type',2)->where('status', 5)->whereIn('id', $nursery_id)
+                ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
+                ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('first_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('uid', 'LIKE', '%' . $search . '%')
+                        ->orWhere('address_description', 'LIKE', '%' . $search . '%');
+                })->with(['availabilities' =>
+                    function ($item) use ($from_hour, $to_hour) {
+                        $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                            ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
+                            ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
+                    },])
+                ->with([
+                    'country:id,name',
+                    'city:id,country_id,name',
+                    'neighborhood:id,city_id,name',
+                    'babySitter:id,nursery_id',
+                    'babySitter.skills',
+                    'babySitter.attachmentable',
+                    'services',
+                    'services.sub_type:id,name',
+                    'availabilities',
+                    'reservedTime'
+                ])
+                ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+                    'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
+                ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+        }else{
 
-    $x = $model::where('is_active', 1)->where('acceptance_age_type',1)->where('status', 5)->whereIn('id', $nursery_id)
-        ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
-        ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('first_name', 'LIKE', '%' . $search . '%')
-                ->orWhere('last_name', 'LIKE', '%' . $search . '%')
-                ->orWhere('uid', 'LIKE', '%' . $search . '%')
-                ->orWhere('address_description', 'LIKE', '%' . $search . '%');
-        })->with(['availabilities' =>
-            function ($item) use ($from_hour, $to_hour) {
-                $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
-                    ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
-                    ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
-            },])
-        ->with([
-            'country:id,name',
-            'city:id,country_id,name',
-            'neighborhood:id,city_id,name',
-            'babySitter:id,nursery_id',
-            'babySitter.skills',
-            'babySitter.attachmentable',
-            'services',
-            'services.sub_type:id,name',
-            'availabilities'
-        ])
-        ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
-            'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
-        ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
-}
+            $x = $model::where('is_active', 1)->where('acceptance_age_type',1)->where('status', 5)->whereIn('id', $nursery_id)
+                ->where('acceptance_age_from', '<=', $age_find)->where('acceptance_age_to', '>=', $age_find)
+                ->whereIn('city_id', $city_id)->whereIn('neighborhood_id', $neighborhood_id)
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('first_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('last_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('uid', 'LIKE', '%' . $search . '%')
+                        ->orWhere('address_description', 'LIKE', '%' . $search . '%');
+                })->with(['availabilities' =>
+                    function ($item) use ($from_hour, $to_hour) {
+                        $item->select('id', 'from_hour', 'to_hour', 'day_id', 'nursery_id')
+                            ->whereTime('from_hour', '>=', Carbon::parse($from_hour))
+                            ->whereTime('to_hour', '<=', Carbon::parse($to_hour));
+                    },])
+                ->with([
+                    'country:id,name',
+                    'city:id,country_id,name',
+                    'neighborhood:id,city_id,name',
+                    'babySitter:id,nursery_id',
+                    'babySitter.skills',
+                    'babySitter.attachmentable',
+                    'services',
+                    'services.sub_type:id,name',
+                    'availabilities',
+                    'reservedTime'
+                ])
+                ->select(['id', 'uid', 'user_id', 'name', 'first_name', 'last_name', 'license_no', 'capacity', 'acceptance_age_from',
+                    'acceptance_age_to', 'national_address', 'address_description', 'price', 'latitude', 'longitude', 'city_id', 'country_id', 'neighborhood_id'])
+                ->orderBy('price', $sortOrder)->paginate(10)->withQueryString();
+        }
         if ($x->isEmpty()){
             return null;
         }
