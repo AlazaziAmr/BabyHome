@@ -176,7 +176,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         $AddMins  = $Duration * 60;
 
-        while ($StartTime <= $EndTime) //Run loop
+        while ($StartTime < $EndTime) //Run loop
         {
             $ReturnArray[] = date ("G:i", $StartTime);
             $StartTime += $AddMins; //Endtime check
@@ -216,7 +216,7 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
 
         $AddMins  = $Duration * 60;
 
-        while ($StartTime <= $EndTime) //Run loop
+        while ($StartTime < $EndTime) //Run loop
         {
             $ReturnArray[] = date ("G:i", $StartTime);
             $StartTime += $AddMins; //Endtime check
@@ -225,7 +225,6 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
             $time= Carbon::parse($array);
             $start_time= $time->format('H:i');
             $end_time= $time->addMinutes(60)->format('H:i');
-
             $booking_date = Carbon::now()->format('Y:m:d');
             $ReturnArrayTable=ReservedTime::where('nursery_id',$request->nursery_id)
                 ->where('start_hour',$start_time)->where('end_hour',$end_time)
@@ -262,45 +261,48 @@ class BookingRequestRepository extends BaseRepository implements IBookingRequest
     public function extension($request)
     {
 
-
-
         $booking_time = Carbon::now()->format('H:i:m');
         $total = $this->prices($request);
         $total_hours = Carbon::parse($total['totalTime']);
         $id = $request['services'];
-        //   foreach ($request['child_id'] as $child) {
-        $booking_id = array();
+        $startTime = Carbon::parse($request->start_time);
+        $endTime = Carbon::parse($request->end_time);
+        $totalHoure = $startTime->diff($endTime)->format('%H');
+        if ($totalHoure >2){
+            $msg='عذراً الحد الأقصى للتمديد ساعتين';
+            return $this->returnEmpty($msg);
+        }else{
+                $last = Booking::create([
+                    'nursery_id' => $request->nursery_id,
+                    'master_id' => $request->master_id,
+                    'child_id' => $request->child_id,
+                    'status_id' => "1",
+                    'booking_date' => $request->booking_date,
+                    'booking_time' => $booking_time,
+                    'start_datetime' => $request->start_datetime,
+                    'end_datetime' => $request->end_datetime,
+                    'total_hours' => $request->total_hours,
+                    'created_by' => $request->created_by,
+                ]);
+                $StartTime=$request->start_time;
+                $EndTime=$request->end_time;
 
-        foreach ($request['child_id'] as $child_id) {
-            $last = Booking::create([
-                'nursery_id' => $request->nursery_id,
-                'master_id' => $request->master_id,
-                'child_id' => $child_id,
-                'status_id' => "1",
-                'booking_date' => $request->booking_date,
-                'booking_time' => $booking_time,
-                'start_datetime' => $request->start_datetime,
-                'end_datetime' => $request->end_datetime,
-                'total_hours' => $request->total_hours,
-                'created_by' => $request->created_by,
-            ]);
-            $booking_id[] = $last;
+                $this->bookingLog($last);
+                $this->SplitTimeSave($StartTime, $EndTime, $Duration = "60",$request);
+                $this->bookingStatus($request,$last);
+                $user_id=Nursery::where("id",$request->nursery_id)->first();
+                $user_id=$user_id->user_id;
+                $user=User::where("id",$user_id)->first();
+                $fcm = new \App\Functions\FcmNotification();
+                $phone = str_replace("+9660","966",$user->phone);
+                $phone = str_replace("+966","966",$phone);
+                $fcm->send_notification("طلب جديد",'طلب تمديد حجز جديد.',$phone);
+                $msg='تم حفظ البيانات بنجاح';
+            return $this->returnData($last,$msg);
 
-            $this->bookingLog($last);
-            $this->reservedTimes($request,$last);
-            $this->bookingStatus($request,$last);
-
-            $user_id=Nursery::where("id",$request->nursery_id)->first();
-            $user_id=$user_id->user_id;
-            $user=User::where("id",$user_id)->first();
-            $fcm = new \App\Functions\FcmNotification();
-            $phone = str_replace("+9660","966",$user->phone);
-            $phone = str_replace("+966","966",$phone);
-            $fcm->send_notification("حجز جديد",'هناك حجز جديد.',$phone);
         }
-        //  $this->bookingServices($request, $booking_id, $child_id);
-        $msg='تم حفظ البيانات بنجاح';
-        return $this->returnData($last,$msg);
+
+
 
     }
 
