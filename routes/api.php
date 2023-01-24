@@ -422,8 +422,10 @@ Route::group(['as' => 'api.', 'middleware' => ['cors', 'json.response', 'locale'
     Route::get('child-phone/{id}', [ChildPhoneController::class,'index']);
     Route::get('child-sickness/{id}', [ChildSicknessController::class, 'index']);
     Route::get('child-allergies/{id}', [ChildAllergyController::class,'index']);
+
 });
 Route::POST('/success-url', [PaymentController::class, 'successPayment']);
 Route::get('/error-url', [PaymentController::class, 'error']);
 
-
+Route::post('parent', [NoteController::class,'parent']);
+Route::post('nursery', [NoteController::class,'nursery']);
